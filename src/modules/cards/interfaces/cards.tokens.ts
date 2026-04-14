@@ -1,0 +1,1 @@
+export const CARDS_REPOSITORY = Symbol('CARDS_REPOSITORY');

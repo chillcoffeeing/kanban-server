@@ -1,4 +1,4 @@
-import type { Activity, Prisma } from '@prisma/client';
+import type { Activity, Prisma } from '@/generated/prisma/client';
 
 export interface CreateActivityData {
   boardId: string;

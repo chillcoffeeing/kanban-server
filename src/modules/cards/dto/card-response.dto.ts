@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { Card } from '@prisma/client';
+import type { Card } from '@/generated/prisma/client';
 
 export class CardResponseDto {
   @ApiProperty() id!: string;
@@ -9,7 +9,6 @@ export class CardResponseDto {
   @ApiProperty() position!: number;
   @ApiProperty({ nullable: true }) startDate!: Date | null;
   @ApiProperty({ nullable: true }) dueDate!: Date | null;
-  @ApiProperty({ nullable: true }) coverAttachmentId!: string | null;
   @ApiProperty() createdAt!: Date;
   @ApiProperty() updatedAt!: Date;
 
@@ -22,7 +21,6 @@ export class CardResponseDto {
       position: c.position,
       startDate: c.startDate,
       dueDate: c.dueDate,
-      coverAttachmentId: c.coverAttachmentId,
       createdAt: c.createdAt,
       updatedAt: c.updatedAt,
     };

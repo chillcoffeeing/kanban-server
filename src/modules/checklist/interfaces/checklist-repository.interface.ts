@@ -1,4 +1,4 @@
-import type { ChecklistItem } from '@prisma/client';
+import type { ChecklistItem } from '@/generated/prisma/client';
 
 export interface IChecklistRepository {
   findById(id: string): Promise<ChecklistItem | null>;

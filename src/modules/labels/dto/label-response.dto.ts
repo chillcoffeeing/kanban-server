@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { Label } from '@prisma/client';
+import type { Label } from '@/generated/prisma/client';
 
 export class LabelResponseDto {
   @ApiProperty() id!: string;

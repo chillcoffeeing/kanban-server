@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { BoardRole, type Invitation } from '@prisma/client';
+import { BoardRole, type Invitation } from '@/generated/prisma/client';
 import { IsEmail, IsEnum, IsOptional } from 'class-validator';
 
 export class CreateInvitationDto {

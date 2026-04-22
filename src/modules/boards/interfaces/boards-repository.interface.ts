@@ -1,4 +1,4 @@
-import type { Board, Prisma } from '@prisma/client';
+import type { Board, Prisma } from '@/generated/prisma/client';
 
 export interface IBoardsRepository {
   findById(id: string): Promise<Board | null>;

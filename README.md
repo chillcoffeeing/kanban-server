@@ -1,6 +1,6 @@
 # kanban-backend
 
-Backend NestJS para Kanban Platform. Arquitectura modular atómica, SOLID, upload de archivos vía Multer → S3/MinIO.
+Backend NestJS para Kanban Platform. Arquitectura modular atómica, SOLID.
 
 ## Requisitos
 
@@ -41,13 +41,12 @@ src/
 ├── common/                    guards/filters/interceptors (cross-cutting)
 ├── shared/                    utils puros
 ├── infrastructure/
-│   ├── prisma/                PrismaService (global)
-│   └── storage/               IStorageProvider + S3Provider (global)
+│   └── prisma/                PrismaService (global)
 └── modules/
-    ├── health/                /health (DB + storage)
-    └── ...                    dominio (auth, boards, cards, attachments, …)
+    ├── health/                /health (básico)
+    └── ...                    dominio (auth, boards, cards, …)
 ```
 
 ## Fases del roadmap
 
-Este repo está en **Fase 1: Esqueleto**. Próximas: Auth+Users, dominio core, Attachments, Activity+Invitations, Realtime.
+Este repo está en **Fase 1: Esqueleto**. Próximas: Auth+Users, dominio core, Activity+Invitations, Realtime.

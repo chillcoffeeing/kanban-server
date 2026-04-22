@@ -1,4 +1,4 @@
-import type { CardLabel, Label } from '@prisma/client';
+import type { CardLabel, Label } from '@/generated/prisma/client';
 
 export interface ILabelsRepository {
   findById(id: string): Promise<Label | null>;

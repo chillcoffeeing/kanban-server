@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { ChecklistItem } from '@prisma/client';
+import type { ChecklistItem } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type { IChecklistRepository } from '../interfaces/checklist-repository.interface';
 

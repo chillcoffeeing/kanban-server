@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { CardLabel, Label } from '@prisma/client';
+import type { CardLabel, Label } from '@/generated/prisma/client';
 import {
   ILabelsRepository,
   LABELS_REPOSITORY,

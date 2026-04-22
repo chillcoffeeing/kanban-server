@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { Comment } from '@prisma/client';
+import type { Comment } from '@/generated/prisma/client';
 import {
   COMMENTS_REPOSITORY,
   ICommentsRepository,

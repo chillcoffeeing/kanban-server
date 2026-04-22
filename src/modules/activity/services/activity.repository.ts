@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Activity } from '@prisma/client';
+import type { Activity } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type {
   CreateActivityData,

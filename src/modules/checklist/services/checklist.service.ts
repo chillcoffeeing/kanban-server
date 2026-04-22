@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { ChecklistItem } from '@prisma/client';
+import type { ChecklistItem } from '@/generated/prisma/client';
 import { positionBetween } from '@shared/position.util';
 import {
   CHECKLIST_REPOSITORY,

@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import type { BoardMember, BoardRole } from '@prisma/client';
+import type { BoardMember, BoardRole } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type {
   BoardMembership,
   IMembersRepository,
 } from '../interfaces/members-repository.interface';
+import { log } from 'node:console';
 
 @Injectable()
 export class MembersRepository implements IMembersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   findMembership(boardId: string, userId: string): Promise<BoardMembership | null> {
+    
     return this.prisma.boardMember.findUnique({
       where: { boardId_userId: { boardId, userId } },
       select: {
@@ -23,10 +25,16 @@ export class MembersRepository implements IMembersRepository {
     });
   }
 
-  listByBoard(boardId: string): Promise<BoardMember[]> {
+  listByBoard(boardId: string): Promise<(BoardMember)[]> {
+    log('Listing members for board', { boardId });
     return this.prisma.boardMember.findMany({
       where: { boardId },
       orderBy: { invitedAt: 'asc' },
+      include: {
+        'user':{
+          select: {name: true, avatarUrl: true}
+        }
+      },
     });
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Board, Prisma } from '@prisma/client';
+import type { Board, Prisma } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type { IBoardsRepository } from '../interfaces/boards-repository.interface';
 

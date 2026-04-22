@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { User } from '@prisma/client';
+import type { User } from '@/generated/prisma/client';
 import { UsersService } from '@modules/users/services/users.service';
 import { PasswordHasherService } from './password-hasher.service';
 import { TokenService } from './token.service';

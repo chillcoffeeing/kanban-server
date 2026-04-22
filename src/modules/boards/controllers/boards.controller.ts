@@ -31,6 +31,7 @@ import { CreateBoardDto } from '../dto/create-board.dto';
 import { UpdateBoardDto } from '../dto/update-board.dto';
 import { UpdatePreferencesDto } from '../dto/update-preferences.dto';
 import { BoardResponseDto } from '../dto/board-response.dto';
+import { log } from 'node:console';
 
 @ApiTags('boards')
 @ApiBearerAuth()
@@ -81,12 +82,16 @@ export class BoardsController {
       this.cards.listByBoard(id),
       this.members.listByBoard(id),
     ]);
+    log('Fetched board details', { boardId: id, stagesCount: stages.length, cardsCount: cards.length, membersCount: members.length });
+    
     const cardsByStage = new Map<string, CardResponseDto[]>();
+
     for (const c of cards) {
       const arr = cardsByStage.get(c.stageId) ?? [];
       arr.push(CardResponseDto.fromEntity(c));
       cardsByStage.set(c.stageId, arr);
     }
+    
     return {
       board: BoardResponseDto.fromEntity(board),
       members: members.map(MemberResponseDto.fromEntity),

@@ -14,7 +14,4 @@ export class UpdateCardDto {
 
   @ApiPropertyOptional() @IsOptional() @Type(() => Date) @IsDate()
   dueDate?: Date | null;
-
-  @ApiPropertyOptional() @IsOptional() @IsUUID()
-  coverAttachmentId?: string | null;
 }

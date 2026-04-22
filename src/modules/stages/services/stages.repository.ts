@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Stage } from '@prisma/client';
+import type { Stage } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type { IStagesRepository } from '../interfaces/stages-repository.interface';
 

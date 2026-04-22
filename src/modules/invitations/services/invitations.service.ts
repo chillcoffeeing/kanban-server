@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { randomBytes } from 'node:crypto';
-import type { BoardRole, Invitation } from '@prisma/client';
+import type { BoardRole, Invitation } from '@/generated/prisma/client';
 import { UsersService } from '@modules/users/services/users.service';
 import { MembersService } from '@modules/members/services/members.service';
 import {

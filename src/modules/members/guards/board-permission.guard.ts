@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { BoardRole } from '@prisma/client';
+import type { BoardRole } from '@/generated/prisma/client';
 import type { BoardPermission } from '@shared/board-permissions';
 import type { AuthUser } from '@modules/auth/interfaces/auth-user.interface';
 import { BoardAccessService } from '../services/board-access.service';

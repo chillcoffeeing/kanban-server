@@ -1,4 +1,4 @@
-import type { Stage } from '@prisma/client';
+import type { Stage } from '@/generated/prisma/client';
 
 export interface IStagesRepository {
   findById(id: string): Promise<Stage | null>;

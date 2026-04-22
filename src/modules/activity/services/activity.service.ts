@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { Activity, Prisma } from '@prisma/client';
+import type { Activity, Prisma } from '@/generated/prisma/client';
 import {
   ACTIVITY_REPOSITORY,
   IActivityRepository,

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Invitation } from '@prisma/client';
+import type { Invitation } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type {
   CreateInvitationData,

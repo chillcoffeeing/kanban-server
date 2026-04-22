@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { Stage } from '@prisma/client';
+import type { Stage } from '@/generated/prisma/client';
 import { positionBetween } from '@shared/position.util';
 import {
   IStagesRepository,

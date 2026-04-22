@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { Stage } from '@prisma/client';
+import type { Stage } from '@/generated/prisma/client';
 
 export class StageResponseDto {
   @ApiProperty() id!: string;

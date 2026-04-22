@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsDate, IsInt, IsOptional, Max, Min } from 'class-validator';
-import type { Activity } from '@prisma/client';
+import type { Activity } from '@/generated/prisma/client';
 
 export class ListActivityQueryDto {
   @ApiPropertyOptional({ default: 50 })

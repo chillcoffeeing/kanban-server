@@ -1,6 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
 import type { BoardPermission } from '@shared/board-permissions';
-import type { BoardRole } from '@prisma/client';
+import type { BoardRole } from '@/generated/prisma/client';
 
 export const BOARD_PERMISSION_KEY = 'boardPermission';
 export const BOARD_ROLE_KEY = 'boardRole';

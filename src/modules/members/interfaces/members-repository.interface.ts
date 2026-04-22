@@ -1,4 +1,4 @@
-import type { BoardMember, BoardRole } from '@prisma/client';
+import type { BoardMember, BoardRole } from '@/generated/prisma/client';
 
 export interface BoardMembership {
   id: string;
@@ -10,7 +10,7 @@ export interface BoardMembership {
 
 export interface IMembersRepository {
   findMembership(boardId: string, userId: string): Promise<BoardMembership | null>;
-  listByBoard(boardId: string): Promise<BoardMember[]>;
+  listByBoard(boardId: string): Promise<(BoardMember)[]>;
   create(data: {
     boardId: string;
     userId: string;

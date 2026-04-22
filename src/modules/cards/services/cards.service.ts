@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { Card } from '@prisma/client';
+import type { Card } from '@/generated/prisma/client';
 import { positionBetween } from '@shared/position.util';
 import { StagesService } from '@modules/stages/services/stages.service';
 import type {

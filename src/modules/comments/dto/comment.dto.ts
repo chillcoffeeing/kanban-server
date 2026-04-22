@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MaxLength, MinLength } from 'class-validator';
-import type { Comment } from '@prisma/client';
+import type { Comment } from '@/generated/prisma/client';
 
 export class CreateCommentDto {
   @ApiProperty() @IsString() @MinLength(1) @MaxLength(5000)

@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { BoardMember, BoardRole } from '@prisma/client';
+import type { BoardMember, BoardRole } from '@/generated/prisma/client';
 import {
   IMembersRepository,
   MEMBERS_REPOSITORY,
@@ -18,7 +18,7 @@ export class MembersService {
     @Inject(MEMBERS_REPOSITORY) private readonly repo: IMembersRepository,
   ) {}
 
-  listByBoard(boardId: string): Promise<BoardMember[]> {
+  listByBoard(boardId: string): Promise<(BoardMember)[]> {
     return this.repo.listByBoard(boardId);
   }
 

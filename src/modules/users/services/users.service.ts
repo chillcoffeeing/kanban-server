@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { User } from '@prisma/client';
+import type { User } from '@/generated/prisma/client';
 import {
   IUsersRepository,
   USERS_REPOSITORY,

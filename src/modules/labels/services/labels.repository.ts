@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { CardLabel, Label } from '@prisma/client';
+import type { CardLabel, Label } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type { ILabelsRepository } from '../interfaces/labels-repository.interface';
 

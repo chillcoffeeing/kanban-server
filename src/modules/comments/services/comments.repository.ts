@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Comment } from '@prisma/client';
+import type { Comment } from '@/generated/prisma/client';
 import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import type { ICommentsRepository } from '../interfaces/comments-repository.interface';
 

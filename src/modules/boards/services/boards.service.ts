@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { Board, Prisma } from '@prisma/client';
+import type { Board, Prisma } from '@/generated/prisma/client';
 import { MembersService } from '@modules/members/services/members.service';
 import {
   BOARDS_REPOSITORY,

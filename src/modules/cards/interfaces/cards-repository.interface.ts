@@ -1,4 +1,4 @@
-import type { Card, Prisma } from '@prisma/client';
+import type { Card, Prisma } from '@/generated/prisma/client';
 
 export interface CreateCardData {
   stageId: string;
@@ -16,7 +16,6 @@ export interface UpdateCardData {
   dueDate?: Date | null;
   position?: number;
   stageId?: string;
-  coverAttachmentId?: string | null;
 }
 
 export interface ICardsRepository {

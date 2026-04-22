@@ -1,5 +1,5 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
-import type { BoardRole } from '@prisma/client';
+import type { BoardRole } from '@/generated/prisma/client';
 import {
   IMembersRepository,
   MEMBERS_REPOSITORY,

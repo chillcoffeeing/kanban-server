@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { BoardRole } from '@prisma/client';
+import { BoardRole } from '@/generated/prisma/client';
 import { ArrayUnique, IsEnum, IsIn, IsOptional } from 'class-validator';
 import { BOARD_PERMISSIONS, type BoardPermission } from '@shared/board-permissions';
 

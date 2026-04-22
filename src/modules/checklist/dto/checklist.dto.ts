@@ -7,7 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import type { ChecklistItem } from '@prisma/client';
+import type { ChecklistItem } from '@/generated/prisma/client';
 
 export class CreateChecklistItemDto {
   @ApiProperty() @IsString() @MinLength(1) @MaxLength(500)

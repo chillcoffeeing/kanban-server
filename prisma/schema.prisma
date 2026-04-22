@@ -1,14 +1,19 @@
-// Kanban Platform - Prisma schema
-// Traduce kanban-platform/database/schema.sql + tablas de docs/BACKEND.md §2
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client"
+  output        = "../src/generated/prisma"
+  moduleFormat  = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
+
+
 
 enum BoardRole {
   owner
@@ -32,7 +37,6 @@ model User {
   ownedBoards   Board[]         @relation("BoardOwner")
   memberships   BoardMember[]
   cardMembers   CardMember[]
-  attachments   Attachment[]
   comments      Comment[]
   activities    Activity[]
   refreshTokens RefreshToken[]
@@ -112,16 +116,13 @@ model Card {
   position    Float     @default(0)
   startDate   DateTime? @map("start_date") @db.Date
   dueDate     DateTime? @map("due_date") @db.Date
-  coverAttachmentId String? @unique @map("cover_attachment_id") @db.Uuid
   createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
 
   stage           Stage           @relation(fields: [stageId], references: [id], onDelete: Cascade)
-  cover           Attachment?     @relation("CardCover", fields: [coverAttachmentId], references: [id], onDelete: SetNull)
   labels          CardLabel[]
   members         CardMember[]
   checklistItems  ChecklistItem[]
-  attachments     Attachment[]    @relation("CardAttachments")
   comments        Comment[]
 
   @@index([stageId, position])
@@ -163,25 +164,6 @@ model CardMember {
 
   @@id([cardId, userId])
   @@map("card_members")
-}
-
-model Attachment {
-  id          String   @id @default(uuid()) @db.Uuid
-  cardId      String   @map("card_id") @db.Uuid
-  name        String   @db.VarChar(500)
-  mimeType    String   @map("mime_type") @db.VarChar(200)
-  size        Int
-  storageKey  String   @unique @map("storage_key") @db.VarChar(1000)
-  url         String   @db.VarChar(2000)
-  uploadedBy  String   @map("uploaded_by") @db.Uuid
-  uploadedAt  DateTime @default(now()) @map("uploaded_at") @db.Timestamptz
-
-  card       Card  @relation("CardAttachments", fields: [cardId], references: [id], onDelete: Cascade)
-  uploader   User  @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
-  cardCover  Card? @relation("CardCover")
-
-  @@index([cardId])
-  @@map("attachments")
 }
 
 model Comment {

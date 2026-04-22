@@ -1,4 +1,4 @@
-import type { BoardRole, Invitation } from '@prisma/client';
+import type { BoardRole, Invitation } from '@/generated/prisma/client';
 
 export interface CreateInvitationData {
   boardId: string;

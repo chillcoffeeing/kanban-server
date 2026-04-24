@@ -1,14 +1,15 @@
-import { Module } from '@nestjs/common';
-import { BoardsController } from './controllers/boards.controller';
-import { BoardsService } from './services/boards.service';
-import { BoardsRepository } from './services/boards.repository';
-import { BOARDS_REPOSITORY } from './interfaces/boards-repository.interface';
-import { StagesModule } from '@modules/stages/stages.module';
-import { CardsModule } from '@modules/cards/cards.module';
-import { MembersModule } from '@modules/members/members.module';
+import { Module } from "@nestjs/common";
+import { BoardsController } from "./controllers/boards.controller";
+import { BoardsService } from "./services/boards.service";
+import { BoardsRepository } from "./services/boards.repository";
+import { BOARDS_REPOSITORY } from "./interfaces/boards-repository.interface";
+import { StagesModule } from "@modules/stages/stages.module";
+import { CardsModule } from "@modules/cards/cards.module";
+import { MembersModule } from "@modules/members/members.module";
+import { LabelsModule } from "@modules/labels/labels.module";
 
 @Module({
-  imports: [StagesModule, CardsModule, MembersModule],
+  imports: [StagesModule, CardsModule, MembersModule, LabelsModule],
   controllers: [BoardsController],
   providers: [
     BoardsService,

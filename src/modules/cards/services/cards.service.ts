@@ -5,6 +5,7 @@ import { StagesService } from '@modules/stages/services/stages.service';
 import type {
   ICardsRepository,
   UpdateCardData,
+  UpdateMembersData,
 } from '../interfaces/cards-repository.interface';
 import { CARDS_REPOSITORY } from '../interfaces/cards.tokens';
 
@@ -51,6 +52,10 @@ export class CardsService {
 
   update(id: string, data: UpdateCardData): Promise<Card> {
     return this.repo.update(id, data);
+  }
+
+  updateMembers(data: UpdateMembersData): Promise<any> {
+    return this.repo.updateMembers(data);
   }
 
   async move(cardId: string, stageId: string, index: number): Promise<Card> {

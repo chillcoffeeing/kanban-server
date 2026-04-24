@@ -26,13 +26,21 @@ export class MembersRepository implements IMembersRepository {
   }
 
   listByBoard(boardId: string): Promise<(BoardMember)[]> {
-    log('Listing members for board', { boardId });
     return this.prisma.boardMember.findMany({
       where: { boardId },
       orderBy: { invitedAt: 'asc' },
-      include: {
-        'user':{
-          select: {name: true, avatarUrl: true}
+      select: {
+        id: true,
+        boardId: true,
+        userId: true,
+        invitedAt: true,
+        role: true,
+        permissions: true,
+        user: {
+          select: {
+            name: true,       
+            avatarUrl: true,
+          },
         }
       },
     });

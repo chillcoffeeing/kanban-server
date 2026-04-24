@@ -26,7 +26,7 @@ import { RealtimeService } from '@infrastructure/realtime/realtime.service';
 import { REALTIME_EVENTS } from '@infrastructure/realtime/events.constants';
 import { CardsService } from '../services/cards.service';
 import { CreateCardDto } from '../dto/create-card.dto';
-import { UpdateCardDto } from '../dto/update-card.dto';
+import { UpdateCardDto, UpdateMembersDto } from '../dto/update-card.dto';
 import { MoveCardDto } from '../dto/move-card.dto';
 import { CardResponseDto } from '../dto/card-response.dto';
 
@@ -52,6 +52,37 @@ export class CardsController {
     const card = await this.cards.create(stageId, dto);
     const res = CardResponseDto.fromEntity(card);
     this.realtime.cardChanged(stage.boardId, REALTIME_EVENTS.CARD_CREATED, res);
+    return res;
+  }
+
+  @Post('cards/:id/members')
+  async addMember(
+    @CurrentUser() user: AuthUser,
+    @Param('id', ParseUUIDPipe) cardId: string,
+    @Body() dto: UpdateMembersDto,
+  ): Promise<CardResponseDto> {
+    const boardId = await this.cards.getBoardIdForCard(cardId);
+    await this.access.requirePermission(boardId, user.id, 'invite_member');
+    await this.cards.updateMembers({  action: 'addMember', cardId, userId: dto.userId });
+    const card = await this.cards.getById(cardId); // Refetch with members
+    const res = CardResponseDto.fromEntity(card);
+    this.realtime.cardChanged(boardId, REALTIME_EVENTS.CARD_MEMBER_ADDED, res);
+    return res;
+  }
+
+  @Delete('cards/:id/members/:userId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async removeMember(
+    @CurrentUser() user: AuthUser,
+    @Param('id', ParseUUIDPipe) cardId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
+  ): Promise<CardResponseDto> {
+    const boardId = await this.cards.getBoardIdForCard(cardId);
+    await this.access.requirePermission(boardId, user.id, 'invite_member');
+    await this.cards.updateMembers({ action: 'removeMember', cardId, userId });
+    const card = await this.cards.getById(cardId); // Refetch with members
+    const res = CardResponseDto.fromEntity(card);
+    this.realtime.cardChanged(boardId, REALTIME_EVENTS.CARD_MEMBER_REMOVED, res);
     return res;
   }
 

@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import type { Card } from '@/generated/prisma/client';
+import { ApiProperty } from "@nestjs/swagger";
+import type { Card, ChecklistItem, Label } from "@/generated/prisma/client";
 
 export class CardResponseDto {
   @ApiProperty() id!: string;
@@ -11,8 +11,17 @@ export class CardResponseDto {
   @ApiProperty({ nullable: true }) dueDate!: Date | null;
   @ApiProperty() createdAt!: Date;
   @ApiProperty() updatedAt!: Date;
+  @ApiProperty() members!: object[];
+  @ApiProperty({ type: Object, isArray: true }) labels!: object[];
+  @ApiProperty({ type: Object, isArray: true }) checklist!: object[];
 
-  static fromEntity(c: Card): CardResponseDto {
+  static fromEntity(
+    c: Card & {
+      members?: { userId: string; user: { name: string } }[];
+      checklistItems?: ChecklistItem[];
+      labels?: { label: Label }[];
+    },
+  ): CardResponseDto {
     return {
       id: c.id,
       stageId: c.stageId,
@@ -23,6 +32,9 @@ export class CardResponseDto {
       dueDate: c.dueDate,
       createdAt: c.createdAt,
       updatedAt: c.updatedAt,
+      members: c.members || [],
+      labels: c.labels?.map((item) => item.label) ?? [],
+      checklist: c.checklistItems ?? [],
     };
   }
 }

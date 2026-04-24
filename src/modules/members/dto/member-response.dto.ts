@@ -8,8 +8,12 @@ export class MemberResponseDto {
   @ApiProperty() role!: BoardRole;
   @ApiProperty({ type: [String] }) permissions!: string[];
   @ApiProperty() invitedAt!: Date;
+  @ApiProperty() user?: {
+    name: string;
+    avatarUrl: string | null;
+  };
 
-  static fromEntity(m: BoardMember): MemberResponseDto {
+  static fromEntity(m: BoardMember & { user?: { name: string; avatarUrl: string | null } }): MemberResponseDto & { user?: { name: string; avatarUrl: string | null } } {
     return {
       id: m.id,
       boardId: m.boardId,
@@ -17,6 +21,7 @@ export class MemberResponseDto {
       role: m.role,
       permissions: m.permissions,
       invitedAt: m.invitedAt,
+      user: m.user ? { name: m.user.name, avatarUrl: m.user.avatarUrl } : undefined,
     };
   }
 }

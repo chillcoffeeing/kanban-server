@@ -9,6 +9,12 @@ export interface CreateCardData {
   dueDate?: Date | null;
 }
 
+export type UpdateMembersData =  {
+  action: 'addMember' | 'removeMember';
+  cardId: string;
+  userId: string;
+}
+
 export interface UpdateCardData {
   title?: string;
   description?: string;
@@ -25,6 +31,7 @@ export interface ICardsRepository {
   lastPositionInStage(stageId: string): Promise<number | null>;
   create(data: CreateCardData): Promise<Card>;
   update(id: string, data: UpdateCardData): Promise<Card>;
+  updateMembers(data: UpdateMembersData): Promise<any>;
   delete(id: string): Promise<void>;
   search(boardId: string, query: string, limit?: number): Promise<Card[]>;
   neighborPositions(

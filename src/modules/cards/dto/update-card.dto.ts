@@ -1,6 +1,6 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDate, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import { IsDate, IsOptional, IsString, IsUUID, MaxLength, IsArray } from 'class-validator';
 
 export class UpdateCardDto {
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(500)
@@ -14,4 +14,9 @@ export class UpdateCardDto {
 
   @ApiPropertyOptional() @IsOptional() @Type(() => Date) @IsDate()
   dueDate?: Date | null;
+}
+
+export class UpdateMembersDto {
+  @ApiProperty() @IsUUID()
+  userId!: string;
 }

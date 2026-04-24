@@ -10,45 +10,48 @@ import {
   Patch,
   Post,
   UseGuards,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@modules/auth/decorators/current-user.decorator';
-import type { AuthUser } from '@modules/auth/interfaces/auth-user.interface';
-import { BoardPermissionGuard } from '@modules/members/guards/board-permission.guard';
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { CurrentUser } from "@modules/auth/decorators/current-user.decorator";
+import type { AuthUser } from "@modules/auth/interfaces/auth-user.interface";
+import { BoardPermissionGuard } from "@modules/members/guards/board-permission.guard";
 import {
   RequireBoardPermission,
   RequireBoardRole,
-} from '@modules/members/decorators/board-permission.decorator';
-import { RealtimeService } from '@infrastructure/realtime/realtime.service';
-import { BoardsService } from '../services/boards.service';
-import { StagesService } from '@modules/stages/services/stages.service';
-import { CardsService } from '@modules/cards/services/cards.service';
-import { MembersService } from '@modules/members/services/members.service';
-import { StageResponseDto } from '@modules/stages/dto/stage-response.dto';
-import { CardResponseDto } from '@modules/cards/dto/card-response.dto';
-import { MemberResponseDto } from '@modules/members/dto/member-response.dto';
-import { CreateBoardDto } from '../dto/create-board.dto';
-import { UpdateBoardDto } from '../dto/update-board.dto';
-import { UpdatePreferencesDto } from '../dto/update-preferences.dto';
-import { BoardResponseDto } from '../dto/board-response.dto';
-import { log } from 'node:console';
+} from "@modules/members/decorators/board-permission.decorator";
+import { RealtimeService } from "@infrastructure/realtime/realtime.service";
+import { BoardsService } from "../services/boards.service";
+import { StagesService } from "@modules/stages/services/stages.service";
+import { CardsService } from "@modules/cards/services/cards.service";
+import { MembersService } from "@modules/members/services/members.service";
+import { LabelsService } from "@modules/labels/services/labels.service";
+import { StageResponseDto } from "@modules/stages/dto/stage-response.dto";
+import { CardResponseDto } from "@modules/cards/dto/card-response.dto";
+import { MemberResponseDto } from "@modules/members/dto/member-response.dto";
+import { LabelResponseDto } from "@modules/labels/dto/label-response.dto";
+import { CreateBoardDto } from "../dto/create-board.dto";
+import { UpdateBoardDto } from "../dto/update-board.dto";
+import { UpdatePreferencesDto } from "../dto/update-preferences.dto";
+import { BoardResponseDto } from "../dto/board-response.dto";
+import { log } from "node:console";
 
-@ApiTags('boards')
+@ApiTags("boards")
 @ApiBearerAuth()
-@Controller('boards')
+@Controller("boards")
 export class BoardsController {
   constructor(
     private readonly boards: BoardsService,
     private readonly stages: StagesService,
     private readonly cards: CardsService,
     private readonly members: MembersService,
+    private readonly labels: LabelsService,
     private readonly realtime: RealtimeService,
   ) {}
 
   @Get()
   async list(@CurrentUser() user: AuthUser): Promise<BoardResponseDto[]> {
     const rows = await this.boards.listForUser(user.id);
-    return rows.map(BoardResponseDto.fromEntity);
+    return rows.map((board) => BoardResponseDto.fromEntity(board));
   }
 
   @Post()
@@ -60,30 +63,30 @@ export class BoardsController {
     return BoardResponseDto.fromEntity(board);
   }
 
-  @Get(':id')
+  @Get(":id")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole('owner', 'admin', 'member')
-  async get(@Param('id', ParseUUIDPipe) id: string): Promise<BoardResponseDto> {
+  @RequireBoardRole("owner", "admin", "member")
+  async get(@Param("id", ParseUUIDPipe) id: string): Promise<BoardResponseDto> {
     const board = await this.boards.getById(id);
     return BoardResponseDto.fromEntity(board);
   }
 
-  @Get(':id/full')
+  @Get(":id/full")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole('owner', 'admin', 'member')
-  async getFull(@Param('id', ParseUUIDPipe) id: string): Promise<{
+  @RequireBoardRole("owner", "admin", "member")
+  async getFull(@Param("id", ParseUUIDPipe) id: string): Promise<{
     board: BoardResponseDto;
     members: MemberResponseDto[];
     stages: (StageResponseDto & { cards: CardResponseDto[] })[];
   }> {
-    const [board, stages, cards, members] = await Promise.all([
+    const [board, stages, cards, members, labels] = await Promise.all([
       this.boards.getById(id),
       this.stages.listByBoard(id),
       this.cards.listByBoard(id),
       this.members.listByBoard(id),
+      this.labels.listByBoard(id),
     ]);
-    log('Fetched board details', { boardId: id, stagesCount: stages.length, cardsCount: cards.length, membersCount: members.length });
-    
+
     const cardsByStage = new Map<string, CardResponseDto[]>();
 
     for (const c of cards) {
@@ -91,9 +94,12 @@ export class BoardsController {
       arr.push(CardResponseDto.fromEntity(c));
       cardsByStage.set(c.stageId, arr);
     }
-    
+
     return {
-      board: BoardResponseDto.fromEntity(board),
+      board: BoardResponseDto.fromEntity(
+        board,
+        labels.map(LabelResponseDto.fromEntity),
+      ),
       members: members.map(MemberResponseDto.fromEntity),
       stages: stages.map((s) => ({
         ...StageResponseDto.fromEntity(s),
@@ -102,11 +108,11 @@ export class BoardsController {
     };
   }
 
-  @Patch(':id')
+  @Patch(":id")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardPermission('modify_board')
+  @RequireBoardPermission("modify_board")
   async update(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param("id", ParseUUIDPipe) id: string,
     @Body() dto: UpdateBoardDto,
   ): Promise<BoardResponseDto> {
     const board = await this.boards.update(id, dto);
@@ -115,24 +121,26 @@ export class BoardsController {
     return res;
   }
 
-  @Patch(':id/preferences')
+  @Patch(":id/preferences")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole('owner', 'admin', 'member')
+  @RequireBoardRole("owner", "admin", "member")
   async updatePrefs(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param("id", ParseUUIDPipe) id: string,
     @Body() dto: UpdatePreferencesDto,
   ): Promise<BoardResponseDto> {
-    const board = await this.boards.update(id, { preferences: dto.preferences });
+    const board = await this.boards.update(id, {
+      preferences: dto.preferences,
+    });
     const res = BoardResponseDto.fromEntity(board);
     this.realtime.boardUpdated(board.id, res);
     return res;
   }
 
-  @Delete(':id')
+  @Delete(":id")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole('owner')
+  @RequireBoardRole("owner")
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+  async remove(@Param("id", ParseUUIDPipe) id: string): Promise<void> {
     this.realtime.boardDeleted(id);
     await this.boards.delete(id);
   }

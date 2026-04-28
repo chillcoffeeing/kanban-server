@@ -38,7 +38,13 @@ export class BoardsService {
       ownerId,
       preferences: data.preferences as Prisma.InputJsonValue | undefined,
     });
-    await this.members.add(board.id, ownerId, 'owner');
+    await this.members.add(board.id, ownerId, 'owner', [
+      'create_stage',
+      'create_card',
+      'modify_card',
+      'delete_card',
+      'invite_member',
+    ]);
     return board;
   }
 

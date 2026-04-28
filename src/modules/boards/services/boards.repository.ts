@@ -16,6 +16,15 @@ export class BoardsRepository implements IBoardsRepository {
     return this.prisma.board.findMany({
       where: { id: { in: ids } },
       orderBy: { updatedAt: 'desc' },
+      include: {
+        _count: {
+          select: {
+            stages: true,
+            members: true,
+            cards: true,
+          },
+        },
+      },
     });
   }
 

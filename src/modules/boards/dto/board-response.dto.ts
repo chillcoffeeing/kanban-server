@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type { Board } from "@/generated/prisma/client";
 import { LabelResponseDto } from "@modules/labels/dto/label-response.dto";
 
@@ -12,9 +12,18 @@ export class BoardResponseDto {
   @ApiProperty() updatedAt!: Date;
   @ApiProperty({ type: LabelResponseDto, isArray: true })
   labels!: LabelResponseDto[];
-
+  @ApiPropertyOptional() stagesCount?: number;
+  @ApiPropertyOptional() membersCount?: number;
+  @ApiPropertyOptional() cardsCount?: number;
+  
   static fromEntity(
-    b: Board,
+    b: Board & {
+      _count?: {
+        stages: number;
+        members: number;
+        cards: number;
+      };
+    },
     labels: LabelResponseDto[] = [],
   ): BoardResponseDto {
     return {
@@ -26,6 +35,9 @@ export class BoardResponseDto {
       createdAt: b.createdAt,
       updatedAt: b.updatedAt,
       labels,
+      stagesCount: b._count?.stages,
+      membersCount: b._count?.members,
+      cardsCount: b._count?.cards,
     };
   }
 }

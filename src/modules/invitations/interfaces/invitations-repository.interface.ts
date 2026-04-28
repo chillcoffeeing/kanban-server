@@ -14,6 +14,8 @@ export interface IInvitationsRepository {
   listByBoard(boardId: string): Promise<Invitation[]>;
   create(data: CreateInvitationData): Promise<Invitation>;
   markAccepted(id: string): Promise<void>;
+  findPendingByUserEmail(email: string): Promise<Invitation[]>;
+  reject(id: string): Promise<void>;
 }
 
 export const INVITATIONS_REPOSITORY = Symbol('INVITATIONS_REPOSITORY');

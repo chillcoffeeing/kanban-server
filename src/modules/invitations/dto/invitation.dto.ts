@@ -15,6 +15,7 @@ export class CreateInvitationDto {
 export class InvitationResponseDto {
   @ApiProperty() id!: string;
   @ApiProperty() boardId!: string;
+  @ApiProperty() boardName?: string;
   @ApiProperty() email!: string;
   @ApiProperty() role!: BoardRole;
   @ApiProperty() expiresAt!: Date;
@@ -22,10 +23,11 @@ export class InvitationResponseDto {
   @ApiProperty() createdAt!: Date;
   @ApiProperty({ description: 'Only returned on creation' }) token?: string;
 
-  static fromEntity(i: Invitation, includeToken = false): InvitationResponseDto {
+  static fromEntity(i: any, includeToken = false): InvitationResponseDto {
     const dto: InvitationResponseDto = {
       id: i.id,
       boardId: i.boardId,
+      boardName: i.board?.name,
       email: i.email,
       role: i.role,
       expiresAt: i.expiresAt,

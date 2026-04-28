@@ -55,7 +55,7 @@ export class StagesController {
     @Body() dto: UpdateStageDto,
   ): Promise<StageResponseDto> {
     const stage = await this.stages.getById(id);
-    await this.access.requirePermission(stage.boardId, user.id, 'modify_board');
+    await this.access.requireRole(stage.boardId, user.id, ['owner']);
     const updated = await this.stages.update(id, dto);
     const res = StageResponseDto.fromEntity(updated);
     const event =
@@ -71,7 +71,7 @@ export class StagesController {
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<void> {
     const stage = await this.stages.getById(id);
-    await this.access.requirePermission(stage.boardId, user.id, 'modify_board');
+    await this.access.requireRole(stage.boardId, user.id, ['owner']);
     await this.stages.delete(id);
     this.realtime.stageChanged(stage.boardId, REALTIME_EVENTS.STAGE_DELETED, {
       id,

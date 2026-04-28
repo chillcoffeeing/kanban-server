@@ -110,7 +110,7 @@ export class BoardsController {
 
   @Patch(":id")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardPermission("modify_board")
+  @RequireBoardRole("owner")
   async update(
     @Param("id", ParseUUIDPipe) id: string,
     @Body() dto: UpdateBoardDto,

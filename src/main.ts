@@ -1,12 +1,12 @@
-import 'reflect-metadata';
-import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { IoAdapter } from '@nestjs/platform-socket.io';
-import { Logger } from 'nestjs-pino';
-import helmet from 'helmet';
-import { AppModule } from './app.module';
-import { TypedConfigService } from './config/typed-config.service';
+import "reflect-metadata";
+import { NestFactory } from "@nestjs/core";
+import { ValidationPipe } from "@nestjs/common";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { IoAdapter } from "@nestjs/platform-socket.io";
+import { Logger } from "nestjs-pino";
+import helmet from "helmet";
+import { AppModule } from "./app.module";
+import { TypedConfigService } from "./config/typed-config.service";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -17,13 +17,16 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.enableCors({
     origin: config
-      .get('CORS_ORIGINS')
-      .split(',')
+      .get("CORS_ORIGINS")
+      .split(",")
       .map((o) => o.trim())
       .filter(Boolean),
     credentials: true,
   });
-  app.setGlobalPrefix(config.get('API_PREFIX'));
+
+  const globalPrefix = process.env.API_PREFIX || config.get("API_PREFIX");
+  app.setGlobalPrefix(globalPrefix);
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -34,13 +37,13 @@ async function bootstrap(): Promise<void> {
   );
 
   const swagger = new DocumentBuilder()
-    .setTitle('Kanban Platform API')
-    .setVersion('0.1.0')
+    .setTitle("Kanban Platform API")
+    .setVersion("0.1.0")
     .addBearerAuth()
     .build();
-  SwaggerModule.setup('docs', app, SwaggerModule.createDocument(app, swagger));
+  SwaggerModule.setup("docs", app, SwaggerModule.createDocument(app, swagger));
 
-  await app.listen(config.get('PORT'));
+  await app.listen(process.env.PORT || config.get("PORT"));
 }
 
 void bootstrap();

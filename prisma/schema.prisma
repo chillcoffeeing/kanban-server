@@ -70,7 +70,7 @@ model BoardMember {
   boardId     String    @map("board_id") @db.Uuid
   userId      String    @map("user_id") @db.Uuid
   role        BoardRole @default(member)
-  permissions String[]  @default(["create_stage", "create_card", "modify_card", "delete_card", "invite_member", "modify_board"])
+  permissions String[]  @default([])
   invitedAt   DateTime  @default(now()) @map("invited_at") @db.Timestamptz
 
   board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)

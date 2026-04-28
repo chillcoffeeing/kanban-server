@@ -9,6 +9,8 @@ import { randomBytes } from 'node:crypto';
 import type { BoardRole, Invitation } from '@/generated/prisma/client';
 import { UsersService } from '@modules/users/services/users.service';
 import { MembersService } from '@modules/members/services/members.service';
+import { BoardsService } from '@modules/boards/services/boards.service';
+import { EmailService } from '@infrastructure/email/email.service';
 import {
   IInvitationsRepository,
   INVITATIONS_REPOSITORY,
@@ -23,6 +25,8 @@ export class InvitationsService {
     private readonly repo: IInvitationsRepository,
     private readonly users: UsersService,
     private readonly members: MembersService,
+    private readonly boards: BoardsService,
+    private readonly email: EmailService,
   ) {}
 
   listByBoard(boardId: string): Promise<Invitation[]> {
@@ -32,6 +36,7 @@ export class InvitationsService {
   async invite(
     boardId: string,
     email: string,
+    inviterName: string,
     role: BoardRole = 'member',
   ): Promise<Invitation> {
     if (role === 'owner') {
@@ -39,13 +44,21 @@ export class InvitationsService {
     }
     const existing = await this.repo.findPendingByEmail(boardId, email);
     if (existing) throw new ConflictException('Pending invitation already exists');
-    return this.repo.create({
+
+    const board = await this.boards.getById(boardId);
+    const token = randomBytes(32).toString('hex');
+    const invitation = await this.repo.create({
       boardId,
       email,
       role,
-      token: randomBytes(32).toString('hex'),
+      token,
       expiresAt: new Date(Date.now() + INVITATION_TTL_MS),
     });
+
+    const acceptUrl = `${process.env.APP_URL || 'http://localhost:5173'}/invite/${token}`;
+    await this.email.sendInvitationEmail(email, board.name, inviterName, acceptUrl);
+
+    return invitation;
   }
 
   async accept(token: string, userId: string): Promise<Invitation> {
@@ -66,5 +79,30 @@ export class InvitationsService {
     await this.members.add(invitation.boardId, userId, invitation.role);
     await this.repo.markAccepted(invitation.id);
     return { ...invitation, acceptedAt: new Date() };
+  }
+
+  async acceptByTokenOnly(token: string, userId: string): Promise<Invitation> {
+    const invitation = await this.repo.findByToken(token);
+    if (!invitation) throw new NotFoundException('Invitation not found');
+    if (invitation.acceptedAt) {
+      throw new BadRequestException('Invitation already accepted');
+    }
+    if (invitation.expiresAt < new Date()) {
+      throw new BadRequestException('Invitation expired');
+    }
+
+    await this.members.add(invitation.boardId, userId, invitation.role);
+    await this.repo.markAccepted(invitation.id);
+    return { ...invitation, acceptedAt: new Date() };
+  }
+
+  async getPendingForUser(email: string) {
+    return this.repo.findPendingByUserEmail(email);
+  }
+
+  async rejectInvitation(id: string, userId: string) {
+    const user = await this.users.getById(userId);
+    await this.repo.reject(id);
+    return { ok: true };
   }
 }

@@ -1,4 +1,4 @@
-import { Inject, Logger, UnauthorizedException } from '@nestjs/common';
+import { Logger, UnauthorizedException } from "@nestjs/common";
 import {
   ConnectedSocket,
   MessageBody,
@@ -8,88 +8,86 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-} from '@nestjs/websockets';
-import { JwtService } from '@nestjs/jwt';
-import { createAdapter } from '@socket.io/redis-adapter';
-import type { Redis } from 'ioredis';
-import type { Server } from 'socket.io';
-import { TypedConfigService } from '@config/typed-config.service';
-import { REDIS_PUB, REDIS_SUB } from '@infrastructure/redis/redis.constants';
-import { BoardAccessService } from '@modules/members/services/board-access.service';
-import type { AccessTokenPayload } from '@modules/auth/interfaces/token-payload.interface';
-import { RealtimeService } from './realtime.service';
-import { boardRoom } from './events.constants';
-import type { AuthenticatedSocket } from './interfaces/socket-user.interface';
+} from "@nestjs/websockets";
+import { JwtService } from "@nestjs/jwt";
+import { Server } from "socket.io";
+import { TypedConfigService } from "@config/typed-config.service";
+import { BoardAccessService } from "@modules/members/services/board-access.service";
+import type { AccessTokenPayload } from "@modules/auth/interfaces/token-payload.interface";
+import { boardRoom } from "./events.constants";
+import type { AuthenticatedSocket } from "./interfaces/socket-user.interface";
 
-@WebSocketGateway({ namespace: '/ws', cors: { origin: true, credentials: true } })
+interface JoinBoardDto {
+  boardId: string;
+}
+
+interface EmitResult {
+  ok: boolean;
+}
+
+@WebSocketGateway({
+  cors: { origin: "*" },
+})
 export class RealtimeGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   private readonly logger = new Logger(RealtimeGateway.name);
-  @WebSocketServer() private server!: Server;
+
+  @WebSocketServer()
+  server!: Server;
+
+  afterInit(): void {
+    this.logger.log("RealtimeGateway initialized");
+  }
 
   constructor(
     private readonly jwt: JwtService,
     private readonly config: TypedConfigService,
     private readonly access: BoardAccessService,
-    private readonly realtime: RealtimeService,
-    @Inject(REDIS_PUB) private readonly pub: Redis,
-    @Inject(REDIS_SUB) private readonly sub: Redis,
   ) {}
-
-  afterInit(server: Server): void {
-    if (typeof (server as unknown as { adapter?: unknown }).adapter === 'function') {
-      server.adapter(createAdapter(this.pub, this.sub));
-      this.logger.log('Realtime gateway initialised with Redis adapter');
-    } else {
-      this.logger.warn('Socket.IO adapter API unavailable; skipping Redis adapter');
-    }
-    this.realtime.bindServer(server);
-  }
 
   async handleConnection(client: AuthenticatedSocket): Promise<void> {
     try {
       const token = this.extractToken(client);
       const payload = await this.jwt.verifyAsync<AccessTokenPayload>(token, {
-        secret: this.config.get('JWT_ACCESS_SECRET'),
+        secret: this.getJwtSecret(),
       });
       client.data.user = {
         id: payload.sub,
         email: payload.email,
+        name: payload.name,
         roles: payload.roles,
       };
-      this.logger.debug(`Socket connected: user=${payload.sub}`);
-    } catch (err) {
-      this.logger.debug(`Rejected socket: ${(err as Error).message}`);
+    } catch {
       client.disconnect(true);
     }
   }
 
-  handleDisconnect(client: AuthenticatedSocket): void {
-    this.logger.debug(`Socket disconnected: ${client.id}`);
-  }
+  handleDisconnect(): void {}
 
-  @SubscribeMessage('board:join')
+  @SubscribeMessage("board:join")
   async joinBoard(
     @ConnectedSocket() client: AuthenticatedSocket,
-    @MessageBody() body: { boardId: string },
-  ): Promise<{ ok: true }> {
-    if (!body?.boardId) throw new UnauthorizedException('boardId required');
+    @MessageBody() body: JoinBoardDto,
+  ): Promise<EmitResult> {
+    if (!body?.boardId) {
+      throw new UnauthorizedException("boardId required");
+    }
     await this.access.requireMembership(body.boardId, client.data.user.id);
     await client.join(boardRoom(body.boardId));
     return { ok: true };
   }
 
-  @SubscribeMessage('board:leave')
+  @SubscribeMessage("board:leave")
   async leaveBoard(
     @ConnectedSocket() client: AuthenticatedSocket,
-    @MessageBody() body: { boardId: string },
-  ): Promise<{ ok: true }> {
+    @MessageBody() body: JoinBoardDto,
+  ): Promise<EmitResult> {
     await client.leave(boardRoom(body.boardId));
     return { ok: true };
   }
 
-  @SubscribeMessage('presence:ping')
+  @SubscribeMessage("presence:ping")
   presencePing(): { ok: true; ts: number } {
     return { ok: true, ts: Date.now() };
   }
@@ -97,10 +95,19 @@ export class RealtimeGateway
   private extractToken(client: AuthenticatedSocket): string {
     const auth = client.handshake.auth as { token?: string } | undefined;
     if (auth?.token) return auth.token;
+
     const header = client.handshake.headers.authorization;
-    if (header?.startsWith('Bearer ')) return header.slice(7);
+    if (header?.startsWith("Bearer ")) return header.slice(7);
+
     const queryToken = client.handshake.query.token;
-    if (typeof queryToken === 'string') return queryToken;
-    throw new UnauthorizedException('Missing auth token');
+    if (typeof queryToken === "string") return queryToken;
+
+    throw new UnauthorizedException("Missing auth token");
+  }
+
+  private getJwtSecret(): string {
+    return (
+      process.env.JWT_ACCESS_SECRET || this.config.get("JWT_ACCESS_SECRET")
+    );
   }
 }

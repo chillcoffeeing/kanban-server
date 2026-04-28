@@ -7,6 +7,8 @@ import type { User } from '@/generated/prisma/client';
 import { UsersService } from '@modules/users/services/users.service';
 import { PasswordHasherService } from './password-hasher.service';
 import { TokenService } from './token.service';
+import { MembersService } from '@modules/members/services/members.service';
+import { InvitationsService } from '@modules/invitations/services/invitations.service';
 import type { AuthTokens } from '../interfaces/token-payload.interface';
 
 @Injectable()
@@ -15,6 +17,8 @@ export class AuthService {
     private readonly users: UsersService,
     private readonly hasher: PasswordHasherService,
     private readonly tokens: TokenService,
+    private readonly members: MembersService,
+    private readonly invitations: InvitationsService,
   ) {}
 
   async register(input: {
@@ -31,9 +35,16 @@ export class AuthService {
       name: input.name,
       passwordHash,
     });
+    
+    const pending = await this.invitations.getPendingForUser(input.email);
+    for (const inv of pending) {
+      await this.invitations.acceptByTokenOnly(inv.token, user.id);
+    }
+
     const tokens = await this.tokens.issueTokens({
       sub: user.id,
       email: user.email,
+      name: user.name,
       roles: user.roles,
     });
     return { user, tokens };
@@ -52,6 +63,7 @@ export class AuthService {
     const tokens = await this.tokens.issueTokens({
       sub: user.id,
       email: user.email,
+      name: user.name,
       roles: user.roles,
     });
     return { user, tokens };
@@ -65,6 +77,7 @@ export class AuthService {
     return this.tokens.issueTokens({
       sub: user.id,
       email: user.email,
+      name: user.name,
       roles: user.roles,
     });
   }

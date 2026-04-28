@@ -5,8 +5,8 @@ import { TypedConfigService } from '@config/typed-config.service';
 import { AppLoggerModule } from '@common/logging/logger.module';
 import { AppThrottlerModule } from '@common/throttler/throttler.module';
 import { PrismaModule } from '@infrastructure/prisma/prisma.module';
-import { RedisModule } from '@infrastructure/redis/redis.module';
 import { RealtimeModule } from '@infrastructure/realtime/realtime.module';
+import { EmailModule } from '@infrastructure/email/email.module';
 import { HealthModule } from '@modules/health/health.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { UsersModule } from '@modules/users/users.module';
@@ -27,8 +27,8 @@ import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
     AppLoggerModule,
     AppThrottlerModule,
     PrismaModule,
-    RedisModule,
     RealtimeModule,
+    EmailModule,
     AuthModule,
     UsersModule,
     MembersModule,

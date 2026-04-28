@@ -1,17 +1,17 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { createHash, randomUUID } from 'node:crypto';
-import { TypedConfigService } from '@config/typed-config.service';
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { createHash, randomUUID } from "node:crypto";
+import { TypedConfigService } from "@config/typed-config.service";
 import type {
   AccessTokenPayload,
   AuthTokens,
   RefreshTokenPayload,
-} from '../interfaces/token-payload.interface';
+} from "../interfaces/token-payload.interface";
 import {
   IRefreshTokenRepository,
   REFRESH_TOKEN_REPOSITORY,
-} from '../interfaces/refresh-token-repository.interface';
-import { parseDurationToMs } from '@shared/duration.util';
+} from "../interfaces/refresh-token-repository.interface";
+import { parseDurationToMs } from "@shared/duration.util";
 
 @Injectable()
 export class TokenService {
@@ -23,18 +23,22 @@ export class TokenService {
   ) {}
 
   async issueTokens(payload: AccessTokenPayload): Promise<AuthTokens> {
-    const accessTtl = this.config.get('JWT_ACCESS_TTL');
-    const refreshTtl = this.config.get('JWT_REFRESH_TTL');
+    const accessTtl =
+      process.env.JWT_ACCESS_TTL || this.config.get("JWT_ACCESS_TTL");
+    const refreshTtl =
+      process.env.JWT_REFRESH_TTL || this.config.get("JWT_REFRESH_TTL");
 
     const accessToken = await this.jwt.signAsync(payload, {
-      secret: this.config.get('JWT_ACCESS_SECRET'),
+      secret:
+        process.env.JWT_ACCESS_SECRET || this.config.get("JWT_ACCESS_SECRET"),
       expiresIn: accessTtl,
     });
 
     const jti = randomUUID();
     const refreshPayload: RefreshTokenPayload = { sub: payload.sub, jti };
     const refreshToken = await this.jwt.signAsync(refreshPayload, {
-      secret: this.config.get('JWT_REFRESH_SECRET'),
+      secret:
+        process.env.JWT_REFRESH_SECRET || this.config.get("JWT_REFRESH_SECRET"),
       expiresIn: refreshTtl,
     });
 
@@ -57,18 +61,20 @@ export class TokenService {
     let payload: RefreshTokenPayload;
     try {
       payload = await this.jwt.verifyAsync<RefreshTokenPayload>(token, {
-        secret: this.config.get('JWT_REFRESH_SECRET'),
+        secret:
+          process.env.JWT_REFRESH_SECRET ||
+          this.config.get("JWT_REFRESH_SECRET"),
       });
     } catch {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException("Invalid refresh token");
     }
 
     const stored = await this.refreshRepo.findById(payload.jti);
     if (!stored || stored.revokedAt || stored.expiresAt < new Date()) {
-      throw new UnauthorizedException('Refresh token revoked or expired');
+      throw new UnauthorizedException("Refresh token revoked or expired");
     }
     if (stored.tokenHash !== this.hashToken(token)) {
-      throw new UnauthorizedException('Refresh token mismatch');
+      throw new UnauthorizedException("Refresh token mismatch");
     }
     return payload;
   }
@@ -82,6 +88,6 @@ export class TokenService {
   }
 
   private hashToken(token: string): string {
-    return createHash('sha256').update(token).digest('hex');
+    return createHash("sha256").update(token).digest("hex");
   }
 }

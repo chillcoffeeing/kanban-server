@@ -46,7 +46,7 @@ export class LabelsController {
 
   @Post('boards/:id/labels')
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardPermission('modify_board')
+  @RequireBoardRole('owner')
   async create(
     @Param('id', ParseUUIDPipe) boardId: string,
     @Body() dto: CreateLabelDto,
@@ -62,7 +62,7 @@ export class LabelsController {
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<void> {
     const boardId = await this.labels.getBoardIdForLabel(id);
-    await this.access.requirePermission(boardId, user.id, 'modify_board');
+    await this.access.requireRole(boardId, user.id, ['owner']);
     await this.labels.delete(id);
   }
 

@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-import { TypedConfigService } from '@config/typed-config.service';
+import { Injectable } from "@nestjs/common";
+import * as bcrypt from "bcrypt";
+import { TypedConfigService } from "@config/typed-config.service";
 
 @Injectable()
 export class PasswordHasherService {
   private readonly rounds: number;
 
   constructor(config: TypedConfigService) {
-    this.rounds = config.get('BCRYPT_ROUNDS');
+    this.rounds = process.env.BCRYPT_ROUNDS
+      ? parseInt(process.env.BCRYPT_ROUNDS)
+      : config.get("BCRYPT_ROUNDS");
   }
 
   hash(plain: string): Promise<string> {

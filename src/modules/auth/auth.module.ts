@@ -2,6 +2,8 @@ import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '@modules/users/users.module';
+import { MembersModule } from '@modules/members/members.module';
+import { InvitationsModule } from '@modules/invitations/invitations.module';
 import { TypedConfigService } from '@config/typed-config.service';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
@@ -17,6 +19,8 @@ import { REFRESH_TOKEN_REPOSITORY } from './interfaces/refresh-token-repository.
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({}),
     forwardRef(() => UsersModule),
+    MembersModule,
+    InvitationsModule,
   ],
   controllers: [AuthController],
   providers: [

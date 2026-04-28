@@ -44,4 +44,20 @@ export class InvitationsRepository implements IInvitationsRepository {
       data: { acceptedAt: new Date() },
     });
   }
+
+  findPendingByUserEmail(email: string): Promise<Invitation[]> {
+    return this.prisma.invitation.findMany({
+      where: {
+        email: email.toLowerCase(),
+        acceptedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      include: { board: { select: { id: true, name: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async reject(id: string): Promise<void> {
+    await this.prisma.invitation.delete({ where: { id } });
+  }
 }

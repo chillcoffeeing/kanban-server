@@ -34,7 +34,7 @@ export class InvitationsController {
   @HttpCode(HttpStatus.OK)
   async getPending(@CurrentUser() user: AuthUser) {
     const rows = await this.invitations.getPendingForUser(user.email);
-    return rows.map((i) => InvitationResponseDto.fromEntity(i));
+    return rows.map((i) => InvitationResponseDto.fromEntity(i, true));
   }
 
   @Delete('invitations/:id')

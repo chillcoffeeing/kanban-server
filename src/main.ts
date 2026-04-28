@@ -15,8 +15,12 @@ async function bootstrap(): Promise<void> {
 
   app.useWebSocketAdapter(new IoAdapter(app));
   app.use(helmet());
+  const corsOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
+    : config.get("CORS_ORIGINS") || [];
+
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || config.get("CORS_ORIGINS"),
+    origin: corsOrigins,
     credentials: true,
   });
 

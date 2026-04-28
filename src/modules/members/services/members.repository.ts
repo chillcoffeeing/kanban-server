@@ -38,8 +38,9 @@ export class MembersRepository implements IMembersRepository {
         permissions: true,
         user: {
           select: {
-            name: true,       
+            name: true,
             avatarUrl: true,
+            createdAt: true,
           },
         }
       },

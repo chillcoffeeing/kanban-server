@@ -15,10 +15,10 @@ async function bootstrap(): Promise<void> {
 
   app.useWebSocketAdapter(new IoAdapter(app));
   app.use(helmet());
-  app.enableCors({
+  /* app.enableCors({
     origin: process.env.CORS_ORIGIN || config.get("CORS_ORIGINS"),
     credentials: true,
-  });
+  }); */
 
   const globalPrefix = process.env.API_PREFIX || config.get("API_PREFIX");
   app.setGlobalPrefix(globalPrefix);

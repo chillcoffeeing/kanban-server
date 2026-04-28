@@ -43,7 +43,7 @@ async function bootstrap(): Promise<void> {
     .build();
   SwaggerModule.setup("docs", app, SwaggerModule.createDocument(app, swagger));
 
-  await app.listen(process.env.PORT || config.get("PORT"));
+  await app.listen(Number(process.env.PORT) || config.get("PORT"), "0.0.0.0");
 }
 
 void bootstrap();

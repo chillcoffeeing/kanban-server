@@ -19,8 +19,9 @@
  * Opcional: RESET=1 para borrar los boards antes de re-crearlos.
  */
 
-const apiBaseUrl =
-  process.env.API_BASE ?? "https://kanban-server-zpq5.onrender.com/api/v1";
+const apiBaseUrl = "http://localhost:3000/api/v1";
+/* const apiBaseUrl =
+  process.env.API_BASE ?? "https://kanban-server-zpq5.onrender.com/api/v1"; */
 const shouldReset = process.env.RESET === "1";
 
 const ALL_PERMISSIONS = [
@@ -80,11 +81,36 @@ async function ensureUser({ email, name, password }) {
 }
 
 const seedUsers = [
-  { email: "alice@kanban.dev", name: "Alice Martin", password: "Passw0rd!", role: "Tech Lead" },
-  { email: "bob@kanban.dev", name: "Bob Navarro", password: "Passw0rd!", role: "Frontend Dev" },
-  { email: "carol@kanban.dev", name: "Carol Rodriguez", password: "Passw0rd!", role: "UX Designer" },
-  { email: "dave@kanban.dev", name: "Dave Wilson", password: "Passw0rd!", role: "Backend Dev" },
-  { email: "eve@kanban.dev", name: "Eve Chen", password: "Passw0rd!", role: "Mobile Dev" },
+  {
+    email: "alice@kanban.dev",
+    name: "Alice Martin",
+    password: "Passw0rd!",
+    role: "Tech Lead",
+  },
+  {
+    email: "bob@kanban.dev",
+    name: "Bob Navarro",
+    password: "Passw0rd!",
+    role: "Frontend Dev",
+  },
+  {
+    email: "carol@kanban.dev",
+    name: "Carol Rodriguez",
+    password: "Passw0rd!",
+    role: "UX Designer",
+  },
+  {
+    email: "dave@kanban.dev",
+    name: "Dave Wilson",
+    password: "Passw0rd!",
+    role: "Backend Dev",
+  },
+  {
+    email: "eve@kanban.dev",
+    name: "Eve Chen",
+    password: "Passw0rd!",
+    role: "Mobile Dev",
+  },
 ];
 
 // Labels para boards
@@ -109,7 +135,8 @@ const board1CardPlan = [
   {
     stageIndex: 0,
     title: "Auditoria de accesibilidad (WCAG 2.1 AA)",
-    description: "Revisar contraste, navegacion por teclado y roles ARIA en todas las vistas principales.",
+    description:
+      "Revisar contraste, navegacion por teclado y roles ARIA en todas las vistas principales.",
     ownerEmail: "alice@kanban.dev",
     assigneeEmails: ["carol@kanban.dev"],
     labelNames: ["Accessibility"],
@@ -122,7 +149,8 @@ const board1CardPlan = [
   {
     stageIndex: 0,
     title: "Migrar iconografia a Phosphor Icons",
-    description: "Reemplazar lucide-react por @phosphor-icons/react y normalizar tamaños.",
+    description:
+      "Reemplazar lucide-react por @phosphor-icons/react y normalizar tamaños.",
     ownerEmail: "bob@kanban.dev",
     assigneeEmails: ["bob@kanban.dev"],
     labelNames: ["Refactor"],
@@ -134,7 +162,8 @@ const board1CardPlan = [
   {
     stageIndex: 0,
     title: "Definir design tokens en Tailwind v4",
-    description: "Colores, tipografia, radios y sombras centralizados; documentar en docs/FRONTEND.md.",
+    description:
+      "Colores, tipografia, radios y sombras centralizados; documentar en docs/FRONTEND.md.",
     ownerEmail: "alice@kanban.dev",
     assigneeEmails: ["carol@kanban.dev"],
     labelNames: ["UI/UX"],
@@ -144,7 +173,8 @@ const board1CardPlan = [
   {
     stageIndex: 1,
     title: "Drag and drop entre etapas con @dnd-kit",
-    description: "Reescritura del kanban board para soportar reordenado y cross-stage move con persistencia optimista.",
+    description:
+      "Reescritura del kanban board para soportar reordenado y cross-stage move con persistencia optimista.",
     ownerEmail: "bob@kanban.dev",
     assigneeEmails: ["bob@kanban.dev", "dave@kanban.dev"],
     labelNames: ["Refactor"],
@@ -157,7 +187,8 @@ const board1CardPlan = [
   {
     stageIndex: 1,
     title: "Modal de detalle de tarjeta",
-    description: "Labels, checklist, adjuntos y comentarios editables. Estado derivado del store central.",
+    description:
+      "Labels, checklist, adjuntos y comentarios editables. Estado derivado del store central.",
     ownerEmail: "bob@kanban.dev",
     assigneeEmails: ["carol@kanban.dev"],
     labelNames: ["UI/UX"],
@@ -171,7 +202,8 @@ const board1CardPlan = [
   {
     stageIndex: 2,
     title: "Integrar autenticacion JWT",
-    description: "Capa services/api.ts con interceptor y refresh. Sustituir el mock de localStorage.",
+    description:
+      "Capa services/api.ts con interceptor y refresh. Sustituir el mock de localStorage.",
     ownerEmail: "alice@kanban.dev",
     assigneeEmails: ["alice@kanban.dev", "dave@kanban.dev"],
     labelNames: ["Bug"],
@@ -189,7 +221,8 @@ const board2CardPlan = [
   {
     stageIndex: 0,
     title: "Setup inicial React Native + Expo",
-    description: "Scaffolding del proyecto mobile con navegacion y tema oscuro.",
+    description:
+      "Scaffolding del proyecto mobile con navegacion y tema oscuro.",
     ownerEmail: "bob@kanban.dev",
     assigneeEmails: ["eve@kanban.dev"],
     labelNames: ["Mobile"],
@@ -202,7 +235,8 @@ const board2CardPlan = [
   {
     stageIndex: 1,
     title: "API de autenticacion mobile",
-    description: "Endpoints de login/logout con JWT para la app mobile. Integrar biometric auth.",
+    description:
+      "Endpoints de login/logout con JWT para la app mobile. Integrar biometric auth.",
     ownerEmail: "bob@kanban.dev",
     assigneeEmails: ["eve@kanban.dev", "carol@kanban.dev"],
     labelNames: ["API", "Mobile"],
@@ -215,7 +249,8 @@ const board2CardPlan = [
   {
     stageIndex: 2,
     title: "Diseno de componentes base",
-    description: "Button, Input, Card, Modal y Typography para la app mobile siguiendo design system.",
+    description:
+      "Button, Input, Card, Modal y Typography para la app mobile siguiendo design system.",
     ownerEmail: "carol@kanban.dev",
     assigneeEmails: ["carol@kanban.dev"],
     labelNames: ["Design", "Mobile"],
@@ -241,7 +276,8 @@ async function main() {
     );
   }
 
-  const [aliceAccount, bobAccount, carolAccount, daveAccount, eveAccount] = accounts;
+  const [aliceAccount, bobAccount, carolAccount, daveAccount, eveAccount] =
+    accounts;
 
   // 2. Reset opcional
   if (shouldReset) {
@@ -255,7 +291,9 @@ async function main() {
             token: account.token,
             expect: 204,
           });
-          console.log(`[reset] board borrado (${existingBoard.id.slice(0, 8)})`);
+          console.log(
+            `[reset] board borrado (${existingBoard.id.slice(0, 8)})`,
+          );
         }
       }
     }
@@ -298,14 +336,10 @@ async function main() {
         body: { email: inv.account.email, role: inv.role },
       },
     );
-    await httpRequest(
-      "POST",
-      `/invitations/${createdInv.token}/accept`,
-      {
-        token: inv.account.token,
-        expect: 200,
-      },
-    );
+    await httpRequest("POST", `/invitations/${createdInv.token}/accept`, {
+      token: inv.account.token,
+      expect: 200,
+    });
     console.log(`  ${inv.account.name} acepto invitacion (${inv.role})`);
     await new Promise((resolve) => setTimeout(resolve, 120));
   }
@@ -324,14 +358,10 @@ async function main() {
         body: { email: inv.account.email, role: inv.role },
       },
     );
-    await httpRequest(
-      "POST",
-      `/invitations/${createdInv.token}/accept`,
-      {
-        token: inv.account.token,
-        expect: 200,
-      },
-    );
+    await httpRequest("POST", `/invitations/${createdInv.token}/accept`, {
+      token: inv.account.token,
+      expect: 200,
+    });
     console.log(`  ${inv.account.name} acepto invitacion (${inv.role})`);
     await new Promise((resolve) => setTimeout(resolve, 120));
   }
@@ -340,25 +370,17 @@ async function main() {
   console.log("\nInvitaciones pendientes:");
 
   // Board 1: invitar a Eve (pendiente)
-  await httpRequest(
-    "POST",
-    `/boards/${board1.id}/invitations`,
-    {
-      token: aliceAccount.token,
-      body: { email: eveAccount.email, role: "member" },
-    },
-  );
+  await httpRequest("POST", `/boards/${board1.id}/invitations`, {
+    token: aliceAccount.token,
+    body: { email: eveAccount.email, role: "member" },
+  });
   console.log(`  Board 1: ${eveAccount.name} (pendiente)`);
 
   // Board 2: invitar a Dave (pendiente)
-  await httpRequest(
-    "POST",
-    `/boards/${board2.id}/invitations`,
-    {
-      token: bobAccount.token,
-      body: { email: daveAccount.email, role: "member" },
-    },
-  );
+  await httpRequest("POST", `/boards/${board2.id}/invitations`, {
+    token: bobAccount.token,
+    body: { email: daveAccount.email, role: "member" },
+  });
   console.log(`  Board 2: ${daveAccount.name} (pendiente)\n`);
 
   // 8. Crear labels para Board 1
@@ -391,7 +413,9 @@ async function main() {
     board2LabelIds[label.name] = createdLabel.id;
     await new Promise((resolve) => setTimeout(resolve, 120));
   }
-  console.log(`Labels Board 2: ${board2Labels.map((l) => l.name).join(", ")}\n`);
+  console.log(
+    `Labels Board 2: ${board2Labels.map((l) => l.name).join(", ")}\n`,
+  );
 
   // 10. Crear stages para Board 1
   const board1StageIds = [];
@@ -470,14 +494,10 @@ async function main() {
       for (const assigneeEmail of plannedCard.assigneeEmails) {
         const userId = getUserIdByEmail(assigneeEmail);
         if (userId) {
-          await httpRequest(
-            "POST",
-            `/cards/${createdCard.id}/members`,
-            {
-              token: author.token,
-              body: { userId },
-            },
-          );
+          await httpRequest("POST", `/cards/${createdCard.id}/members`, {
+            token: author.token,
+            body: { userId },
+          });
           await new Promise((resolve) => setTimeout(resolve, 120));
         }
       }
@@ -486,14 +506,10 @@ async function main() {
     // Agregar checklist items
     if (plannedCard.checklist && plannedCard.checklist.length > 0) {
       for (const item of plannedCard.checklist) {
-        await httpRequest(
-          "POST",
-          `/cards/${createdCard.id}/checklist`,
-          {
-            token: author.token,
-            body: { text: item.text, done: item.done },
-          },
-        );
+        await httpRequest("POST", `/cards/${createdCard.id}/checklist`, {
+          token: author.token,
+          body: { text: item.text, done: item.done },
+        });
         await new Promise((resolve) => setTimeout(resolve, 120));
       }
     }
@@ -543,14 +559,10 @@ async function main() {
       for (const assigneeEmail of plannedCard.assigneeEmails) {
         const userId = getUserIdByEmail(assigneeEmail);
         if (userId) {
-          await httpRequest(
-            "POST",
-            `/cards/${createdCard.id}/members`,
-            {
-              token: author.token,
-              body: { userId },
-            },
-          );
+          await httpRequest("POST", `/cards/${createdCard.id}/members`, {
+            token: author.token,
+            body: { userId },
+          });
           await new Promise((resolve) => setTimeout(resolve, 120));
         }
       }
@@ -559,14 +571,10 @@ async function main() {
     // Agregar checklist items
     if (plannedCard.checklist && plannedCard.checklist.length > 0) {
       for (const item of plannedCard.checklist) {
-        await httpRequest(
-          "POST",
-          `/cards/${createdCard.id}/checklist`,
-          {
-            token: author.token,
-            body: { text: item.text, done: item.done },
-          },
-        );
+        await httpRequest("POST", `/cards/${createdCard.id}/checklist`, {
+          token: author.token,
+          body: { text: item.text, done: item.done },
+        });
         await new Promise((resolve) => setTimeout(resolve, 120));
       }
     }
@@ -580,7 +588,9 @@ async function main() {
   console.log("\nSeed completo!");
   console.log(`\nLogin con alice@kanban.dev / Passw0rd! (owner de Board 1)`);
   console.log(`Login con bob@kanban.dev / Passw0rd! (owner de Board 2)`);
-  console.log(`Carol esta en ambos boards (member en Board 1, admin en Board 2)`);
+  console.log(
+    `Carol esta en ambos boards (member en Board 1, admin en Board 2)`,
+  );
   console.log(`Dave solo en Board 1 (member), Eve solo en Board 2 (member)`);
   console.log(`\nInvitaciones pendientes:`);
   console.log(`  - Eve invitada a Board 1 (aceptar en /invitations)`);

@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
  * Smoke test E2E contra el backend en localhost:3000.
+ * Prueba: auth, boards, stages, cards, members, invitations, permissions.
+ *
  * Ejecuta: node scripts/e2e-smoke.mjs
+ * Opcional: API_BASE=https://kanban-server-zpq5.onrender.com/api/v1 node scripts/e2e-smoke.mjs
  */
 
 const apiBaseUrl = process.env.API_BASE ?? 'http://localhost:3000/api/v1';
@@ -52,74 +55,144 @@ async function main() {
     logResult(result.ok && result.data?.status === 'ok', 'GET /health', result.data?.status);
   }
 
-  // 2. Register
-  const email = `test_${randomSuffix}@example.com`;
+  // 2. Register user 1 (owner)
+  const email1 = `owner_${randomSuffix}@example.com`;
   const password = 'Passw0rd!';
-  let accessToken;
+  let token1;
   {
     const result = await request('POST', '/auth/register', {
-      body: { email, name: `Test ${randomSuffix}`, password },
+      body: { email: email1, name: `Owner ${randomSuffix}`, password },
       expect: [200, 201],
     });
-    accessToken = result.data?.accessToken;
-    logResult(result.ok && !!accessToken, 'POST /auth/register', email);
+    token1 = result.data?.accessToken;
+    logResult(result.ok && !!token1, 'POST /auth/register (owner)', email1);
   }
 
-  // 3. Login
+  // 3. Register user 2 (member)
+  const email2 = `member_${randomSuffix}@example.com`;
+  let token2;
+  {
+    const result = await request('POST', '/auth/register', {
+      body: { email: email2, name: `Member ${randomSuffix}`, password },
+      expect: [200, 201],
+    });
+    token2 = result.data?.accessToken;
+    logResult(result.ok && !!token2, 'POST /auth/register (member)', email2);
+  }
+
+  // 4. Login
   {
     const result = await request('POST', '/auth/login', {
-      body: { email, password },
+      body: { email: email1, password },
       expect: 200,
     });
-    if (result.data?.accessToken) accessToken = result.data.accessToken;
+    if (result.data?.accessToken) token1 = result.data.accessToken;
     logResult(result.ok && !!result.data?.accessToken, 'POST /auth/login');
   }
 
-  // 4. Account
+  // 5. Account
   {
-    const result = await request('GET', '/auth/account', { token: accessToken });
-    logResult(result.ok && result.data?.email === email, 'GET /auth/account');
+    const result = await request('GET', '/auth/account', { token: token1 });
+    logResult(result.ok && result.data?.email === email1, 'GET /auth/account');
   }
 
-  // 5. Create board
+  // 6. Create board (owner should have all permissions)
   let boardId;
   {
     const result = await request('POST', '/boards', {
-      token: accessToken,
+      token: token1,
       body: { name: `Board ${randomSuffix}`, background: '#4f46e5' },
       expect: [200, 201],
     });
     boardId = result.data?.id;
     logResult(result.ok && !!boardId, 'POST /boards', boardId);
+
+    // Verify owner has all permissions
+    if (boardId && token1) {
+      const boardResult = await request('GET', `/boards/${boardId}/full`, { token: token1 });
+      const ownerMember = boardResult.data?.members?.find(m => m.role === 'owner');
+      const hasAllPerms = ownerMember?.permissions?.includes('create_stage')
+        && ownerMember?.permissions?.includes('create_card')
+        && ownerMember?.permissions?.includes('modify_card')
+        && ownerMember?.permissions?.includes('delete_card')
+        && ownerMember?.permissions?.includes('invite_member');
+      logResult(hasAllPerms, 'Owner has all permissions by default', 
+        `perms: ${JSON.stringify(ownerMember?.permissions)}`);
+    }
   }
 
-  // 6. List boards
+  // 7. List boards
   {
-    const result = await request('GET', '/boards', { token: accessToken });
+    const result = await request('GET', '/boards', { token: token1 });
     const found = Array.isArray(result.data) && result.data.some((board) => board.id === boardId);
     logResult(result.ok && found, 'GET /boards', `n=${result.data?.length}`);
   }
 
-  // 7. Get board
+  // 8. Get board
   {
-    const result = await request('GET', `/boards/${boardId}`, { token: accessToken });
+    const result = await request('GET', `/boards/${boardId}`, { token: token1 });
     logResult(result.ok && result.data?.id === boardId, 'GET /boards/:id');
   }
 
-  // 8. Update board
+  // 9. Update board
   {
     const result = await request('PATCH', `/boards/${boardId}`, {
-      token: accessToken,
+      token: token1,
       body: { name: `Board ${randomSuffix} v2` },
     });
     logResult(result.ok && result.data?.name?.endsWith('v2'), 'PATCH /boards/:id');
   }
 
-  // 9. Create stage
+  // 10. Invite member (create invitation)
+  let invitationToken;
+  {
+    const result = await request('POST', `/boards/${boardId}/invitations`, {
+      token: token1,
+      body: { email: email2, role: 'member' },
+      expect: [200, 201],
+    });
+    invitationToken = result.data?.token;
+    logResult(result.ok && !!invitationToken, 'POST /boards/:id/invitations', 'pending invitation created');
+  }
+
+  // 11. List board invitations (as owner)
+  {
+    const result = await request('GET', `/boards/${boardId}/invitations`, {
+      token: token1,
+    });
+    const hasPending = Array.isArray(result.data) && result.data.some(inv => inv.email === email2);
+    logResult(result.ok && hasPending, 'GET /boards/:id/invitations', `pending=${result.data?.length}`);
+  }
+
+  // 12. List user pending invitations (as invitee)
+  {
+    const result = await request('GET', '/invitations/pending', { token: token2 });
+    const hasInv = Array.isArray(result.data) && result.data.some(inv => inv.email === email2);
+    logResult(result.ok && hasInv, 'GET /invitations/pending', `pending=${result.data?.length}`);
+  }
+
+  // 13. Accept invitation
+  {
+    const result = await request('POST', `/invitations/${invitationToken}/accept`, {
+      token: token2,
+      expect: 200,
+    });
+    logResult(result.ok, 'POST /invitations/:token/accept', 'member accepted');
+  }
+
+  // 14. Verify member appears in board members
+  {
+    const result = await request('GET', `/boards/${boardId}/members`, { token: token1 });
+    const memberFound = Array.isArray(result.data) && result.data.some(m => m.userId === result.data?.[1]?.userId);
+    const memberCount = result.data?.length;
+    logResult(result.ok && memberCount === 2, 'GET /boards/:id/members', `count=${memberCount}`);
+  }
+
+  // 15. Create stage
   let firstStageId;
   {
     const result = await request('POST', `/boards/${boardId}/stages`, {
-      token: accessToken,
+      token: token1,
       body: { name: 'To Do' },
       expect: [200, 201],
     });
@@ -127,11 +200,11 @@ async function main() {
     logResult(result.ok && !!firstStageId, 'POST /boards/:id/stages', firstStageId);
   }
 
-  // 10. Create second stage
+  // 16. Create second stage
   let secondStageId;
   {
     const result = await request('POST', `/boards/${boardId}/stages`, {
-      token: accessToken,
+      token: token1,
       body: { name: 'Done' },
       expect: [200, 201],
     });
@@ -139,11 +212,11 @@ async function main() {
     logResult(result.ok && !!secondStageId, 'POST /boards/:id/stages #2');
   }
 
-  // 11. Create card
+  // 17. Create card
   let cardId;
   {
     const result = await request('POST', `/stages/${firstStageId}/cards`, {
-      token: accessToken,
+      token: token1,
       body: { title: `Task ${randomSuffix}`, description: 'lorem ipsum' },
       expect: [200, 201],
     });
@@ -151,56 +224,71 @@ async function main() {
     logResult(result.ok && !!cardId, 'POST /stages/:id/cards', cardId);
   }
 
-  // 12. Get card
+  // 18. Get card
   {
-    const result = await request('GET', `/cards/${cardId}`, { token: accessToken });
+    const result = await request('GET', `/cards/${cardId}`, { token: token1 });
     logResult(result.ok && result.data?.id === cardId, 'GET /cards/:id');
   }
 
-  // 13. Update card
+  // 19. Update card
   {
     const result = await request('PATCH', `/cards/${cardId}`, {
-      token: accessToken,
+      token: token1,
       body: { title: `Task ${randomSuffix} updated` },
     });
     logResult(result.ok && result.data?.title?.endsWith('updated'), 'PATCH /cards/:id');
   }
 
-  // 14. Move card to second stage
+  // 20. Move card to second stage
   {
     const result = await request('PATCH', `/cards/${cardId}/move`, {
-      token: accessToken,
+      token: token1,
       body: { stageId: secondStageId, index: 0 },
     });
     logResult(result.ok && result.data?.stageId === secondStageId, 'PATCH /cards/:id/move');
   }
 
-  // 15. Search cards
+  // 21. Search cards
   {
-    const result = await request('GET', `/boards/${boardId}/cards/search?q=${randomSuffix}`, { token: accessToken });
+    const result = await request('GET', `/boards/${boardId}/cards/search?q=${randomSuffix}`, { token: token1 });
     logResult(result.ok && Array.isArray(result.data) && result.data.length >= 1, 'GET /boards/:id/cards/search');
   }
 
-  // 16. Delete card
+  // 22. Delete card
   {
-    const result = await request('DELETE', `/cards/${cardId}`, { token: accessToken, expect: 204 });
+    const result = await request('DELETE', `/cards/${cardId}`, { token: token1, expect: 204 });
     logResult(result.ok, 'DELETE /cards/:id');
   }
 
-  // 17. Delete stages
+  // 23. Delete stages
   {
-    const firstDelete = await request('DELETE', `/stages/${firstStageId}`, { token: accessToken, expect: 204 });
-    const secondDelete = await request('DELETE', `/stages/${secondStageId}`, { token: accessToken, expect: 204 });
+    const firstDelete = await request('DELETE', `/stages/${firstStageId}`, { token: token1, expect: 204 });
+    const secondDelete = await request('DELETE', `/stages/${secondStageId}`, { token: token1, expect: 204 });
     logResult(firstDelete.ok && secondDelete.ok, 'DELETE /stages/:id x2');
   }
 
-  // 18. Delete board
+  // 24. Reject/delete invitation (create new one first)
   {
-    const result = await request('DELETE', `/boards/${boardId}`, { token: accessToken, expect: 204 });
+    const invResult = await request('POST', `/boards/${boardId}/invitations`, {
+      token: token1,
+      body: { email: `reject_${randomSuffix}@example.com`, role: 'member' },
+      expect: [200, 201],
+    });
+    const tempInvId = invResult.data?.id;
+    const delResult = await request('DELETE', `/invitations/${tempInvId}`, {
+      token: token1,
+      expect: [200, 204],
+    });
+    logResult(delResult.ok, 'DELETE /invitations/:id (reject)');
+  }
+
+  // 25. Delete board
+  {
+    const result = await request('DELETE', `/boards/${boardId}`, { token: token1, expect: 204 });
     logResult(result.ok, 'DELETE /boards/:id');
   }
 
-  // 19. Auth guard (sin token)
+  // 26. Auth guard (sin token)
   {
     const result = await request('GET', '/boards', { expect: 401 });
     logResult(result.ok, 'GET /boards sin token, espera 401');

@@ -16,11 +16,7 @@ async function bootstrap(): Promise<void> {
   app.useWebSocketAdapter(new IoAdapter(app));
   app.use(helmet());
   app.enableCors({
-    origin: config
-      .get("CORS_ORIGINS")
-      .split(",")
-      .map((o) => o.trim())
-      .filter(Boolean),
+    origin: process.env.CORS_ORIGIN || config.get("CORS_ORIGINS"),
     credentials: true,
   });
 

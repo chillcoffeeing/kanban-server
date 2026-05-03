@@ -52,8 +52,11 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Profile: 'Profile',
+  UserPreference: 'UserPreference',
   Board: 'Board',
-  BoardMember: 'BoardMember',
+  BoardPreference: 'BoardPreference',
+  BoardMembership: 'BoardMembership',
   Stage: 'Stage',
   Label: 'Label',
   Card: 'Card',
@@ -86,11 +89,10 @@ export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   name: 'name',
+  username: 'username',
   passwordHash: 'passwordHash',
   avatarUrl: 'avatarUrl',
   roles: 'roles',
-  profile: 'profile',
-  preferences: 'preferences',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
@@ -99,12 +101,62 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const ProfileScalarFieldEnum = {
+  id: 'id',
+  displayName: 'displayName',
+  coverUrl: 'coverUrl',
+  bio: 'bio',
+  jobTitle: 'jobTitle',
+  company: 'company',
+  location: 'location',
+  socialWebsite: 'socialWebsite',
+  socialTwitter: 'socialTwitter',
+  socialGithub: 'socialGithub',
+  socialLinkedin: 'socialLinkedin',
+  socialInstagram: 'socialInstagram',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const UserPreferenceScalarFieldEnum = {
+  id: 'id',
+  theme: 'theme',
+  background: 'background',
+  density: 'density',
+  language: 'language',
+  timezone: 'timezone',
+  timeFormat: 'timeFormat',
+  dateFormat: 'dateFormat',
+  reducedMotion: 'reducedMotion',
+  showCompletedCards: 'showCompletedCards',
+  emailEnabled: 'emailEnabled',
+  pushEnabled: 'pushEnabled',
+  mentions: 'mentions',
+  cardAssigned: 'cardAssigned',
+  cardDueSoon: 'cardDueSoon',
+  boardInvites: 'boardInvites',
+  weeklyDigest: 'weeklyDigest',
+  profileVisibility: 'profileVisibility',
+  showEmail: 'showEmail',
+  showActivity: 'showActivity',
+  allowDM: 'allowDM',
+  analyticsOptOut: 'analyticsOptOut',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type UserPreferenceScalarFieldEnum = (typeof UserPreferenceScalarFieldEnum)[keyof typeof UserPreferenceScalarFieldEnum]
+
+
 export const BoardScalarFieldEnum = {
   id: 'id',
   name: 'name',
   background: 'background',
-  ownerId: 'ownerId',
-  preferences: 'preferences',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -112,7 +164,18 @@ export const BoardScalarFieldEnum = {
 export type BoardScalarFieldEnum = (typeof BoardScalarFieldEnum)[keyof typeof BoardScalarFieldEnum]
 
 
-export const BoardMemberScalarFieldEnum = {
+export const BoardPreferenceScalarFieldEnum = {
+  id: 'id',
+  settings: 'settings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  boardId: 'boardId'
+} as const
+
+export type BoardPreferenceScalarFieldEnum = (typeof BoardPreferenceScalarFieldEnum)[keyof typeof BoardPreferenceScalarFieldEnum]
+
+
+export const BoardMembershipScalarFieldEnum = {
   id: 'id',
   boardId: 'boardId',
   userId: 'userId',
@@ -121,7 +184,7 @@ export const BoardMemberScalarFieldEnum = {
   invitedAt: 'invitedAt'
 } as const
 
-export type BoardMemberScalarFieldEnum = (typeof BoardMemberScalarFieldEnum)[keyof typeof BoardMemberScalarFieldEnum]
+export type BoardMembershipScalarFieldEnum = (typeof BoardMembershipScalarFieldEnum)[keyof typeof BoardMembershipScalarFieldEnum]
 
 
 export const StageScalarFieldEnum = {
@@ -181,7 +244,7 @@ export type CardLabelScalarFieldEnum = (typeof CardLabelScalarFieldEnum)[keyof t
 
 export const CardMemberScalarFieldEnum = {
   cardId: 'cardId',
-  userId: 'userId',
+  boardMembershipId: 'boardMembershipId',
   joinedAt: 'joinedAt'
 } as const
 
@@ -262,6 +325,14 @@ export const QueryMode = {
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
 export const JsonNullValueFilter = {
   DbNull: DbNull,
   JsonNull: JsonNull,
@@ -269,12 +340,4 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

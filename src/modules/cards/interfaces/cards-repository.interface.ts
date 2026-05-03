@@ -1,4 +1,4 @@
-import type { Card, Prisma } from '@/generated/prisma/client';
+import type { Card, Prisma } from "@/generated/prisma/client";
 
 export interface CreateCardData {
   stageId: string;
@@ -9,11 +9,11 @@ export interface CreateCardData {
   dueDate?: Date | null;
 }
 
-export type UpdateMembersData =  {
-  action: 'addMember' | 'removeMember';
+export type UpdateMembersData = {
+  action: "addMember" | "removeMember";
   cardId: string;
-  userId: string;
-}
+  boardMembershipId: string;
+};
 
 export interface UpdateCardData {
   title?: string;

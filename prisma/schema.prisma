@@ -21,51 +21,120 @@ enum BoardRole {
   member
 }
 
+
+
 model User {
   id            String   @id @default(uuid()) @db.Uuid
   email         String   @unique @db.VarChar(255)
   name          String   @db.VarChar(100)
+  username      String?  @unique @map("username") @db.VarChar(50)
   passwordHash  String   @map("password_hash") @db.VarChar(255)
   avatarUrl     String?  @map("avatar_url") @db.VarChar(500)
   roles         String[] @default([])
-  profile       Json     @default("{}")
-  preferences   Json     @default("{}")
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
   lastLoginAt   DateTime? @map("last_login_at") @db.Timestamptz
 
-  ownedBoards   Board[]         @relation("BoardOwner")
-  memberships   BoardMember[]
-  cardMembers   CardMember[]
-  comments      Comment[]
-  activities    Activity[]
+  profile       Profile?          @relation("UserProfile")
+  preferences   UserPreference?   @relation("UserPreference")
+
+  memberships   BoardMembership[]
   refreshTokens RefreshToken[]
 
   @@index([email])
   @@map("users")
 }
 
+model Profile {
+  id              String   @id @default(uuid()) @db.Uuid
+  displayName     String   @default("") @map("display_name") @db.VarChar(100)
+  coverUrl        String?  @map("cover_url") @db.VarChar(500)
+  bio             String?  @db.Text
+  jobTitle        String?  @map("job_title") @db.VarChar(100)
+  company         String?  @db.VarChar(100)
+  location        String?  @db.VarChar(100)
+  socialWebsite   String?  @map("social_website") @db.VarChar(500)
+  socialTwitter   String?  @map("social_twitter") @db.VarChar(100)
+  socialGithub    String?  @map("social_github") @db.VarChar(100)
+  socialLinkedin  String?  @map("social_linkedin") @db.VarChar(100)
+  socialInstagram String?  @map("social_instagram") @db.VarChar(100)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user   User     @relation("UserProfile", fields: [userId], references: [id], onDelete: Cascade)
+  userId String   @unique @map("user_id") @db.Uuid
+
+  @@map("profiles")
+}
+
+model UserPreference {
+  id        String   @id @default(uuid()) @db.Uuid
+
+  theme           String   @default("light") @db.VarChar(20)
+  background      String   @default("plain") @db.VarChar(50)
+  density         String   @default("comfortable") @db.VarChar(20)
+  language        String   @default("es") @db.VarChar(10)
+  timezone        String   @default("") @db.VarChar(50)
+  timeFormat      String   @default("24h") @db.VarChar(5)
+  dateFormat      String   @default("DMY") @db.VarChar(5)
+  reducedMotion   Boolean  @default(false) @map("reduced_motion")
+  showCompletedCards Boolean @default(true) @map("show_completed_cards")
+
+  emailEnabled    Boolean  @default(true) @map("email_enabled")
+  pushEnabled     Boolean  @default(false) @map("push_enabled")
+  mentions        Boolean  @default(true)
+  cardAssigned    Boolean  @default(true) @map("card_assigned")
+  cardDueSoon     Boolean  @default(true) @map("card_due_soon")
+  boardInvites    Boolean  @default(true) @map("board_invites")
+  weeklyDigest    Boolean  @default(false) @map("weekly_digest")
+
+  profileVisibility String @default("workspace") @map("profile_visibility") @db.VarChar(20)
+  showEmail        Boolean  @default(false) @map("show_email")
+  showActivity     Boolean  @default(true) @map("show_activity")
+  allowDM          Boolean  @default(true) @map("allow_dm")
+  analyticsOptOut  Boolean  @default(false) @map("analytics_opt_out")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user     User     @relation("UserPreference", fields: [userId], references: [id], onDelete: Cascade)
+  userId   String   @unique @map("user_id") @db.Uuid
+
+  @@map("user_preferences")
+}
+
 model Board {
   id          String   @id @default(uuid()) @db.Uuid
   name        String   @db.VarChar(200)
   background  String   @default("bg-gradient-to-br from-blue-500 to-purple-600") @db.VarChar(200)
-  ownerId     String   @map("owner_id") @db.Uuid
-  preferences Json     @default("{}")
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
-  owner       User           @relation("BoardOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  members     BoardMember[]
+  members     BoardMembership[]
   stages      Stage[]
   labels      Label[]
   activities  Activity[]
   invitations Invitation[]
 
-  @@index([ownerId])
+  preference  BoardPreference? @relation("BoardPreference")
+
   @@map("boards")
 }
 
-model BoardMember {
+model BoardPreference {
+  id        String   @id @default(uuid()) @db.Uuid
+  settings  Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  board    Board    @relation("BoardPreference", fields: [boardId], references: [id], onDelete: Cascade)
+  boardId  String   @unique @map("board_id") @db.Uuid
+
+  @@index([boardId])
+  @@map("board_preferences")
+}
+
+model BoardMembership {
   id          String    @id @default(uuid()) @db.Uuid
   boardId     String    @map("board_id") @db.Uuid
   userId      String    @map("user_id") @db.Uuid
@@ -75,6 +144,9 @@ model BoardMember {
 
   board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardMembers CardMember[]
+  comments    Comment[]
+  activities  Activity[]
 
   @@unique([boardId, userId])
   @@index([boardId])
@@ -155,14 +227,15 @@ model CardLabel {
 }
 
 model CardMember {
-  cardId   String   @map("card_id") @db.Uuid
-  userId   String   @map("user_id") @db.Uuid
-  joinedAt DateTime @default(now()) @map("joined_at") @db.Timestamptz
+  cardId            String        @map("card_id") @db.Uuid
+  boardMembershipId String        @map("board_membership_id") @db.Uuid
+  joinedAt          DateTime      @default(now()) @map("joined_at") @db.Timestamptz
 
-  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card            Card         @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  boardMembership BoardMembership @relation(fields: [boardMembershipId], references: [id], onDelete: Cascade)
 
-  @@id([cardId, userId])
+  @@id([cardId, boardMembershipId])
+  @@index([boardMembershipId])
   @@map("card_members")
 }
 
@@ -174,10 +247,11 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
-  card   Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
-  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  author BoardMembership @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([cardId, createdAt])
+  @@index([authorId])
   @@map("comments")
 }
 
@@ -191,9 +265,10 @@ model Activity {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
 
   board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  BoardMembership @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([boardId, createdAt(sort: Desc)])
+  @@index([userId])
   @@map("activities")
 }
 

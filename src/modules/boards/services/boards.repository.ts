@@ -11,7 +11,7 @@ export class BoardsRepository implements IBoardsRepository {
     return this.prisma.board.findUnique({ where: { id } });
   }
 
-  listByIds(ids: string[]): Promise<Board[]> {
+  listByIds(ids: string[]): Promise<any[]> {
     if (ids.length === 0) return Promise.resolve([]);
     return this.prisma.board.findMany({
       where: { id: { in: ids } },
@@ -21,7 +21,13 @@ export class BoardsRepository implements IBoardsRepository {
           select: {
             stages: true,
             members: true,
-            cards: true,
+          },
+        },
+        stages: {
+          include: {
+            _count: {
+              select: { cards: true },
+            },
           },
         },
       },
@@ -31,7 +37,6 @@ export class BoardsRepository implements IBoardsRepository {
   create(data: {
     name: string;
     background?: string;
-    ownerId: string;
     preferences?: Prisma.InputJsonValue;
   }): Promise<Board> {
     return this.prisma.board.create({ data });

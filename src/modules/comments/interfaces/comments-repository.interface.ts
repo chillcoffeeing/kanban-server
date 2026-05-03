@@ -5,7 +5,7 @@ export interface ICommentsRepository {
   listByCard(cardId: string): Promise<Comment[]>;
   create(data: {
     cardId: string;
-    authorId: string;
+    authorId: string;  // Now represents BoardMembership ID
     body: string;
   }): Promise<Comment>;
   update(id: string, body: string): Promise<Comment>;

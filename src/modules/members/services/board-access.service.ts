@@ -17,7 +17,7 @@ export class BoardAccessService {
     boardId: string,
     userId: string,
   ): Promise<BoardMembership> {
-    const m = await this.repo.findMembership(boardId, userId);
+    const m = await this.repo.findByUserAndBoard(boardId, userId);
     if (!m) throw new ForbiddenException('Not a member of this board');
     return m;
   }

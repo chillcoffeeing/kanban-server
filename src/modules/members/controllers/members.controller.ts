@@ -43,27 +43,27 @@ export class MembersController {
     return rows.map(MemberResponseDto.fromEntity);
   }
 
-  @Patch('members/:userId')
+  @Patch('members/:membershipId')
   @RequireBoardRole('owner')
   async update(
     @Param('boardId', ParseUUIDPipe) boardId: string,
-    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('membershipId', ParseUUIDPipe) membershipId: string,
     @Body() dto: UpdateMemberDto,
   ): Promise<MemberResponseDto> {
-    const updated = await this.members.update(boardId, userId, dto);
+    const updated = await this.members.updateById(membershipId, dto);
     const res = MemberResponseDto.fromEntity(updated);
     this.realtime.memberChanged(boardId, REALTIME_EVENTS.MEMBER_ROLE_CHANGED, res);
     return res;
   }
 
-  @Delete('members/:userId')
+  @Delete('members/:membershipId')
   @RequireBoardRole('owner')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @Param('boardId', ParseUUIDPipe) boardId: string,
-    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('membershipId', ParseUUIDPipe) membershipId: string,
   ): Promise<void> {
-    await this.members.remove(boardId, userId);
-    this.realtime.memberChanged(boardId, REALTIME_EVENTS.MEMBER_LEFT, { boardId, userId });
+    await this.members.removeById(membershipId);
+    this.realtime.memberChanged(boardId, REALTIME_EVENTS.MEMBER_LEFT, { boardId, membershipId });
   }
 }

@@ -385,8 +385,11 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  Profile: 'Profile',
+  UserPreference: 'UserPreference',
   Board: 'Board',
-  BoardMember: 'BoardMember',
+  BoardPreference: 'BoardPreference',
+  BoardMembership: 'BoardMembership',
   Stage: 'Stage',
   Label: 'Label',
   Card: 'Card',
@@ -412,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "board" | "boardMember" | "stage" | "label" | "card" | "checklistItem" | "cardLabel" | "cardMember" | "comment" | "activity" | "refreshToken" | "invitation"
+    modelProps: "user" | "profile" | "userPreference" | "board" | "boardPreference" | "boardMembership" | "stage" | "label" | "card" | "checklistItem" | "cardLabel" | "cardMember" | "comment" | "activity" | "refreshToken" | "invitation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -490,6 +493,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Profile: {
+      payload: Prisma.$ProfilePayload<ExtArgs>
+      fields: Prisma.ProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.ProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>
+        }
+        findMany: {
+          args: Prisma.ProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>[]
+        }
+        create: {
+          args: Prisma.ProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>
+        }
+        createMany: {
+          args: Prisma.ProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.ProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>
+        }
+        update: {
+          args: Prisma.ProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.ProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.ProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.ProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProfile>
+        }
+        groupBy: {
+          args: Prisma.ProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserPreference: {
+      payload: Prisma.$UserPreferencePayload<ExtArgs>
+      fields: Prisma.UserPreferenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserPreferenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserPreferenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>
+        }
+        findFirst: {
+          args: Prisma.UserPreferenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserPreferenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>
+        }
+        findMany: {
+          args: Prisma.UserPreferenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>[]
+        }
+        create: {
+          args: Prisma.UserPreferenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>
+        }
+        createMany: {
+          args: Prisma.UserPreferenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserPreferenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>[]
+        }
+        delete: {
+          args: Prisma.UserPreferenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>
+        }
+        update: {
+          args: Prisma.UserPreferenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>
+        }
+        deleteMany: {
+          args: Prisma.UserPreferenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserPreferenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserPreferenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>[]
+        }
+        upsert: {
+          args: Prisma.UserPreferenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPreferencePayload>
+        }
+        aggregate: {
+          args: Prisma.UserPreferenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserPreference>
+        }
+        groupBy: {
+          args: Prisma.UserPreferenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserPreferenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserPreferenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserPreferenceCountAggregateOutputType> | number
+        }
+      }
+    }
     Board: {
       payload: Prisma.$BoardPayload<ExtArgs>
       fields: Prisma.BoardFieldRefs
@@ -564,77 +715,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    BoardMember: {
-      payload: Prisma.$BoardMemberPayload<ExtArgs>
-      fields: Prisma.BoardMemberFieldRefs
+    BoardPreference: {
+      payload: Prisma.$BoardPreferencePayload<ExtArgs>
+      fields: Prisma.BoardPreferenceFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.BoardMemberFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload> | null
+          args: Prisma.BoardPreferenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.BoardMemberFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          args: Prisma.BoardPreferenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>
         }
         findFirst: {
-          args: Prisma.BoardMemberFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload> | null
+          args: Prisma.BoardPreferenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.BoardMemberFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          args: Prisma.BoardPreferenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>
         }
         findMany: {
-          args: Prisma.BoardMemberFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>[]
+          args: Prisma.BoardPreferenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>[]
         }
         create: {
-          args: Prisma.BoardMemberCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          args: Prisma.BoardPreferenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>
         }
         createMany: {
-          args: Prisma.BoardMemberCreateManyArgs<ExtArgs>
+          args: Prisma.BoardPreferenceCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.BoardMemberCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>[]
+          args: Prisma.BoardPreferenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>[]
         }
         delete: {
-          args: Prisma.BoardMemberDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          args: Prisma.BoardPreferenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>
         }
         update: {
-          args: Prisma.BoardMemberUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          args: Prisma.BoardPreferenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>
         }
         deleteMany: {
-          args: Prisma.BoardMemberDeleteManyArgs<ExtArgs>
+          args: Prisma.BoardPreferenceDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.BoardMemberUpdateManyArgs<ExtArgs>
+          args: Prisma.BoardPreferenceUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.BoardMemberUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>[]
+          args: Prisma.BoardPreferenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>[]
         }
         upsert: {
-          args: Prisma.BoardMemberUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMemberPayload>
+          args: Prisma.BoardPreferenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardPreferencePayload>
         }
         aggregate: {
-          args: Prisma.BoardMemberAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateBoardMember>
+          args: Prisma.BoardPreferenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBoardPreference>
         }
         groupBy: {
-          args: Prisma.BoardMemberGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.BoardMemberGroupByOutputType>[]
+          args: Prisma.BoardPreferenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BoardPreferenceGroupByOutputType>[]
         }
         count: {
-          args: Prisma.BoardMemberCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.BoardMemberCountAggregateOutputType> | number
+          args: Prisma.BoardPreferenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BoardPreferenceCountAggregateOutputType> | number
+        }
+      }
+    }
+    BoardMembership: {
+      payload: Prisma.$BoardMembershipPayload<ExtArgs>
+      fields: Prisma.BoardMembershipFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BoardMembershipFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BoardMembershipFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>
+        }
+        findFirst: {
+          args: Prisma.BoardMembershipFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BoardMembershipFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>
+        }
+        findMany: {
+          args: Prisma.BoardMembershipFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>[]
+        }
+        create: {
+          args: Prisma.BoardMembershipCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>
+        }
+        createMany: {
+          args: Prisma.BoardMembershipCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BoardMembershipCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>[]
+        }
+        delete: {
+          args: Prisma.BoardMembershipDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>
+        }
+        update: {
+          args: Prisma.BoardMembershipUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>
+        }
+        deleteMany: {
+          args: Prisma.BoardMembershipDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BoardMembershipUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BoardMembershipUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>[]
+        }
+        upsert: {
+          args: Prisma.BoardMembershipUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BoardMembershipPayload>
+        }
+        aggregate: {
+          args: Prisma.BoardMembershipAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBoardMembership>
+        }
+        groupBy: {
+          args: Prisma.BoardMembershipGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BoardMembershipGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BoardMembershipCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BoardMembershipCountAggregateOutputType> | number
         }
       }
     }
@@ -1421,11 +1646,10 @@ export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   name: 'name',
+  username: 'username',
   passwordHash: 'passwordHash',
   avatarUrl: 'avatarUrl',
   roles: 'roles',
-  profile: 'profile',
-  preferences: 'preferences',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
@@ -1434,12 +1658,62 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const ProfileScalarFieldEnum = {
+  id: 'id',
+  displayName: 'displayName',
+  coverUrl: 'coverUrl',
+  bio: 'bio',
+  jobTitle: 'jobTitle',
+  company: 'company',
+  location: 'location',
+  socialWebsite: 'socialWebsite',
+  socialTwitter: 'socialTwitter',
+  socialGithub: 'socialGithub',
+  socialLinkedin: 'socialLinkedin',
+  socialInstagram: 'socialInstagram',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const UserPreferenceScalarFieldEnum = {
+  id: 'id',
+  theme: 'theme',
+  background: 'background',
+  density: 'density',
+  language: 'language',
+  timezone: 'timezone',
+  timeFormat: 'timeFormat',
+  dateFormat: 'dateFormat',
+  reducedMotion: 'reducedMotion',
+  showCompletedCards: 'showCompletedCards',
+  emailEnabled: 'emailEnabled',
+  pushEnabled: 'pushEnabled',
+  mentions: 'mentions',
+  cardAssigned: 'cardAssigned',
+  cardDueSoon: 'cardDueSoon',
+  boardInvites: 'boardInvites',
+  weeklyDigest: 'weeklyDigest',
+  profileVisibility: 'profileVisibility',
+  showEmail: 'showEmail',
+  showActivity: 'showActivity',
+  allowDM: 'allowDM',
+  analyticsOptOut: 'analyticsOptOut',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type UserPreferenceScalarFieldEnum = (typeof UserPreferenceScalarFieldEnum)[keyof typeof UserPreferenceScalarFieldEnum]
+
+
 export const BoardScalarFieldEnum = {
   id: 'id',
   name: 'name',
   background: 'background',
-  ownerId: 'ownerId',
-  preferences: 'preferences',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1447,7 +1721,18 @@ export const BoardScalarFieldEnum = {
 export type BoardScalarFieldEnum = (typeof BoardScalarFieldEnum)[keyof typeof BoardScalarFieldEnum]
 
 
-export const BoardMemberScalarFieldEnum = {
+export const BoardPreferenceScalarFieldEnum = {
+  id: 'id',
+  settings: 'settings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  boardId: 'boardId'
+} as const
+
+export type BoardPreferenceScalarFieldEnum = (typeof BoardPreferenceScalarFieldEnum)[keyof typeof BoardPreferenceScalarFieldEnum]
+
+
+export const BoardMembershipScalarFieldEnum = {
   id: 'id',
   boardId: 'boardId',
   userId: 'userId',
@@ -1456,7 +1741,7 @@ export const BoardMemberScalarFieldEnum = {
   invitedAt: 'invitedAt'
 } as const
 
-export type BoardMemberScalarFieldEnum = (typeof BoardMemberScalarFieldEnum)[keyof typeof BoardMemberScalarFieldEnum]
+export type BoardMembershipScalarFieldEnum = (typeof BoardMembershipScalarFieldEnum)[keyof typeof BoardMembershipScalarFieldEnum]
 
 
 export const StageScalarFieldEnum = {
@@ -1516,7 +1801,7 @@ export type CardLabelScalarFieldEnum = (typeof CardLabelScalarFieldEnum)[keyof t
 
 export const CardMemberScalarFieldEnum = {
   cardId: 'cardId',
-  userId: 'userId',
+  boardMembershipId: 'boardMembershipId',
   joinedAt: 'joinedAt'
 } as const
 
@@ -1597,6 +1882,14 @@ export const QueryMode = {
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
 export const JsonNullValueFilter = {
   DbNull: DbNull,
   JsonNull: JsonNull,
@@ -1604,14 +1897,6 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1635,20 +1920,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -1659,6 +1930,27 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1687,13 +1979,6 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1821,8 +2106,11 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  profile?: Prisma.ProfileOmit
+  userPreference?: Prisma.UserPreferenceOmit
   board?: Prisma.BoardOmit
-  boardMember?: Prisma.BoardMemberOmit
+  boardPreference?: Prisma.BoardPreferenceOmit
+  boardMembership?: Prisma.BoardMembershipOmit
   stage?: Prisma.StageOmit
   label?: Prisma.LabelOmit
   card?: Prisma.CardOmit

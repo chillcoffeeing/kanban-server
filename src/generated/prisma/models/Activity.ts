@@ -195,7 +195,7 @@ export type ActivityWhereInput = {
   meta?: Prisma.JsonFilter<"Activity">
   createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.BoardMembershipScalarRelationFilter, Prisma.BoardMembershipWhereInput>
 }
 
 export type ActivityOrderByWithRelationInput = {
@@ -207,7 +207,7 @@ export type ActivityOrderByWithRelationInput = {
   meta?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   board?: Prisma.BoardOrderByWithRelationInput
-  user?: Prisma.UserOrderByWithRelationInput
+  user?: Prisma.BoardMembershipOrderByWithRelationInput
 }
 
 export type ActivityWhereUniqueInput = Prisma.AtLeast<{
@@ -222,7 +222,7 @@ export type ActivityWhereUniqueInput = Prisma.AtLeast<{
   meta?: Prisma.JsonFilter<"Activity">
   createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
   board?: Prisma.XOR<Prisma.BoardScalarRelationFilter, Prisma.BoardWhereInput>
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  user?: Prisma.XOR<Prisma.BoardMembershipScalarRelationFilter, Prisma.BoardMembershipWhereInput>
 }, "id">
 
 export type ActivityOrderByWithAggregationInput = {
@@ -258,7 +258,7 @@ export type ActivityCreateInput = {
   meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   board: Prisma.BoardCreateNestedOneWithoutActivitiesInput
-  user: Prisma.UserCreateNestedOneWithoutActivitiesInput
+  user: Prisma.BoardMembershipCreateNestedOneWithoutActivitiesInput
 }
 
 export type ActivityUncheckedCreateInput = {
@@ -278,7 +278,7 @@ export type ActivityUpdateInput = {
   meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   board?: Prisma.BoardUpdateOneRequiredWithoutActivitiesNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutActivitiesNestedInput
+  user?: Prisma.BoardMembershipUpdateOneRequiredWithoutActivitiesNestedInput
 }
 
 export type ActivityUncheckedUpdateInput = {
@@ -357,6 +357,48 @@ export type ActivityMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
+export type ActivityCreateNestedManyWithoutBoardInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
+  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+}
+
+export type ActivityUncheckedCreateNestedManyWithoutBoardInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
+  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+}
+
+export type ActivityUpdateManyWithoutBoardNestedInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
+  upsert?: Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput[]
+  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
+  set?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  disconnect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  delete?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  update?: Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput[]
+  updateMany?: Prisma.ActivityUpdateManyWithWhereWithoutBoardInput | Prisma.ActivityUpdateManyWithWhereWithoutBoardInput[]
+  deleteMany?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+}
+
+export type ActivityUncheckedUpdateManyWithoutBoardNestedInput = {
+  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
+  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
+  upsert?: Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput[]
+  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
+  set?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  disconnect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  delete?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+  update?: Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput[]
+  updateMany?: Prisma.ActivityUpdateManyWithWhereWithoutBoardInput | Prisma.ActivityUpdateManyWithWhereWithoutBoardInput[]
+  deleteMany?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+}
+
 export type ActivityCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.ActivityCreateWithoutUserInput, Prisma.ActivityUncheckedCreateWithoutUserInput> | Prisma.ActivityCreateWithoutUserInput[] | Prisma.ActivityUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutUserInput | Prisma.ActivityCreateOrConnectWithoutUserInput[]
@@ -399,46 +441,61 @@ export type ActivityUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
 }
 
-export type ActivityCreateNestedManyWithoutBoardInput = {
-  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
-  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
-  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
-  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+export type ActivityCreateWithoutBoardInput = {
+  id?: string
+  type: string
+  detail: string
+  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  user: Prisma.BoardMembershipCreateNestedOneWithoutActivitiesInput
 }
 
-export type ActivityUncheckedCreateNestedManyWithoutBoardInput = {
-  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
-  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
-  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
-  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
+export type ActivityUncheckedCreateWithoutBoardInput = {
+  id?: string
+  userId: string
+  type: string
+  detail: string
+  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
 }
 
-export type ActivityUpdateManyWithoutBoardNestedInput = {
-  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
-  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
-  upsert?: Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput[]
-  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
-  set?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  disconnect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  delete?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  update?: Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput[]
-  updateMany?: Prisma.ActivityUpdateManyWithWhereWithoutBoardInput | Prisma.ActivityUpdateManyWithWhereWithoutBoardInput[]
-  deleteMany?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+export type ActivityCreateOrConnectWithoutBoardInput = {
+  where: Prisma.ActivityWhereUniqueInput
+  create: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput>
 }
 
-export type ActivityUncheckedUpdateManyWithoutBoardNestedInput = {
-  create?: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput> | Prisma.ActivityCreateWithoutBoardInput[] | Prisma.ActivityUncheckedCreateWithoutBoardInput[]
-  connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutBoardInput | Prisma.ActivityCreateOrConnectWithoutBoardInput[]
-  upsert?: Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpsertWithWhereUniqueWithoutBoardInput[]
-  createMany?: Prisma.ActivityCreateManyBoardInputEnvelope
-  set?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  disconnect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  delete?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  connect?: Prisma.ActivityWhereUniqueInput | Prisma.ActivityWhereUniqueInput[]
-  update?: Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput | Prisma.ActivityUpdateWithWhereUniqueWithoutBoardInput[]
-  updateMany?: Prisma.ActivityUpdateManyWithWhereWithoutBoardInput | Prisma.ActivityUpdateManyWithWhereWithoutBoardInput[]
-  deleteMany?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+export type ActivityCreateManyBoardInputEnvelope = {
+  data: Prisma.ActivityCreateManyBoardInput | Prisma.ActivityCreateManyBoardInput[]
+  skipDuplicates?: boolean
+}
+
+export type ActivityUpsertWithWhereUniqueWithoutBoardInput = {
+  where: Prisma.ActivityWhereUniqueInput
+  update: Prisma.XOR<Prisma.ActivityUpdateWithoutBoardInput, Prisma.ActivityUncheckedUpdateWithoutBoardInput>
+  create: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput>
+}
+
+export type ActivityUpdateWithWhereUniqueWithoutBoardInput = {
+  where: Prisma.ActivityWhereUniqueInput
+  data: Prisma.XOR<Prisma.ActivityUpdateWithoutBoardInput, Prisma.ActivityUncheckedUpdateWithoutBoardInput>
+}
+
+export type ActivityUpdateManyWithWhereWithoutBoardInput = {
+  where: Prisma.ActivityScalarWhereInput
+  data: Prisma.XOR<Prisma.ActivityUpdateManyMutationInput, Prisma.ActivityUncheckedUpdateManyWithoutBoardInput>
+}
+
+export type ActivityScalarWhereInput = {
+  AND?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+  OR?: Prisma.ActivityScalarWhereInput[]
+  NOT?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
+  id?: Prisma.UuidFilter<"Activity"> | string
+  boardId?: Prisma.UuidFilter<"Activity"> | string
+  userId?: Prisma.UuidFilter<"Activity"> | string
+  type?: Prisma.StringFilter<"Activity"> | string
+  detail?: Prisma.StringFilter<"Activity"> | string
+  meta?: Prisma.JsonFilter<"Activity">
+  createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
 }
 
 export type ActivityCreateWithoutUserInput = {
@@ -485,29 +542,7 @@ export type ActivityUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.ActivityUpdateManyMutationInput, Prisma.ActivityUncheckedUpdateManyWithoutUserInput>
 }
 
-export type ActivityScalarWhereInput = {
-  AND?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
-  OR?: Prisma.ActivityScalarWhereInput[]
-  NOT?: Prisma.ActivityScalarWhereInput | Prisma.ActivityScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Activity"> | string
-  boardId?: Prisma.UuidFilter<"Activity"> | string
-  userId?: Prisma.UuidFilter<"Activity"> | string
-  type?: Prisma.StringFilter<"Activity"> | string
-  detail?: Prisma.StringFilter<"Activity"> | string
-  meta?: Prisma.JsonFilter<"Activity">
-  createdAt?: Prisma.DateTimeFilter<"Activity"> | Date | string
-}
-
-export type ActivityCreateWithoutBoardInput = {
-  id?: string
-  type: string
-  detail: string
-  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutActivitiesInput
-}
-
-export type ActivityUncheckedCreateWithoutBoardInput = {
+export type ActivityCreateManyBoardInput = {
   id?: string
   userId: string
   type: string
@@ -516,30 +551,31 @@ export type ActivityUncheckedCreateWithoutBoardInput = {
   createdAt?: Date | string
 }
 
-export type ActivityCreateOrConnectWithoutBoardInput = {
-  where: Prisma.ActivityWhereUniqueInput
-  create: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput>
+export type ActivityUpdateWithoutBoardInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  detail?: Prisma.StringFieldUpdateOperationsInput | string
+  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.BoardMembershipUpdateOneRequiredWithoutActivitiesNestedInput
 }
 
-export type ActivityCreateManyBoardInputEnvelope = {
-  data: Prisma.ActivityCreateManyBoardInput | Prisma.ActivityCreateManyBoardInput[]
-  skipDuplicates?: boolean
+export type ActivityUncheckedUpdateWithoutBoardInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  detail?: Prisma.StringFieldUpdateOperationsInput | string
+  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ActivityUpsertWithWhereUniqueWithoutBoardInput = {
-  where: Prisma.ActivityWhereUniqueInput
-  update: Prisma.XOR<Prisma.ActivityUpdateWithoutBoardInput, Prisma.ActivityUncheckedUpdateWithoutBoardInput>
-  create: Prisma.XOR<Prisma.ActivityCreateWithoutBoardInput, Prisma.ActivityUncheckedCreateWithoutBoardInput>
-}
-
-export type ActivityUpdateWithWhereUniqueWithoutBoardInput = {
-  where: Prisma.ActivityWhereUniqueInput
-  data: Prisma.XOR<Prisma.ActivityUpdateWithoutBoardInput, Prisma.ActivityUncheckedUpdateWithoutBoardInput>
-}
-
-export type ActivityUpdateManyWithWhereWithoutBoardInput = {
-  where: Prisma.ActivityScalarWhereInput
-  data: Prisma.XOR<Prisma.ActivityUpdateManyMutationInput, Prisma.ActivityUncheckedUpdateManyWithoutBoardInput>
+export type ActivityUncheckedUpdateManyWithoutBoardInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  detail?: Prisma.StringFieldUpdateOperationsInput | string
+  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ActivityCreateManyUserInput = {
@@ -578,42 +614,6 @@ export type ActivityUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ActivityCreateManyBoardInput = {
-  id?: string
-  userId: string
-  type: string
-  detail: string
-  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-}
-
-export type ActivityUpdateWithoutBoardInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  detail?: Prisma.StringFieldUpdateOperationsInput | string
-  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutActivitiesNestedInput
-}
-
-export type ActivityUncheckedUpdateWithoutBoardInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  detail?: Prisma.StringFieldUpdateOperationsInput | string
-  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type ActivityUncheckedUpdateManyWithoutBoardInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  detail?: Prisma.StringFieldUpdateOperationsInput | string
-  meta?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
 
 
 export type ActivitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -625,7 +625,7 @@ export type ActivitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   meta?: boolean
   createdAt?: boolean
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
 
 export type ActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -637,7 +637,7 @@ export type ActivitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   meta?: boolean
   createdAt?: boolean
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
 
 export type ActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -649,7 +649,7 @@ export type ActivitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   meta?: boolean
   createdAt?: boolean
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
 
 export type ActivitySelectScalar = {
@@ -665,22 +665,22 @@ export type ActivitySelectScalar = {
 export type ActivityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "boardId" | "userId" | "type" | "detail" | "meta" | "createdAt", ExtArgs["result"]["activity"]>
 export type ActivityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }
 export type ActivityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }
 export type ActivityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   board?: boolean | Prisma.BoardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }
 
 export type $ActivityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Activity"
   objects: {
     board: Prisma.$BoardPayload<ExtArgs>
-    user: Prisma.$UserPayload<ExtArgs>
+    user: Prisma.$BoardMembershipPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1085,7 +1085,7 @@ readonly fields: ActivityFieldRefs;
 export interface Prisma__ActivityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   board<T extends Prisma.BoardDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardDefaultArgs<ExtArgs>>): Prisma.Prisma__BoardClient<runtime.Types.Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.BoardMembershipDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardMembershipDefaultArgs<ExtArgs>>): Prisma.Prisma__BoardMembershipClient<runtime.Types.Result.GetResult<Prisma.$BoardMembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

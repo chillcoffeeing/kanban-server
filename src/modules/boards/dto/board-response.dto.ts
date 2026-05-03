@@ -6,7 +6,6 @@ export class BoardResponseDto {
   @ApiProperty() id!: string;
   @ApiProperty() name!: string;
   @ApiProperty() background!: string;
-  @ApiProperty() ownerId!: string;
   @ApiProperty({ type: Object }) preferences!: Record<string, unknown>;
   @ApiProperty() createdAt!: Date;
   @ApiProperty() updatedAt!: Date;
@@ -15,29 +14,26 @@ export class BoardResponseDto {
   @ApiPropertyOptional() stagesCount?: number;
   @ApiPropertyOptional() membersCount?: number;
   @ApiPropertyOptional() cardsCount?: number;
-  
+
   static fromEntity(
-    b: Board & {
-      _count?: {
-        stages: number;
-        members: number;
-        cards: number;
-      };
-    },
+    b: any,
     labels: LabelResponseDto[] = [],
   ): BoardResponseDto {
+    const totalCards = b.stages?.reduce((sum: number, stage: any) => {
+      return sum + (stage._count?.cards || 0);
+    },0) ?? 0;
+
     return {
       id: b.id,
       name: b.name,
       background: b.background,
-      ownerId: b.ownerId,
       preferences: b.preferences as Record<string, unknown>,
       createdAt: b.createdAt,
       updatedAt: b.updatedAt,
       labels,
       stagesCount: b._count?.stages,
       membersCount: b._count?.members,
-      cardsCount: b._count?.cards,
+      cardsCount: totalCards,
     };
   }
 }

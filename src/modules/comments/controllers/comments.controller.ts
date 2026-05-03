@@ -40,7 +40,7 @@ export class CommentsController {
     @Param('id', ParseUUIDPipe) cardId: string,
   ): Promise<CommentResponseDto[]> {
     const boardId = await this.cards.getBoardIdForCard(cardId);
-    await this.access.requireMembership(boardId, user.id);
+    const membership = await this.access.requireMembership(boardId, user.id);
     const rows = await this.comments.listByCard(cardId);
     return rows.map(CommentResponseDto.fromEntity);
   }
@@ -52,8 +52,8 @@ export class CommentsController {
     @Body() dto: CreateCommentDto,
   ): Promise<CommentResponseDto> {
     const boardId = await this.cards.getBoardIdForCard(cardId);
-    await this.access.requireMembership(boardId, user.id);
-    const comment = await this.comments.create(cardId, user.id, dto.body);
+    const membership = await this.access.requireMembership(boardId, user.id);
+    const comment = await this.comments.create(cardId, membership.id, dto.body);
     const res = CommentResponseDto.fromEntity(comment);
     this.realtime.commentCreated(boardId, res);
     return res;
@@ -67,8 +67,8 @@ export class CommentsController {
   ): Promise<CommentResponseDto> {
     const existing = await this.comments.getById(id);
     const boardId = await this.cards.getBoardIdForCard(existing.cardId);
-    await this.access.requireMembership(boardId, user.id);
-    const comment = await this.comments.update(id, user.id, dto.body);
+    const membership = await this.access.requireMembership(boardId, user.id);
+    const comment = await this.comments.update(id, membership.id, dto.body);
     return CommentResponseDto.fromEntity(comment);
   }
 
@@ -81,6 +81,6 @@ export class CommentsController {
     const existing = await this.comments.getById(id);
     const boardId = await this.cards.getBoardIdForCard(existing.cardId);
     const membership = await this.access.requireMembership(boardId, user.id);
-    await this.comments.delete(id, user.id, membership.role === 'owner');
+    await this.comments.delete(id, membership.id, membership.role === 'owner');
   }
 }

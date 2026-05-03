@@ -1,4 +1,4 @@
-import type { BoardMember, BoardRole } from '@/generated/prisma/client';
+import type { BoardRole } from '@/generated/prisma/client';
 
 export interface BoardMembership {
   id: string;
@@ -9,20 +9,17 @@ export interface BoardMembership {
 }
 
 export interface IMembersRepository {
-  findMembership(boardId: string, userId: string): Promise<BoardMembership | null>;
-  listByBoard(boardId: string): Promise<(BoardMember)[]>;
+  findById(id: string): Promise<BoardMembership | null>;
+  findByUserAndBoard(boardId: string, userId: string): Promise<BoardMembership | null>;
+  listByBoard(boardId: string): Promise<(BoardMembership)[]>;
   create(data: {
     boardId: string;
     userId: string;
     role: BoardRole;
     permissions: string[];
-  }): Promise<BoardMember>;
-  update(
-    boardId: string,
-    userId: string,
-    data: { role?: BoardRole; permissions?: string[] },
-  ): Promise<BoardMember>;
-  delete(boardId: string, userId: string): Promise<void>;
+  }): Promise<BoardMembership>;
+  updateById(id: string, data: { role?: BoardRole; permissions?: string[] }): Promise<BoardMembership>;
+  deleteById(id: string): Promise<void>;
   listBoardIdsForUser(userId: string): Promise<string[]>;
 }
 

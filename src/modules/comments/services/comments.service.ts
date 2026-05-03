@@ -20,8 +20,8 @@ export class CommentsService {
     return this.repo.listByCard(cardId);
   }
 
-  create(cardId: string, authorId: string, body: string): Promise<Comment> {
-    return this.repo.create({ cardId, authorId, body });
+  create(cardId: string, boardMembershipId: string, body: string): Promise<Comment> {
+    return this.repo.create({ cardId, authorId: boardMembershipId, body });
   }
 
   async getById(id: string): Promise<Comment> {
@@ -30,17 +30,17 @@ export class CommentsService {
     return c;
   }
 
-  async update(id: string, authorId: string, body: string): Promise<Comment> {
+  async update(id: string, boardMembershipId: string, body: string): Promise<Comment> {
     const c = await this.getById(id);
-    if (c.authorId !== authorId) {
+    if (c.authorId !== boardMembershipId) {
       throw new ForbiddenException('Only the author can edit this comment');
     }
     return this.repo.update(id, body);
   }
 
-  async delete(id: string, authorId: string, isBoardOwner: boolean): Promise<void> {
+  async delete(id: string, boardMembershipId: string, isBoardOwner: boolean): Promise<void> {
     const c = await this.getById(id);
-    if (c.authorId !== authorId && !isBoardOwner) {
+    if (c.authorId !== boardMembershipId && !isBoardOwner) {
       throw new ForbiddenException('Cannot delete this comment');
     }
     await this.repo.delete(id);

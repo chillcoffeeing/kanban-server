@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { BoardMember, BoardRole } from '@/generated/prisma/client';
+import type { BoardRole } from '@/generated/prisma/client';
 import {
   IMembersRepository,
   MEMBERS_REPOSITORY,
@@ -18,7 +18,7 @@ export class MembersService {
     @Inject(MEMBERS_REPOSITORY) private readonly repo: IMembersRepository,
   ) {}
 
-  listByBoard(boardId: string): Promise<(BoardMember)[]> {
+  listByBoard(boardId: string): Promise<any[]> {
     return this.repo.listByBoard(boardId);
   }
 
@@ -31,31 +31,30 @@ export class MembersService {
     userId: string,
     role: BoardRole,
     permissions: BoardPermission[] = DEFAULT_MEMBER_PERMISSIONS,
-  ): Promise<BoardMember> {
-    const existing = await this.repo.findMembership(boardId, userId);
+  ): Promise<any> {
+    const existing = await this.repo.findByUserAndBoard(boardId, userId);
     if (existing) throw new ConflictException('User is already a member');
     return this.repo.create({ boardId, userId, role, permissions });
   }
 
-  async update(
-    boardId: string,
-    userId: string,
+  async updateById(
+    id: string,
     data: { role?: BoardRole; permissions?: string[] },
-  ): Promise<BoardMember> {
-    const membership = await this.repo.findMembership(boardId, userId);
+  ): Promise<any> {
+    const membership = await this.repo.findById(id);
     if (!membership) throw new NotFoundException('Member not found');
     if (membership.role === 'owner' && data.role && data.role !== 'owner') {
       throw new BadRequestException('Cannot demote the board owner');
     }
-    return this.repo.update(boardId, userId, data);
+    return this.repo.updateById(id, data);
   }
 
-  async remove(boardId: string, userId: string): Promise<void> {
-    const membership = await this.repo.findMembership(boardId, userId);
+  async removeById(id: string): Promise<void> {
+    const membership = await this.repo.findById(id);
     if (!membership) throw new NotFoundException('Member not found');
     if (membership.role === 'owner') {
       throw new BadRequestException('Cannot remove the board owner');
     }
-    await this.repo.delete(boardId, userId);
+    await this.repo.deleteById(id);
   }
 }

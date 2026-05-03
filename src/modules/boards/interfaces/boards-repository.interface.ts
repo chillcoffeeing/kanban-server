@@ -6,7 +6,6 @@ export interface IBoardsRepository {
   create(data: {
     name: string;
     background?: string;
-    ownerId: string;
     preferences?: Prisma.InputJsonValue;
   }): Promise<Board>;
   update(

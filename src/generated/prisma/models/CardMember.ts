@@ -26,19 +26,19 @@ export type AggregateCardMember = {
 
 export type CardMemberMinAggregateOutputType = {
   cardId: string | null
-  userId: string | null
+  boardMembershipId: string | null
   joinedAt: Date | null
 }
 
 export type CardMemberMaxAggregateOutputType = {
   cardId: string | null
-  userId: string | null
+  boardMembershipId: string | null
   joinedAt: Date | null
 }
 
 export type CardMemberCountAggregateOutputType = {
   cardId: number
-  userId: number
+  boardMembershipId: number
   joinedAt: number
   _all: number
 }
@@ -46,19 +46,19 @@ export type CardMemberCountAggregateOutputType = {
 
 export type CardMemberMinAggregateInputType = {
   cardId?: true
-  userId?: true
+  boardMembershipId?: true
   joinedAt?: true
 }
 
 export type CardMemberMaxAggregateInputType = {
   cardId?: true
-  userId?: true
+  boardMembershipId?: true
   joinedAt?: true
 }
 
 export type CardMemberCountAggregateInputType = {
   cardId?: true
-  userId?: true
+  boardMembershipId?: true
   joinedAt?: true
   _all?: true
 }
@@ -137,7 +137,7 @@ export type CardMemberGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type CardMemberGroupByOutputType = {
   cardId: string
-  userId: string
+  boardMembershipId: string
   joinedAt: Date
   _count: CardMemberCountAggregateOutputType | null
   _min: CardMemberMinAggregateOutputType | null
@@ -164,35 +164,35 @@ export type CardMemberWhereInput = {
   OR?: Prisma.CardMemberWhereInput[]
   NOT?: Prisma.CardMemberWhereInput | Prisma.CardMemberWhereInput[]
   cardId?: Prisma.UuidFilter<"CardMember"> | string
-  userId?: Prisma.UuidFilter<"CardMember"> | string
+  boardMembershipId?: Prisma.UuidFilter<"CardMember"> | string
   joinedAt?: Prisma.DateTimeFilter<"CardMember"> | Date | string
   card?: Prisma.XOR<Prisma.CardScalarRelationFilter, Prisma.CardWhereInput>
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  boardMembership?: Prisma.XOR<Prisma.BoardMembershipScalarRelationFilter, Prisma.BoardMembershipWhereInput>
 }
 
 export type CardMemberOrderByWithRelationInput = {
   cardId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  boardMembershipId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
   card?: Prisma.CardOrderByWithRelationInput
-  user?: Prisma.UserOrderByWithRelationInput
+  boardMembership?: Prisma.BoardMembershipOrderByWithRelationInput
 }
 
 export type CardMemberWhereUniqueInput = Prisma.AtLeast<{
-  cardId_userId?: Prisma.CardMemberCardIdUserIdCompoundUniqueInput
+  cardId_boardMembershipId?: Prisma.CardMemberCardIdBoardMembershipIdCompoundUniqueInput
   AND?: Prisma.CardMemberWhereInput | Prisma.CardMemberWhereInput[]
   OR?: Prisma.CardMemberWhereInput[]
   NOT?: Prisma.CardMemberWhereInput | Prisma.CardMemberWhereInput[]
   cardId?: Prisma.UuidFilter<"CardMember"> | string
-  userId?: Prisma.UuidFilter<"CardMember"> | string
+  boardMembershipId?: Prisma.UuidFilter<"CardMember"> | string
   joinedAt?: Prisma.DateTimeFilter<"CardMember"> | Date | string
   card?: Prisma.XOR<Prisma.CardScalarRelationFilter, Prisma.CardWhereInput>
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "cardId_userId">
+  boardMembership?: Prisma.XOR<Prisma.BoardMembershipScalarRelationFilter, Prisma.BoardMembershipWhereInput>
+}, "cardId_boardMembershipId">
 
 export type CardMemberOrderByWithAggregationInput = {
   cardId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  boardMembershipId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
   _count?: Prisma.CardMemberCountOrderByAggregateInput
   _max?: Prisma.CardMemberMaxOrderByAggregateInput
@@ -204,37 +204,37 @@ export type CardMemberScalarWhereWithAggregatesInput = {
   OR?: Prisma.CardMemberScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CardMemberScalarWhereWithAggregatesInput | Prisma.CardMemberScalarWhereWithAggregatesInput[]
   cardId?: Prisma.UuidWithAggregatesFilter<"CardMember"> | string
-  userId?: Prisma.UuidWithAggregatesFilter<"CardMember"> | string
+  boardMembershipId?: Prisma.UuidWithAggregatesFilter<"CardMember"> | string
   joinedAt?: Prisma.DateTimeWithAggregatesFilter<"CardMember"> | Date | string
 }
 
 export type CardMemberCreateInput = {
   joinedAt?: Date | string
   card: Prisma.CardCreateNestedOneWithoutMembersInput
-  user: Prisma.UserCreateNestedOneWithoutCardMembersInput
+  boardMembership: Prisma.BoardMembershipCreateNestedOneWithoutCardMembersInput
 }
 
 export type CardMemberUncheckedCreateInput = {
   cardId: string
-  userId: string
+  boardMembershipId: string
   joinedAt?: Date | string
 }
 
 export type CardMemberUpdateInput = {
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   card?: Prisma.CardUpdateOneRequiredWithoutMembersNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutCardMembersNestedInput
+  boardMembership?: Prisma.BoardMembershipUpdateOneRequiredWithoutCardMembersNestedInput
 }
 
 export type CardMemberUncheckedUpdateInput = {
   cardId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  boardMembershipId?: Prisma.StringFieldUpdateOperationsInput | string
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CardMemberCreateManyInput = {
   cardId: string
-  userId: string
+  boardMembershipId: string
   joinedAt?: Date | string
 }
 
@@ -244,7 +244,7 @@ export type CardMemberUpdateManyMutationInput = {
 
 export type CardMemberUncheckedUpdateManyInput = {
   cardId?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  boardMembershipId?: Prisma.StringFieldUpdateOperationsInput | string
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -258,68 +258,68 @@ export type CardMemberOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type CardMemberCardIdUserIdCompoundUniqueInput = {
+export type CardMemberCardIdBoardMembershipIdCompoundUniqueInput = {
   cardId: string
-  userId: string
+  boardMembershipId: string
 }
 
 export type CardMemberCountOrderByAggregateInput = {
   cardId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  boardMembershipId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
 }
 
 export type CardMemberMaxOrderByAggregateInput = {
   cardId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  boardMembershipId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
 }
 
 export type CardMemberMinOrderByAggregateInput = {
   cardId?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
+  boardMembershipId?: Prisma.SortOrder
   joinedAt?: Prisma.SortOrder
 }
 
-export type CardMemberCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutUserInput, Prisma.CardMemberUncheckedCreateWithoutUserInput> | Prisma.CardMemberCreateWithoutUserInput[] | Prisma.CardMemberUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutUserInput | Prisma.CardMemberCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.CardMemberCreateManyUserInputEnvelope
+export type CardMemberCreateNestedManyWithoutBoardMembershipInput = {
+  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput> | Prisma.CardMemberCreateWithoutBoardMembershipInput[] | Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput[]
+  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput | Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput[]
+  createMany?: Prisma.CardMemberCreateManyBoardMembershipInputEnvelope
   connect?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
 }
 
-export type CardMemberUncheckedCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutUserInput, Prisma.CardMemberUncheckedCreateWithoutUserInput> | Prisma.CardMemberCreateWithoutUserInput[] | Prisma.CardMemberUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutUserInput | Prisma.CardMemberCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.CardMemberCreateManyUserInputEnvelope
+export type CardMemberUncheckedCreateNestedManyWithoutBoardMembershipInput = {
+  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput> | Prisma.CardMemberCreateWithoutBoardMembershipInput[] | Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput[]
+  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput | Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput[]
+  createMany?: Prisma.CardMemberCreateManyBoardMembershipInputEnvelope
   connect?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
 }
 
-export type CardMemberUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutUserInput, Prisma.CardMemberUncheckedCreateWithoutUserInput> | Prisma.CardMemberCreateWithoutUserInput[] | Prisma.CardMemberUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutUserInput | Prisma.CardMemberCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.CardMemberUpsertWithWhereUniqueWithoutUserInput | Prisma.CardMemberUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.CardMemberCreateManyUserInputEnvelope
+export type CardMemberUpdateManyWithoutBoardMembershipNestedInput = {
+  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput> | Prisma.CardMemberCreateWithoutBoardMembershipInput[] | Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput[]
+  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput | Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput[]
+  upsert?: Prisma.CardMemberUpsertWithWhereUniqueWithoutBoardMembershipInput | Prisma.CardMemberUpsertWithWhereUniqueWithoutBoardMembershipInput[]
+  createMany?: Prisma.CardMemberCreateManyBoardMembershipInputEnvelope
   set?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
   disconnect?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
   delete?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
   connect?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
-  update?: Prisma.CardMemberUpdateWithWhereUniqueWithoutUserInput | Prisma.CardMemberUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.CardMemberUpdateManyWithWhereWithoutUserInput | Prisma.CardMemberUpdateManyWithWhereWithoutUserInput[]
+  update?: Prisma.CardMemberUpdateWithWhereUniqueWithoutBoardMembershipInput | Prisma.CardMemberUpdateWithWhereUniqueWithoutBoardMembershipInput[]
+  updateMany?: Prisma.CardMemberUpdateManyWithWhereWithoutBoardMembershipInput | Prisma.CardMemberUpdateManyWithWhereWithoutBoardMembershipInput[]
   deleteMany?: Prisma.CardMemberScalarWhereInput | Prisma.CardMemberScalarWhereInput[]
 }
 
-export type CardMemberUncheckedUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutUserInput, Prisma.CardMemberUncheckedCreateWithoutUserInput> | Prisma.CardMemberCreateWithoutUserInput[] | Prisma.CardMemberUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutUserInput | Prisma.CardMemberCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.CardMemberUpsertWithWhereUniqueWithoutUserInput | Prisma.CardMemberUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.CardMemberCreateManyUserInputEnvelope
+export type CardMemberUncheckedUpdateManyWithoutBoardMembershipNestedInput = {
+  create?: Prisma.XOR<Prisma.CardMemberCreateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput> | Prisma.CardMemberCreateWithoutBoardMembershipInput[] | Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput[]
+  connectOrCreate?: Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput | Prisma.CardMemberCreateOrConnectWithoutBoardMembershipInput[]
+  upsert?: Prisma.CardMemberUpsertWithWhereUniqueWithoutBoardMembershipInput | Prisma.CardMemberUpsertWithWhereUniqueWithoutBoardMembershipInput[]
+  createMany?: Prisma.CardMemberCreateManyBoardMembershipInputEnvelope
   set?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
   disconnect?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
   delete?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
   connect?: Prisma.CardMemberWhereUniqueInput | Prisma.CardMemberWhereUniqueInput[]
-  update?: Prisma.CardMemberUpdateWithWhereUniqueWithoutUserInput | Prisma.CardMemberUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.CardMemberUpdateManyWithWhereWithoutUserInput | Prisma.CardMemberUpdateManyWithWhereWithoutUserInput[]
+  update?: Prisma.CardMemberUpdateWithWhereUniqueWithoutBoardMembershipInput | Prisma.CardMemberUpdateWithWhereUniqueWithoutBoardMembershipInput[]
+  updateMany?: Prisma.CardMemberUpdateManyWithWhereWithoutBoardMembershipInput | Prisma.CardMemberUpdateManyWithWhereWithoutBoardMembershipInput[]
   deleteMany?: Prisma.CardMemberScalarWhereInput | Prisma.CardMemberScalarWhereInput[]
 }
 
@@ -365,40 +365,40 @@ export type CardMemberUncheckedUpdateManyWithoutCardNestedInput = {
   deleteMany?: Prisma.CardMemberScalarWhereInput | Prisma.CardMemberScalarWhereInput[]
 }
 
-export type CardMemberCreateWithoutUserInput = {
+export type CardMemberCreateWithoutBoardMembershipInput = {
   joinedAt?: Date | string
   card: Prisma.CardCreateNestedOneWithoutMembersInput
 }
 
-export type CardMemberUncheckedCreateWithoutUserInput = {
+export type CardMemberUncheckedCreateWithoutBoardMembershipInput = {
   cardId: string
   joinedAt?: Date | string
 }
 
-export type CardMemberCreateOrConnectWithoutUserInput = {
+export type CardMemberCreateOrConnectWithoutBoardMembershipInput = {
   where: Prisma.CardMemberWhereUniqueInput
-  create: Prisma.XOR<Prisma.CardMemberCreateWithoutUserInput, Prisma.CardMemberUncheckedCreateWithoutUserInput>
+  create: Prisma.XOR<Prisma.CardMemberCreateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput>
 }
 
-export type CardMemberCreateManyUserInputEnvelope = {
-  data: Prisma.CardMemberCreateManyUserInput | Prisma.CardMemberCreateManyUserInput[]
+export type CardMemberCreateManyBoardMembershipInputEnvelope = {
+  data: Prisma.CardMemberCreateManyBoardMembershipInput | Prisma.CardMemberCreateManyBoardMembershipInput[]
   skipDuplicates?: boolean
 }
 
-export type CardMemberUpsertWithWhereUniqueWithoutUserInput = {
+export type CardMemberUpsertWithWhereUniqueWithoutBoardMembershipInput = {
   where: Prisma.CardMemberWhereUniqueInput
-  update: Prisma.XOR<Prisma.CardMemberUpdateWithoutUserInput, Prisma.CardMemberUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.CardMemberCreateWithoutUserInput, Prisma.CardMemberUncheckedCreateWithoutUserInput>
+  update: Prisma.XOR<Prisma.CardMemberUpdateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedUpdateWithoutBoardMembershipInput>
+  create: Prisma.XOR<Prisma.CardMemberCreateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedCreateWithoutBoardMembershipInput>
 }
 
-export type CardMemberUpdateWithWhereUniqueWithoutUserInput = {
+export type CardMemberUpdateWithWhereUniqueWithoutBoardMembershipInput = {
   where: Prisma.CardMemberWhereUniqueInput
-  data: Prisma.XOR<Prisma.CardMemberUpdateWithoutUserInput, Prisma.CardMemberUncheckedUpdateWithoutUserInput>
+  data: Prisma.XOR<Prisma.CardMemberUpdateWithoutBoardMembershipInput, Prisma.CardMemberUncheckedUpdateWithoutBoardMembershipInput>
 }
 
-export type CardMemberUpdateManyWithWhereWithoutUserInput = {
+export type CardMemberUpdateManyWithWhereWithoutBoardMembershipInput = {
   where: Prisma.CardMemberScalarWhereInput
-  data: Prisma.XOR<Prisma.CardMemberUpdateManyMutationInput, Prisma.CardMemberUncheckedUpdateManyWithoutUserInput>
+  data: Prisma.XOR<Prisma.CardMemberUpdateManyMutationInput, Prisma.CardMemberUncheckedUpdateManyWithoutBoardMembershipInput>
 }
 
 export type CardMemberScalarWhereInput = {
@@ -406,17 +406,17 @@ export type CardMemberScalarWhereInput = {
   OR?: Prisma.CardMemberScalarWhereInput[]
   NOT?: Prisma.CardMemberScalarWhereInput | Prisma.CardMemberScalarWhereInput[]
   cardId?: Prisma.UuidFilter<"CardMember"> | string
-  userId?: Prisma.UuidFilter<"CardMember"> | string
+  boardMembershipId?: Prisma.UuidFilter<"CardMember"> | string
   joinedAt?: Prisma.DateTimeFilter<"CardMember"> | Date | string
 }
 
 export type CardMemberCreateWithoutCardInput = {
   joinedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutCardMembersInput
+  boardMembership: Prisma.BoardMembershipCreateNestedOneWithoutCardMembersInput
 }
 
 export type CardMemberUncheckedCreateWithoutCardInput = {
-  userId: string
+  boardMembershipId: string
   joinedAt?: Date | string
 }
 
@@ -446,43 +446,43 @@ export type CardMemberUpdateManyWithWhereWithoutCardInput = {
   data: Prisma.XOR<Prisma.CardMemberUpdateManyMutationInput, Prisma.CardMemberUncheckedUpdateManyWithoutCardInput>
 }
 
-export type CardMemberCreateManyUserInput = {
+export type CardMemberCreateManyBoardMembershipInput = {
   cardId: string
   joinedAt?: Date | string
 }
 
-export type CardMemberUpdateWithoutUserInput = {
+export type CardMemberUpdateWithoutBoardMembershipInput = {
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   card?: Prisma.CardUpdateOneRequiredWithoutMembersNestedInput
 }
 
-export type CardMemberUncheckedUpdateWithoutUserInput = {
+export type CardMemberUncheckedUpdateWithoutBoardMembershipInput = {
   cardId?: Prisma.StringFieldUpdateOperationsInput | string
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type CardMemberUncheckedUpdateManyWithoutUserInput = {
+export type CardMemberUncheckedUpdateManyWithoutBoardMembershipInput = {
   cardId?: Prisma.StringFieldUpdateOperationsInput | string
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CardMemberCreateManyCardInput = {
-  userId: string
+  boardMembershipId: string
   joinedAt?: Date | string
 }
 
 export type CardMemberUpdateWithoutCardInput = {
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutCardMembersNestedInput
+  boardMembership?: Prisma.BoardMembershipUpdateOneRequiredWithoutCardMembersNestedInput
 }
 
 export type CardMemberUncheckedUpdateWithoutCardInput = {
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  boardMembershipId?: Prisma.StringFieldUpdateOperationsInput | string
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CardMemberUncheckedUpdateManyWithoutCardInput = {
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  boardMembershipId?: Prisma.StringFieldUpdateOperationsInput | string
   joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -490,57 +490,57 @@ export type CardMemberUncheckedUpdateManyWithoutCardInput = {
 
 export type CardMemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   cardId?: boolean
-  userId?: boolean
+  boardMembershipId?: boolean
   joinedAt?: boolean
   card?: boolean | Prisma.CardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  boardMembership?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cardMember"]>
 
 export type CardMemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   cardId?: boolean
-  userId?: boolean
+  boardMembershipId?: boolean
   joinedAt?: boolean
   card?: boolean | Prisma.CardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  boardMembership?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cardMember"]>
 
 export type CardMemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   cardId?: boolean
-  userId?: boolean
+  boardMembershipId?: boolean
   joinedAt?: boolean
   card?: boolean | Prisma.CardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  boardMembership?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["cardMember"]>
 
 export type CardMemberSelectScalar = {
   cardId?: boolean
-  userId?: boolean
+  boardMembershipId?: boolean
   joinedAt?: boolean
 }
 
-export type CardMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"cardId" | "userId" | "joinedAt", ExtArgs["result"]["cardMember"]>
+export type CardMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"cardId" | "boardMembershipId" | "joinedAt", ExtArgs["result"]["cardMember"]>
 export type CardMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.CardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  boardMembership?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }
 export type CardMemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.CardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  boardMembership?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }
 export type CardMemberIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   card?: boolean | Prisma.CardDefaultArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  boardMembership?: boolean | Prisma.BoardMembershipDefaultArgs<ExtArgs>
 }
 
 export type $CardMemberPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CardMember"
   objects: {
     card: Prisma.$CardPayload<ExtArgs>
-    user: Prisma.$UserPayload<ExtArgs>
+    boardMembership: Prisma.$BoardMembershipPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     cardId: string
-    userId: string
+    boardMembershipId: string
     joinedAt: Date
   }, ExtArgs["result"]["cardMember"]>
   composites: {}
@@ -937,7 +937,7 @@ readonly fields: CardMemberFieldRefs;
 export interface Prisma__CardMemberClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   card<T extends Prisma.CardDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CardDefaultArgs<ExtArgs>>): Prisma.Prisma__CardClient<runtime.Types.Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  boardMembership<T extends Prisma.BoardMembershipDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BoardMembershipDefaultArgs<ExtArgs>>): Prisma.Prisma__BoardMembershipClient<runtime.Types.Result.GetResult<Prisma.$BoardMembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -968,7 +968,7 @@ export interface Prisma__CardMemberClient<T, Null = never, ExtArgs extends runti
  */
 export interface CardMemberFieldRefs {
   readonly cardId: Prisma.FieldRef<"CardMember", 'String'>
-  readonly userId: Prisma.FieldRef<"CardMember", 'String'>
+  readonly boardMembershipId: Prisma.FieldRef<"CardMember", 'String'>
   readonly joinedAt: Prisma.FieldRef<"CardMember", 'DateTime'>
 }
     

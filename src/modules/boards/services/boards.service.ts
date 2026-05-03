@@ -1,5 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { Board, Prisma } from '@/generated/prisma/client';
+import { PrismaService } from '@infrastructure/prisma/prisma.service';
 import { MembersService } from '@modules/members/services/members.service';
 import {
   BOARDS_REPOSITORY,
@@ -10,6 +11,7 @@ import {
 export class BoardsService {
   constructor(
     @Inject(BOARDS_REPOSITORY) private readonly repo: IBoardsRepository,
+    private readonly prisma: PrismaService,
     private readonly members: MembersService,
   ) {}
 
@@ -25,27 +27,38 @@ export class BoardsService {
   }
 
   async create(
-    ownerId: string,
+    userId: string,
     data: {
       name: string;
       background?: string;
       preferences?: Record<string, unknown>;
     },
   ): Promise<Board> {
-    const board = await this.repo.create({
-      name: data.name,
-      background: data.background,
-      ownerId,
-      preferences: data.preferences as Prisma.InputJsonValue | undefined,
+    return this.prisma.$transaction(async (prisma) => {
+      const board = await prisma.board.create({
+        data: {
+          name: data.name,
+          background: data.background,
+        },
+      });
+
+      await prisma.boardMembership.create({
+        data: {
+          boardId: board.id,
+          userId: userId,
+          role: 'owner',
+          permissions: [
+            'create_stage',
+            'create_card',
+            'modify_card',
+            'delete_card',
+            'invite_member',
+          ],
+        },
+      });
+
+      return board;
     });
-    await this.members.add(board.id, ownerId, 'owner', [
-      'create_stage',
-      'create_card',
-      'modify_card',
-      'delete_card',
-      'invite_member',
-    ]);
-    return board;
   }
 
   update(

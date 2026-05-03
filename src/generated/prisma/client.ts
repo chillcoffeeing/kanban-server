@@ -45,15 +45,30 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model Profile
+ * 
+ */
+export type Profile = Prisma.ProfileModel
+/**
+ * Model UserPreference
+ * 
+ */
+export type UserPreference = Prisma.UserPreferenceModel
+/**
  * Model Board
  * 
  */
 export type Board = Prisma.BoardModel
 /**
- * Model BoardMember
+ * Model BoardPreference
  * 
  */
-export type BoardMember = Prisma.BoardMemberModel
+export type BoardPreference = Prisma.BoardPreferenceModel
+/**
+ * Model BoardMembership
+ * 
+ */
+export type BoardMembership = Prisma.BoardMembershipModel
 /**
  * Model Stage
  * 

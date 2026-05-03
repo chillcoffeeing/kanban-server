@@ -41,6 +41,7 @@ async function bootstrap(): Promise<void> {
     .setVersion("0.1.0")
     .addBearerAuth()
     .build();
+
   SwaggerModule.setup("docs", app, SwaggerModule.createDocument(app, swagger));
 
   await app.listen(Number(process.env.PORT) || config.get("PORT"), "0.0.0.0");

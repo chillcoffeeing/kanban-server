@@ -17,7 +17,12 @@ export class CardResponseDto {
 
   static fromEntity(
     c: Card & {
-      members?: { userId: string; user: { name: string } }[];
+      members?: {
+        boardMembershipId: string;
+        boardMembership: {
+          user: { name: string; avatarUrl: string | null; id: string };
+        };
+      }[];
       checklistItems?: ChecklistItem[];
       labels?: { label: Label }[];
     },

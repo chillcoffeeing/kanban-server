@@ -16,7 +16,16 @@ export class CardsRepository implements ICardsRepository {
     return this.prisma.card.findUnique({
       where: { id },
       include: {
-        members: { select: { userId: true, user: { select: { name: true } } } },
+        members: {
+          select: {
+            boardMembershipId: true,
+            boardMembership: {
+              select: {
+                user: { select: { name: true, avatarUrl: true, id: true } },
+              },
+            },
+          },
+        },
         checklistItems: { orderBy: { position: "asc" } },
         labels: { include: { label: true } },
       },
@@ -39,7 +48,16 @@ export class CardsRepository implements ICardsRepository {
       where: { stage: { boardId } },
       orderBy: { position: "asc" },
       include: {
-        members: { select: { userId: true, user: { select: { name: true } } } },
+        members: {
+          select: {
+            boardMembershipId: true,
+            boardMembership: {
+              select: {
+                user: { select: { name: true, avatarUrl: true, id: true } },
+              },
+            },
+          },
+        },
         checklistItems: { orderBy: { position: "asc" } },
         labels: { include: { label: true } },
       },
@@ -99,7 +117,12 @@ export class CardsRepository implements ICardsRepository {
 
   async updateMembers(data: UpdateMembersData): Promise<any> {
     const existing = await this.prisma.cardMember.findUnique({
-      where: { cardId_userId: { cardId: data.cardId, userId: data.userId } },
+      where: {
+        cardId_boardMembershipId: {
+          cardId: data.cardId,
+          boardMembershipId: data.boardMembershipId,
+        },
+      },
     });
 
     if (data.action === "removeMember") {
@@ -108,7 +131,12 @@ export class CardsRepository implements ICardsRepository {
       }
 
       const result = await this.prisma.cardMember.delete({
-        where: { cardId_userId: { cardId: data.cardId, userId: data.userId } },
+        where: {
+          cardId_boardMembershipId: {
+            cardId: data.cardId,
+            boardMembershipId: data.boardMembershipId,
+          },
+        },
       });
 
       return result;
@@ -117,8 +145,29 @@ export class CardsRepository implements ICardsRepository {
         throw new HttpException("Member already exists", 409);
       }
 
+      const membership = await this.prisma.boardMembership.findUnique({
+        where: { id: data.boardMembershipId },
+        include: { board: true },
+      });
+
+      if (!membership) {
+        throw new HttpException("Board membership not found", 404);
+      }
+
+      const card = await this.prisma.card.findUnique({
+        where: { id: data.cardId },
+        include: { stage: true },
+      });
+
+      if (!card || card.stage.boardId !== membership.boardId) {
+        throw new HttpException("Member does not belong to this board", 400);
+      }
+
       const result = await this.prisma.cardMember.create({
-        data: { cardId: data.cardId, userId: data.userId },
+        data: {
+          cardId: data.cardId,
+          boardMembershipId: data.boardMembershipId,
+        },
       });
 
       return result;

@@ -73,15 +73,79 @@ async function main() {
 
   // 2. Create profiles and preferences for users
   console.log("\n📋 Creating profiles and preferences...");
+  const profileData = [
+    {
+      userId: users[0].id,
+      displayName: "Alice Martin",
+      bio: "Tech Lead con 8+ años de experiencia en arquitectura de software y liderazgo de equipos ágiles.",
+      jobTitle: "Tech Lead",
+      company: "KanbanFlow Inc.",
+      location: "Madrid, España",
+      coverUrl: "https://images.unsplash.com/photo-1553879582-76a8c5b25c18?w=1200",
+      socialWebsite: "https://alicemartin.dev",
+      socialTwitter: "@alice_martin",
+      socialGithub: "alice-martin",
+      socialLinkedin: "alice-martin-tech",
+      socialInstagram: "alice.codes",
+    },
+    {
+      userId: users[1].id,
+      displayName: "Bob Navarro",
+      bio: "Frontend Developer apasionado por React, TypeScript y crear interfaces de usuario excepcionales.",
+      jobTitle: "Frontend Dev",
+      company: "KanbanFlow Inc.",
+      location: "Barcelona, España",
+      coverUrl: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=1200",
+      socialWebsite: "https://bobnavarro.dev",
+      socialGithub: "bob-navarro",
+      socialLinkedin: "bob-navarro-dev",
+      socialTwitter: "@bob_n_codes",
+    },
+    {
+      userId: users[2].id,
+      displayName: "Carol Rodriguez",
+      bio: "UX Designer enfocada en experiencias de usuario accesibles y design systems escalables.",
+      jobTitle: "UX Designer",
+      company: "KanbanFlow Inc.",
+      location: "Valencia, España",
+      coverUrl: "https://images.unsplash.com/photo-1561070791-2529016b179a7?w=1200",
+      socialWebsite: "https://carolrodriguez.design",
+      socialGithub: "carol-rodriguez",
+      socialLinkedin: "carol-rodriguez-ux",
+      socialInstagram: "carol.designs",
+    },
+    {
+      userId: users[3].id,
+      displayName: "Dave Wilson",
+      bio: "Backend Developer especializado en APIs RESTful, microservicios y bases de datos PostgreSQL.",
+      jobTitle: "Backend Dev",
+      company: "KanbanFlow Inc.",
+      location: "Sevilla, España",
+      coverUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200",
+      socialWebsite: "https://davewilson.tech",
+      socialGithub: "dave-wilson",
+      socialLinkedin: "dave-wilson-backend",
+    },
+    {
+      userId: users[4].id,
+      displayName: "Eve Chen",
+      bio: "Mobile Developer creando apps multiplataforma con React Native y Expo. Amo el diseño mobile-first.",
+      jobTitle: "Mobile Dev",
+      company: "KanbanFlow Inc.",
+      location: "Bilbao, España",
+      coverUrl: "https://images.unsplash.com/photo-1512486130939-2c5c9ed22d41?w=1200",
+      socialWebsite: "https://evechen.dev",
+      socialGithub: "eve-chen",
+      socialLinkedin: "eve-chen-mobile",
+      socialTwitter: "@eve_c_mobile",
+    },
+  ];
+
+  for (const p of profileData) {
+    await prisma.profile.create({ data: p });
+  }
+
   for (const u of users) {
-    await prisma.profile.create({
-      data: {
-        userId: u.id,
-        displayName: u.name,
-        bio: `Profile for ${u.name}`,
-        jobTitle: u.role,
-      },
-    });
     await prisma.userPreference.create({
       data: {
         userId: u.id,

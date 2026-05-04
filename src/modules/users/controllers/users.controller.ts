@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Query,
   UnauthorizedException,
@@ -48,6 +49,12 @@ export class UsersController {
     const profile = await this.users.getProfile(current.id);
     if (!profile) return { message: "Profile not found" };
     return ProfileResponseDto.fromEntity(profile);
+  }
+
+  @Get(":id")
+  async getUserById(@Param("id") id: string): Promise<UserResponseDto | { message: string }> {
+    const user = await this.users.getById(id);
+    return UserResponseDto.fromEntity(user);
   }
 
   @Patch("account")

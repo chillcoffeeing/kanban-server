@@ -56,6 +56,7 @@ export class MembersRepository implements IMembersRepository {
           select: {
             id: true,
             name: true,
+            email: true,
             avatarUrl: true,
             createdAt: true,
           },

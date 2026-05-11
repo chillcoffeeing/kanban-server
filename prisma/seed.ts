@@ -37,7 +37,7 @@ async function main() {
   await prisma.board.deleteMany({});
   await prisma.refreshToken.deleteMany({});
   await prisma.activity.deleteMany({});
-  await prisma.profile.deleteMany({});
+  await prisma.userProfile.deleteMany({});
   await prisma.userPreference.deleteMany({});
   await prisma.user.deleteMany({});
   console.log("  ✓ Database cleaned");
@@ -45,14 +45,45 @@ async function main() {
   // 1. Create users
   console.log("📝 Creating users...");
   const seedUsers: SeedUser[] = [
-    { email: "alice@kanban.dev", name: "Alice Martin", role: "Tech Lead", username: "alice_m" },
-    { email: "bob@kanban.dev", name: "Bob Navarro", role: "Frontend Dev", username: "bob_n" },
-    { email: "carol@kanban.dev", name: "Carol Rodriguez", role: "UX Designer", username: "carol_r" },
-    { email: "dave@kanban.dev", name: "Dave Wilson", role: "Backend Dev", username: "dave_w" },
-    { email: "eve@kanban.dev", name: "Eve Chen", role: "Mobile Dev", username: "eve_c" },
+    {
+      email: "alice@kanban.dev",
+      name: "Alice Martin",
+      role: "Tech Lead",
+      username: "alice_m",
+    },
+    {
+      email: "bob@kanban.dev",
+      name: "Bob Navarro",
+      role: "Frontend Dev",
+      username: "bob_n",
+    },
+    {
+      email: "carol@kanban.dev",
+      name: "Carol Rodriguez",
+      role: "UX Designer",
+      username: "carol_r",
+    },
+    {
+      email: "dave@kanban.dev",
+      name: "Dave Wilson",
+      role: "Backend Dev",
+      username: "dave_w",
+    },
+    {
+      email: "eve@kanban.dev",
+      name: "Eve Chen",
+      role: "Mobile Dev",
+      username: "eve_c",
+    },
   ];
 
-  const users: { id: string; email: string; name: string; role: string; username: string }[] = [];
+  const users: {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+    username: string;
+  }[] = [];
   for (const u of seedUsers) {
     const user = await prisma.user.create({
       data: {
@@ -76,83 +107,95 @@ async function main() {
   const profileData = [
     {
       userId: users[0].id,
-      displayName: "Alice Martin",
-      bio: "Tech Lead con 8+ años de experiencia en arquitectura de software y liderazgo de equipos ágiles.",
-      jobTitle: "Tech Lead",
-      company: "KanbanFlow Inc.",
-      location: "Madrid, España",
-      coverUrl: "https://images.unsplash.com/photo-1553879582-76a8c5b25c18?w=1200",
-      socialWebsite: "https://alicemartin.dev",
-      socialTwitter: "@alice_martin",
-      socialGithub: "alice-martin",
-      socialLinkedin: "alice-martin-tech",
-      socialInstagram: "alice.codes",
+      profile: {
+        displayName: "Alice Martin",
+        bio: "Tech Lead con 8+ años de experiencia en arquitectura de software y liderazgo de equipos ágiles.",
+        jobTitle: "Tech Lead",
+        company: "KanbanFlow Inc.",
+        location: "Madrid, España",
+        coverUrl: "https://images.unsplash.com/photo-1553879582-76a8c5b25c18?w=1200",
+        socialWebsite: "https://alicemartin.dev",
+        socialTwitter: "@alice_martin",
+        socialGithub: "alice-martin",
+        socialLinkedin: "alice-martin-tech",
+        socialInstagram: "alice.codes",
+      },
     },
     {
       userId: users[1].id,
-      displayName: "Bob Navarro",
-      bio: "Frontend Developer apasionado por React, TypeScript y crear interfaces de usuario excepcionales.",
-      jobTitle: "Frontend Dev",
-      company: "KanbanFlow Inc.",
-      location: "Barcelona, España",
-      coverUrl: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=1200",
-      socialWebsite: "https://bobnavarro.dev",
-      socialGithub: "bob-navarro",
-      socialLinkedin: "bob-navarro-dev",
-      socialTwitter: "@bob_n_codes",
+      profile: {
+        displayName: "Bob Navarro",
+        bio: "Frontend Developer apasionado por React, TypeScript y crear interfaces de usuario excepcionales.",
+        jobTitle: "Frontend Dev",
+        company: "KanbanFlow Inc.",
+        location: "Barcelona, España",
+        coverUrl: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=1200",
+        socialWebsite: "https://bobnavarro.dev",
+        socialGithub: "bob-navarro",
+        socialLinkedin: "bob-navarro-dev",
+        socialTwitter: "@bob_n_codes",
+      },
     },
     {
       userId: users[2].id,
-      displayName: "Carol Rodriguez",
-      bio: "UX Designer enfocada en experiencias de usuario accesibles y design systems escalables.",
-      jobTitle: "UX Designer",
-      company: "KanbanFlow Inc.",
-      location: "Valencia, España",
-      coverUrl: "https://images.unsplash.com/photo-1561070791-2529016b179a7?w=1200",
-      socialWebsite: "https://carolrodriguez.design",
-      socialGithub: "carol-rodriguez",
-      socialLinkedin: "carol-rodriguez-ux",
-      socialInstagram: "carol.designs",
+      profile: {
+        displayName: "Carol Rodriguez",
+        bio: "UX Designer enfocada en experiencias de usuario accesibles y design systems escalables.",
+        jobTitle: "UX Designer",
+        company: "KanbanFlow Inc.",
+        location: "Valencia, España",
+        coverUrl: "https://images.unsplash.com/photo-1561070791-2529016b179a7?w=1200",
+        socialWebsite: "https://carolrodriguez.design",
+        socialGithub: "carol-rodriguez",
+        socialLinkedin: "carol-rodriguez-ux",
+        socialInstagram: "carol.designs",
+      },
     },
     {
       userId: users[3].id,
-      displayName: "Dave Wilson",
-      bio: "Backend Developer especializado en APIs RESTful, microservicios y bases de datos PostgreSQL.",
-      jobTitle: "Backend Dev",
-      company: "KanbanFlow Inc.",
-      location: "Sevilla, España",
-      coverUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200",
-      socialWebsite: "https://davewilson.tech",
-      socialGithub: "dave-wilson",
-      socialLinkedin: "dave-wilson-backend",
+      profile: {
+        displayName: "Dave Wilson",
+        bio: "Backend Developer especializado en APIs RESTful, microservicios y bases de datos PostgreSQL.",
+        jobTitle: "Backend Dev",
+        company: "KanbanFlow Inc.",
+        location: "Sevilla, España",
+        coverUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200",
+        socialWebsite: "https://davewilson.tech",
+        socialGithub: "dave-wilson",
+        socialLinkedin: "dave-wilson-backend",
+      },
     },
     {
       userId: users[4].id,
-      displayName: "Eve Chen",
-      bio: "Mobile Developer creando apps multiplataforma con React Native y Expo. Amo el diseño mobile-first.",
-      jobTitle: "Mobile Dev",
-      company: "KanbanFlow Inc.",
-      location: "Bilbao, España",
-      coverUrl: "https://images.unsplash.com/photo-1512486130939-2c5c9ed22d41?w=1200",
-      socialWebsite: "https://evechen.dev",
-      socialGithub: "eve-chen",
-      socialLinkedin: "eve-chen-mobile",
-      socialTwitter: "@eve_c_mobile",
+      profile: {
+        displayName: "Eve Chen",
+        bio: "Mobile Developer creando apps multiplataforma con React Native y Expo. Amo el diseño mobile-first.",
+        jobTitle: "Mobile Dev",
+        company: "KanbanFlow Inc.",
+        location: "Bilbao, España",
+        coverUrl: "https://images.unsplash.com/photo-1512486130939-2c5c9ed22d41?w=1200",
+        socialWebsite: "https://evechen.dev",
+        socialGithub: "eve-chen",
+        socialLinkedin: "eve-chen-mobile",
+        socialTwitter: "@eve_c_mobile",
+      },
     },
   ];
 
   for (const p of profileData) {
-    await prisma.profile.create({ data: p });
+    await prisma.userProfile.create({ data: p });
   }
 
   for (const u of users) {
     await prisma.userPreference.create({
       data: {
         userId: u.id,
-        theme: "light",
-        language: "es",
-        dateFormat: "DMY",
-        timeFormat: "24h",
+        settings: {
+          theme: "light",
+          language: "es",
+          dateFormat: "DMY",
+          timeFormat: "24h",
+        },
       },
     });
   }
@@ -174,11 +217,11 @@ async function main() {
   await prisma.boardPreference.create({
     data: {
       boardId: board1.id,
-      settings: JSON.parse(JSON.stringify({
+      settings: {
         showMembers: true,
         showLabels: true,
         cardCover: false,
-      })),
+      },
     },
   });
 
@@ -196,11 +239,11 @@ async function main() {
   await prisma.boardPreference.create({
     data: {
       boardId: board2.id,
-      settings: JSON.parse(JSON.stringify({
+      settings: {
         showMembers: true,
         showLabels: true,
         cardCover: false,
-      })),
+      },
     },
   });
 
@@ -536,12 +579,12 @@ async function main() {
       data: [
         {
           cardId: b1FirstCard.id,
-          authorId: b1MemMap.get(alice.id).id,  // Use BoardMembership ID
+          authorId: b1MemMap.get(alice.id).id, // Use BoardMembership ID
           body: "Let's get this started! WCAG 2.1 AA compliance.",
         },
         {
           cardId: b1FirstCard.id,
-          authorId: b1MemMap.get(carol.id).id,  // Use BoardMembership ID
+          authorId: b1MemMap.get(carol.id).id, // Use BoardMembership ID
           body: "I'll help with the accessibility audit.",
         },
       ],
@@ -555,12 +598,12 @@ async function main() {
       data: [
         {
           cardId: b2FirstCard.id,
-          authorId: b2MemMap.get(bob.id).id,  // Use BoardMembership ID
+          authorId: b2MemMap.get(bob.id).id, // Use BoardMembership ID
           body: "Setting up Expo with TypeScript.",
         },
         {
           cardId: b2FirstCard.id,
-          authorId: b2MemMap.get(eve.id).id,  // Use BoardMembership ID
+          authorId: b2MemMap.get(eve.id).id, // Use BoardMembership ID
           body: "I'll handle navigation setup.",
         },
       ],

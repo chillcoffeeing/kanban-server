@@ -52,7 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Profile: 'Profile',
+  UserProfile: 'UserProfile',
   UserPreference: 'UserPreference',
   Board: 'Board',
   BoardPreference: 'BoardPreference',
@@ -101,50 +101,20 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const ProfileScalarFieldEnum = {
+export const UserProfileScalarFieldEnum = {
   id: 'id',
-  displayName: 'displayName',
-  coverUrl: 'coverUrl',
-  bio: 'bio',
-  jobTitle: 'jobTitle',
-  company: 'company',
-  location: 'location',
-  socialWebsite: 'socialWebsite',
-  socialTwitter: 'socialTwitter',
-  socialGithub: 'socialGithub',
-  socialLinkedin: 'socialLinkedin',
-  socialInstagram: 'socialInstagram',
+  profile: 'profile',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
 } as const
 
-export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+export type UserProfileScalarFieldEnum = (typeof UserProfileScalarFieldEnum)[keyof typeof UserProfileScalarFieldEnum]
 
 
 export const UserPreferenceScalarFieldEnum = {
   id: 'id',
-  theme: 'theme',
-  background: 'background',
-  density: 'density',
-  language: 'language',
-  timezone: 'timezone',
-  timeFormat: 'timeFormat',
-  dateFormat: 'dateFormat',
-  reducedMotion: 'reducedMotion',
-  showCompletedCards: 'showCompletedCards',
-  emailEnabled: 'emailEnabled',
-  pushEnabled: 'pushEnabled',
-  mentions: 'mentions',
-  cardAssigned: 'cardAssigned',
-  cardDueSoon: 'cardDueSoon',
-  boardInvites: 'boardInvites',
-  weeklyDigest: 'weeklyDigest',
-  profileVisibility: 'profileVisibility',
-  showEmail: 'showEmail',
-  showActivity: 'showActivity',
-  allowDM: 'allowDM',
-  analyticsOptOut: 'analyticsOptOut',
+  settings: 'settings',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'

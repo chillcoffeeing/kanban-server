@@ -6,9 +6,11 @@ export class MemberResponseDto {
   @ApiProperty() role!: BoardRole;
   @ApiProperty({ type: [String] }) permissions!: string[];
   @ApiProperty() invitedAt!: Date;
+  @ApiProperty() email?: string;
   @ApiProperty() user?: {
     id: string;
     name: string;
+    email?: string;
     avatarUrl: string | null;
     createdAt: Date;
   };
@@ -20,6 +22,7 @@ export class MemberResponseDto {
         avatarUrl: string | null;
         createdAt: Date;
         id: string;
+        email?: string;
       };
     },
   ): MemberResponseDto & {
@@ -28,6 +31,7 @@ export class MemberResponseDto {
       avatarUrl: string | null;
       createdAt: Date;
       id: string;
+      email?: string;
     };
   } {
     return {
@@ -35,6 +39,7 @@ export class MemberResponseDto {
       role: m.role,
       permissions: m.permissions,
       invitedAt: m.invitedAt,
+      email: m.user?.email,
       user: m.user,
     };
   }

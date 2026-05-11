@@ -35,8 +35,8 @@ model User {
   updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
   lastLoginAt   DateTime? @map("last_login_at") @db.Timestamptz
 
-  profile       Profile?          @relation("UserProfile")
-  preferences   UserPreference?   @relation("UserPreference")
+  profile       UserProfile?      @relation("UserProfile")
+  preference    UserPreference?   @relation("UserPreference")
 
   memberships   BoardMembership[]
   refreshTokens RefreshToken[]
@@ -45,21 +45,11 @@ model User {
   @@map("users")
 }
 
-model Profile {
-  id              String   @id @default(uuid()) @db.Uuid
-  displayName     String   @default("") @map("display_name") @db.VarChar(100)
-  coverUrl        String?  @map("cover_url") @db.VarChar(500)
-  bio             String?  @db.Text
-  jobTitle        String?  @map("job_title") @db.VarChar(100)
-  company         String?  @db.VarChar(100)
-  location        String?  @db.VarChar(100)
-  socialWebsite   String?  @map("social_website") @db.VarChar(500)
-  socialTwitter   String?  @map("social_twitter") @db.VarChar(100)
-  socialGithub    String?  @map("social_github") @db.VarChar(100)
-  socialLinkedin  String?  @map("social_linkedin") @db.VarChar(100)
-  socialInstagram String?  @map("social_instagram") @db.VarChar(100)
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz
+model UserProfile {
+  id        String   @id @default(uuid()) @db.Uuid
+  profile   Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   user   User     @relation("UserProfile", fields: [userId], references: [id], onDelete: Cascade)
   userId String   @unique @map("user_id") @db.Uuid
@@ -69,38 +59,14 @@ model Profile {
 
 model UserPreference {
   id        String   @id @default(uuid()) @db.Uuid
-
-  theme           String   @default("light") @db.VarChar(20)
-  background      String   @default("plain") @db.VarChar(50)
-  density         String   @default("comfortable") @db.VarChar(20)
-  language        String   @default("es") @db.VarChar(10)
-  timezone        String   @default("") @db.VarChar(50)
-  timeFormat      String   @default("24h") @db.VarChar(5)
-  dateFormat      String   @default("DMY") @db.VarChar(5)
-  reducedMotion   Boolean  @default(false) @map("reduced_motion")
-  showCompletedCards Boolean @default(true) @map("show_completed_cards")
-
-  emailEnabled    Boolean  @default(true) @map("email_enabled")
-  pushEnabled     Boolean  @default(false) @map("push_enabled")
-  mentions        Boolean  @default(true)
-  cardAssigned    Boolean  @default(true) @map("card_assigned")
-  cardDueSoon     Boolean  @default(true) @map("card_due_soon")
-  boardInvites    Boolean  @default(true) @map("board_invites")
-  weeklyDigest    Boolean  @default(false) @map("weekly_digest")
-
-  profileVisibility String @default("workspace") @map("profile_visibility") @db.VarChar(20)
-  showEmail        Boolean  @default(false) @map("show_email")
-  showActivity     Boolean  @default(true) @map("show_activity")
-  allowDM          Boolean  @default(true) @map("allow_dm")
-  analyticsOptOut  Boolean  @default(false) @map("analytics_opt_out")
-
+  settings  Json     @default("{}")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   user     User     @relation("UserPreference", fields: [userId], references: [id], onDelete: Cascade)
   userId   String   @unique @map("user_id") @db.Uuid
 
-  @@map("user_preferences")
+  @@map("user_preference")
 }
 
 model Board {
@@ -131,7 +97,7 @@ model BoardPreference {
   boardId  String   @unique @map("board_id") @db.Uuid
 
   @@index([boardId])
-  @@map("board_preferences")
+  @@map("board_preference")
 }
 
 model BoardMembership {

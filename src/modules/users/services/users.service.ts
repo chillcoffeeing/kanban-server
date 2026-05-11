@@ -1,5 +1,9 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import type { Profile, User, UserPreference } from "@/generated/prisma/client";
+import type {
+  UserProfile,
+  User,
+  UserPreference,
+} from "@/generated/prisma/client";
 import {
   IUsersRepository,
   USERS_REPOSITORY,
@@ -7,6 +11,12 @@ import {
   type UpdateProfileData,
   type UpdatePreferencesData,
 } from "../interfaces/users-repository.interface";
+import {
+  DEFAULT_PREFERENCES_SETTINGS_JSON,
+  DEFAULT_PROFILE_JSON,
+  UserPreferencesSettingsJson,
+  UserProfileJson,
+} from "../interfaces/settings-json.types";
 
 @Injectable()
 export class UsersService {
@@ -32,7 +42,7 @@ export class UsersService {
     if (!id) throw new NotFoundException("User ID is required");
     return this.users.getUserPreprences(id);
   }
-  getProfile(id?: string): Promise<Profile | null> {
+  getProfile(id?: string): Promise<UserProfile | null> {
     if (!id) throw new NotFoundException("User ID is required");
     return this.users.getUserProfile(id);
   }
@@ -45,7 +55,10 @@ export class UsersService {
     return this.users.updateProfile(id, data);
   }
 
-  updatePreferences(id: string, data: UpdatePreferencesData): Promise<UserPreference> {
+  updatePreferences(
+    id: string,
+    data: UpdatePreferencesData,
+  ): Promise<UserPreference> {
     return this.users.updatePreferences(id, data);
   }
 
@@ -55,5 +68,13 @@ export class UsersService {
 
   touchLastLogin(id: string): Promise<void> {
     return this.users.touchLastLogin(id);
+  }
+
+  getDefaultProfile(): UserProfileJson {
+    return { ...DEFAULT_PROFILE_JSON };
+  }
+
+  getDefaultPreferences(): UserPreferencesSettingsJson {
+    return { ...DEFAULT_PREFERENCES_SETTINGS_JSON };
   }
 }

@@ -59,6 +59,7 @@ export class RealtimeGateway
         roles: payload.roles,
       };
     } catch {
+      this.logger.warn("Unauthorized connection attempt");
       client.disconnect(true);
     }
   }

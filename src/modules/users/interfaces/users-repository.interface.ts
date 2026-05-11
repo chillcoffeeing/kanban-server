@@ -1,4 +1,12 @@
-import type { Profile, User, UserPreference } from "@/generated/prisma/client";
+import type {
+  UserProfile,
+  User,
+  UserPreference,
+} from "@/generated/prisma/client";
+import type {
+  UserProfileJson,
+  UserPreferencesSettingsJson,
+} from "./settings-json.types";
 
 export interface CreateUserData {
   email: string;
@@ -7,41 +15,11 @@ export interface CreateUserData {
 }
 
 export interface UpdateProfileData {
-  displayName?: string;
-  bio?: string;
-  coverUrl?: string | null;
-  jobTitle?: string;
-  company?: string;
-  location?: string;
-  socialWebsite?: string | null;
-  socialTwitter?: string | null;
-  socialGithub?: string | null;
-  socialLinkedin?: string | null;
-  socialInstagram?: string | null;
+  profile?: UserProfileJson;
 }
 
 export interface UpdatePreferencesData {
-  theme?: string;
-  background?: string;
-  density?: string;
-  language?: string;
-  timezone?: string;
-  timeFormat?: string;
-  dateFormat?: string;
-  reducedMotion?: boolean;
-  showCompletedCards?: boolean;
-  emailEnabled?: boolean;
-  pushEnabled?: boolean;
-  mentions?: boolean;
-  cardAssigned?: boolean;
-  cardDueSoon?: boolean;
-  boardInvites?: boolean;
-  weeklyDigest?: boolean;
-  profileVisibility?: string;
-  showEmail?: boolean;
-  showActivity?: boolean;
-  allowDM?: boolean;
-  analyticsOptOut?: boolean;
+  settings?: UserPreferencesSettingsJson;
 }
 
 export interface IUsersRepository {
@@ -49,10 +27,13 @@ export interface IUsersRepository {
   findByEmail(email: string): Promise<User | null>;
   searchByEmail(query: string, limit?: number): Promise<User[]>;
   getUserPreprences(id: string): Promise<UserPreference | null>;
-  getUserProfile(id: string): Promise<Profile | null>;
+  getUserProfile(id: string): Promise<UserProfile | null>;
   create(data: CreateUserData): Promise<User>;
   updateProfile(id: string, data: UpdateProfileData): Promise<User>;
-  updatePreferences(id: string, data: UpdatePreferencesData): Promise<UserPreference>;
+  updatePreferences(
+    id: string,
+    data: UpdatePreferencesData,
+  ): Promise<UserPreference>;
   updatePasswordHash(id: string, passwordHash: string): Promise<void>;
   touchLastLogin(id: string): Promise<void>;
 }

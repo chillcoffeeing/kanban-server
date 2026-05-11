@@ -26,27 +26,6 @@ export type AggregateUserPreference = {
 
 export type UserPreferenceMinAggregateOutputType = {
   id: string | null
-  theme: string | null
-  background: string | null
-  density: string | null
-  language: string | null
-  timezone: string | null
-  timeFormat: string | null
-  dateFormat: string | null
-  reducedMotion: boolean | null
-  showCompletedCards: boolean | null
-  emailEnabled: boolean | null
-  pushEnabled: boolean | null
-  mentions: boolean | null
-  cardAssigned: boolean | null
-  cardDueSoon: boolean | null
-  boardInvites: boolean | null
-  weeklyDigest: boolean | null
-  profileVisibility: string | null
-  showEmail: boolean | null
-  showActivity: boolean | null
-  allowDM: boolean | null
-  analyticsOptOut: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
@@ -54,27 +33,6 @@ export type UserPreferenceMinAggregateOutputType = {
 
 export type UserPreferenceMaxAggregateOutputType = {
   id: string | null
-  theme: string | null
-  background: string | null
-  density: string | null
-  language: string | null
-  timezone: string | null
-  timeFormat: string | null
-  dateFormat: string | null
-  reducedMotion: boolean | null
-  showCompletedCards: boolean | null
-  emailEnabled: boolean | null
-  pushEnabled: boolean | null
-  mentions: boolean | null
-  cardAssigned: boolean | null
-  cardDueSoon: boolean | null
-  boardInvites: boolean | null
-  weeklyDigest: boolean | null
-  profileVisibility: string | null
-  showEmail: boolean | null
-  showActivity: boolean | null
-  allowDM: boolean | null
-  analyticsOptOut: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
@@ -82,27 +40,7 @@ export type UserPreferenceMaxAggregateOutputType = {
 
 export type UserPreferenceCountAggregateOutputType = {
   id: number
-  theme: number
-  background: number
-  density: number
-  language: number
-  timezone: number
-  timeFormat: number
-  dateFormat: number
-  reducedMotion: number
-  showCompletedCards: number
-  emailEnabled: number
-  pushEnabled: number
-  mentions: number
-  cardAssigned: number
-  cardDueSoon: number
-  boardInvites: number
-  weeklyDigest: number
-  profileVisibility: number
-  showEmail: number
-  showActivity: number
-  allowDM: number
-  analyticsOptOut: number
+  settings: number
   createdAt: number
   updatedAt: number
   userId: number
@@ -112,27 +50,6 @@ export type UserPreferenceCountAggregateOutputType = {
 
 export type UserPreferenceMinAggregateInputType = {
   id?: true
-  theme?: true
-  background?: true
-  density?: true
-  language?: true
-  timezone?: true
-  timeFormat?: true
-  dateFormat?: true
-  reducedMotion?: true
-  showCompletedCards?: true
-  emailEnabled?: true
-  pushEnabled?: true
-  mentions?: true
-  cardAssigned?: true
-  cardDueSoon?: true
-  boardInvites?: true
-  weeklyDigest?: true
-  profileVisibility?: true
-  showEmail?: true
-  showActivity?: true
-  allowDM?: true
-  analyticsOptOut?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -140,27 +57,6 @@ export type UserPreferenceMinAggregateInputType = {
 
 export type UserPreferenceMaxAggregateInputType = {
   id?: true
-  theme?: true
-  background?: true
-  density?: true
-  language?: true
-  timezone?: true
-  timeFormat?: true
-  dateFormat?: true
-  reducedMotion?: true
-  showCompletedCards?: true
-  emailEnabled?: true
-  pushEnabled?: true
-  mentions?: true
-  cardAssigned?: true
-  cardDueSoon?: true
-  boardInvites?: true
-  weeklyDigest?: true
-  profileVisibility?: true
-  showEmail?: true
-  showActivity?: true
-  allowDM?: true
-  analyticsOptOut?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -168,27 +64,7 @@ export type UserPreferenceMaxAggregateInputType = {
 
 export type UserPreferenceCountAggregateInputType = {
   id?: true
-  theme?: true
-  background?: true
-  density?: true
-  language?: true
-  timezone?: true
-  timeFormat?: true
-  dateFormat?: true
-  reducedMotion?: true
-  showCompletedCards?: true
-  emailEnabled?: true
-  pushEnabled?: true
-  mentions?: true
-  cardAssigned?: true
-  cardDueSoon?: true
-  boardInvites?: true
-  weeklyDigest?: true
-  profileVisibility?: true
-  showEmail?: true
-  showActivity?: true
-  allowDM?: true
-  analyticsOptOut?: true
+  settings?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -269,27 +145,7 @@ export type UserPreferenceGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type UserPreferenceGroupByOutputType = {
   id: string
-  theme: string
-  background: string
-  density: string
-  language: string
-  timezone: string
-  timeFormat: string
-  dateFormat: string
-  reducedMotion: boolean
-  showCompletedCards: boolean
-  emailEnabled: boolean
-  pushEnabled: boolean
-  mentions: boolean
-  cardAssigned: boolean
-  cardDueSoon: boolean
-  boardInvites: boolean
-  weeklyDigest: boolean
-  profileVisibility: string
-  showEmail: boolean
-  showActivity: boolean
-  allowDM: boolean
-  analyticsOptOut: boolean
+  settings: runtime.JsonValue
   createdAt: Date
   updatedAt: Date
   userId: string
@@ -318,27 +174,7 @@ export type UserPreferenceWhereInput = {
   OR?: Prisma.UserPreferenceWhereInput[]
   NOT?: Prisma.UserPreferenceWhereInput | Prisma.UserPreferenceWhereInput[]
   id?: Prisma.UuidFilter<"UserPreference"> | string
-  theme?: Prisma.StringFilter<"UserPreference"> | string
-  background?: Prisma.StringFilter<"UserPreference"> | string
-  density?: Prisma.StringFilter<"UserPreference"> | string
-  language?: Prisma.StringFilter<"UserPreference"> | string
-  timezone?: Prisma.StringFilter<"UserPreference"> | string
-  timeFormat?: Prisma.StringFilter<"UserPreference"> | string
-  dateFormat?: Prisma.StringFilter<"UserPreference"> | string
-  reducedMotion?: Prisma.BoolFilter<"UserPreference"> | boolean
-  showCompletedCards?: Prisma.BoolFilter<"UserPreference"> | boolean
-  emailEnabled?: Prisma.BoolFilter<"UserPreference"> | boolean
-  pushEnabled?: Prisma.BoolFilter<"UserPreference"> | boolean
-  mentions?: Prisma.BoolFilter<"UserPreference"> | boolean
-  cardAssigned?: Prisma.BoolFilter<"UserPreference"> | boolean
-  cardDueSoon?: Prisma.BoolFilter<"UserPreference"> | boolean
-  boardInvites?: Prisma.BoolFilter<"UserPreference"> | boolean
-  weeklyDigest?: Prisma.BoolFilter<"UserPreference"> | boolean
-  profileVisibility?: Prisma.StringFilter<"UserPreference"> | string
-  showEmail?: Prisma.BoolFilter<"UserPreference"> | boolean
-  showActivity?: Prisma.BoolFilter<"UserPreference"> | boolean
-  allowDM?: Prisma.BoolFilter<"UserPreference"> | boolean
-  analyticsOptOut?: Prisma.BoolFilter<"UserPreference"> | boolean
+  settings?: Prisma.JsonFilter<"UserPreference">
   createdAt?: Prisma.DateTimeFilter<"UserPreference"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserPreference"> | Date | string
   userId?: Prisma.UuidFilter<"UserPreference"> | string
@@ -347,27 +183,7 @@ export type UserPreferenceWhereInput = {
 
 export type UserPreferenceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  theme?: Prisma.SortOrder
-  background?: Prisma.SortOrder
-  density?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  timeFormat?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  reducedMotion?: Prisma.SortOrder
-  showCompletedCards?: Prisma.SortOrder
-  emailEnabled?: Prisma.SortOrder
-  pushEnabled?: Prisma.SortOrder
-  mentions?: Prisma.SortOrder
-  cardAssigned?: Prisma.SortOrder
-  cardDueSoon?: Prisma.SortOrder
-  boardInvites?: Prisma.SortOrder
-  weeklyDigest?: Prisma.SortOrder
-  profileVisibility?: Prisma.SortOrder
-  showEmail?: Prisma.SortOrder
-  showActivity?: Prisma.SortOrder
-  allowDM?: Prisma.SortOrder
-  analyticsOptOut?: Prisma.SortOrder
+  settings?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -380,27 +196,7 @@ export type UserPreferenceWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserPreferenceWhereInput | Prisma.UserPreferenceWhereInput[]
   OR?: Prisma.UserPreferenceWhereInput[]
   NOT?: Prisma.UserPreferenceWhereInput | Prisma.UserPreferenceWhereInput[]
-  theme?: Prisma.StringFilter<"UserPreference"> | string
-  background?: Prisma.StringFilter<"UserPreference"> | string
-  density?: Prisma.StringFilter<"UserPreference"> | string
-  language?: Prisma.StringFilter<"UserPreference"> | string
-  timezone?: Prisma.StringFilter<"UserPreference"> | string
-  timeFormat?: Prisma.StringFilter<"UserPreference"> | string
-  dateFormat?: Prisma.StringFilter<"UserPreference"> | string
-  reducedMotion?: Prisma.BoolFilter<"UserPreference"> | boolean
-  showCompletedCards?: Prisma.BoolFilter<"UserPreference"> | boolean
-  emailEnabled?: Prisma.BoolFilter<"UserPreference"> | boolean
-  pushEnabled?: Prisma.BoolFilter<"UserPreference"> | boolean
-  mentions?: Prisma.BoolFilter<"UserPreference"> | boolean
-  cardAssigned?: Prisma.BoolFilter<"UserPreference"> | boolean
-  cardDueSoon?: Prisma.BoolFilter<"UserPreference"> | boolean
-  boardInvites?: Prisma.BoolFilter<"UserPreference"> | boolean
-  weeklyDigest?: Prisma.BoolFilter<"UserPreference"> | boolean
-  profileVisibility?: Prisma.StringFilter<"UserPreference"> | string
-  showEmail?: Prisma.BoolFilter<"UserPreference"> | boolean
-  showActivity?: Prisma.BoolFilter<"UserPreference"> | boolean
-  allowDM?: Prisma.BoolFilter<"UserPreference"> | boolean
-  analyticsOptOut?: Prisma.BoolFilter<"UserPreference"> | boolean
+  settings?: Prisma.JsonFilter<"UserPreference">
   createdAt?: Prisma.DateTimeFilter<"UserPreference"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserPreference"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -408,27 +204,7 @@ export type UserPreferenceWhereUniqueInput = Prisma.AtLeast<{
 
 export type UserPreferenceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  theme?: Prisma.SortOrder
-  background?: Prisma.SortOrder
-  density?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  timeFormat?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  reducedMotion?: Prisma.SortOrder
-  showCompletedCards?: Prisma.SortOrder
-  emailEnabled?: Prisma.SortOrder
-  pushEnabled?: Prisma.SortOrder
-  mentions?: Prisma.SortOrder
-  cardAssigned?: Prisma.SortOrder
-  cardDueSoon?: Prisma.SortOrder
-  boardInvites?: Prisma.SortOrder
-  weeklyDigest?: Prisma.SortOrder
-  profileVisibility?: Prisma.SortOrder
-  showEmail?: Prisma.SortOrder
-  showActivity?: Prisma.SortOrder
-  allowDM?: Prisma.SortOrder
-  analyticsOptOut?: Prisma.SortOrder
+  settings?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -442,27 +218,7 @@ export type UserPreferenceScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserPreferenceScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserPreferenceScalarWhereWithAggregatesInput | Prisma.UserPreferenceScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"UserPreference"> | string
-  theme?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  background?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  density?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  language?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  timezone?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  timeFormat?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  dateFormat?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  reducedMotion?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  showCompletedCards?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  emailEnabled?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  pushEnabled?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  mentions?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  cardAssigned?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  cardDueSoon?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  boardInvites?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  weeklyDigest?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  profileVisibility?: Prisma.StringWithAggregatesFilter<"UserPreference"> | string
-  showEmail?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  showActivity?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  allowDM?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
-  analyticsOptOut?: Prisma.BoolWithAggregatesFilter<"UserPreference"> | boolean
+  settings?: Prisma.JsonWithAggregatesFilter<"UserPreference">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"UserPreference"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserPreference"> | Date | string
   userId?: Prisma.UuidWithAggregatesFilter<"UserPreference"> | string
@@ -470,55 +226,15 @@ export type UserPreferenceScalarWhereWithAggregatesInput = {
 
 export type UserPreferenceCreateInput = {
   id?: string
-  theme?: string
-  background?: string
-  density?: string
-  language?: string
-  timezone?: string
-  timeFormat?: string
-  dateFormat?: string
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: string
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutPreferencesInput
+  user: Prisma.UserCreateNestedOneWithoutPreferenceInput
 }
 
 export type UserPreferenceUncheckedCreateInput = {
   id?: string
-  theme?: string
-  background?: string
-  density?: string
-  language?: string
-  timezone?: string
-  timeFormat?: string
-  dateFormat?: string
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: string
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -526,55 +242,15 @@ export type UserPreferenceUncheckedCreateInput = {
 
 export type UserPreferenceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  theme?: Prisma.StringFieldUpdateOperationsInput | string
-  background?: Prisma.StringFieldUpdateOperationsInput | string
-  density?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  timeFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  reducedMotion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showCompletedCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  mentions?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardAssigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardDueSoon?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  boardInvites?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  weeklyDigest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileVisibility?: Prisma.StringFieldUpdateOperationsInput | string
-  showEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showActivity?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowDM?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  analyticsOptOut?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutPreferencesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPreferenceNestedInput
 }
 
 export type UserPreferenceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  theme?: Prisma.StringFieldUpdateOperationsInput | string
-  background?: Prisma.StringFieldUpdateOperationsInput | string
-  density?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  timeFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  reducedMotion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showCompletedCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  mentions?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardAssigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardDueSoon?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  boardInvites?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  weeklyDigest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileVisibility?: Prisma.StringFieldUpdateOperationsInput | string
-  showEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showActivity?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowDM?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  analyticsOptOut?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -582,27 +258,7 @@ export type UserPreferenceUncheckedUpdateInput = {
 
 export type UserPreferenceCreateManyInput = {
   id?: string
-  theme?: string
-  background?: string
-  density?: string
-  language?: string
-  timezone?: string
-  timeFormat?: string
-  dateFormat?: string
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: string
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -610,54 +266,14 @@ export type UserPreferenceCreateManyInput = {
 
 export type UserPreferenceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  theme?: Prisma.StringFieldUpdateOperationsInput | string
-  background?: Prisma.StringFieldUpdateOperationsInput | string
-  density?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  timeFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  reducedMotion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showCompletedCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  mentions?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardAssigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardDueSoon?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  boardInvites?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  weeklyDigest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileVisibility?: Prisma.StringFieldUpdateOperationsInput | string
-  showEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showActivity?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowDM?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  analyticsOptOut?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserPreferenceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  theme?: Prisma.StringFieldUpdateOperationsInput | string
-  background?: Prisma.StringFieldUpdateOperationsInput | string
-  density?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  timeFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  reducedMotion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showCompletedCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  mentions?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardAssigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardDueSoon?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  boardInvites?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  weeklyDigest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileVisibility?: Prisma.StringFieldUpdateOperationsInput | string
-  showEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showActivity?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowDM?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  analyticsOptOut?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -670,27 +286,7 @@ export type UserPreferenceNullableScalarRelationFilter = {
 
 export type UserPreferenceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  theme?: Prisma.SortOrder
-  background?: Prisma.SortOrder
-  density?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  timeFormat?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  reducedMotion?: Prisma.SortOrder
-  showCompletedCards?: Prisma.SortOrder
-  emailEnabled?: Prisma.SortOrder
-  pushEnabled?: Prisma.SortOrder
-  mentions?: Prisma.SortOrder
-  cardAssigned?: Prisma.SortOrder
-  cardDueSoon?: Prisma.SortOrder
-  boardInvites?: Prisma.SortOrder
-  weeklyDigest?: Prisma.SortOrder
-  profileVisibility?: Prisma.SortOrder
-  showEmail?: Prisma.SortOrder
-  showActivity?: Prisma.SortOrder
-  allowDM?: Prisma.SortOrder
-  analyticsOptOut?: Prisma.SortOrder
+  settings?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -698,27 +294,6 @@ export type UserPreferenceCountOrderByAggregateInput = {
 
 export type UserPreferenceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  theme?: Prisma.SortOrder
-  background?: Prisma.SortOrder
-  density?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  timeFormat?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  reducedMotion?: Prisma.SortOrder
-  showCompletedCards?: Prisma.SortOrder
-  emailEnabled?: Prisma.SortOrder
-  pushEnabled?: Prisma.SortOrder
-  mentions?: Prisma.SortOrder
-  cardAssigned?: Prisma.SortOrder
-  cardDueSoon?: Prisma.SortOrder
-  boardInvites?: Prisma.SortOrder
-  weeklyDigest?: Prisma.SortOrder
-  profileVisibility?: Prisma.SortOrder
-  showEmail?: Prisma.SortOrder
-  showActivity?: Prisma.SortOrder
-  allowDM?: Prisma.SortOrder
-  analyticsOptOut?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -726,27 +301,6 @@ export type UserPreferenceMaxOrderByAggregateInput = {
 
 export type UserPreferenceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  theme?: Prisma.SortOrder
-  background?: Prisma.SortOrder
-  density?: Prisma.SortOrder
-  language?: Prisma.SortOrder
-  timezone?: Prisma.SortOrder
-  timeFormat?: Prisma.SortOrder
-  dateFormat?: Prisma.SortOrder
-  reducedMotion?: Prisma.SortOrder
-  showCompletedCards?: Prisma.SortOrder
-  emailEnabled?: Prisma.SortOrder
-  pushEnabled?: Prisma.SortOrder
-  mentions?: Prisma.SortOrder
-  cardAssigned?: Prisma.SortOrder
-  cardDueSoon?: Prisma.SortOrder
-  boardInvites?: Prisma.SortOrder
-  weeklyDigest?: Prisma.SortOrder
-  profileVisibility?: Prisma.SortOrder
-  showEmail?: Prisma.SortOrder
-  showActivity?: Prisma.SortOrder
-  allowDM?: Prisma.SortOrder
-  analyticsOptOut?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -784,60 +338,16 @@ export type UserPreferenceUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserPreferenceUpdateToOneWithWhereWithoutUserInput, Prisma.UserPreferenceUpdateWithoutUserInput>, Prisma.UserPreferenceUncheckedUpdateWithoutUserInput>
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type UserPreferenceCreateWithoutUserInput = {
   id?: string
-  theme?: string
-  background?: string
-  density?: string
-  language?: string
-  timezone?: string
-  timeFormat?: string
-  dateFormat?: string
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: string
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type UserPreferenceUncheckedCreateWithoutUserInput = {
   id?: string
-  theme?: string
-  background?: string
-  density?: string
-  language?: string
-  timezone?: string
-  timeFormat?: string
-  dateFormat?: string
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: string
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -860,54 +370,14 @@ export type UserPreferenceUpdateToOneWithWhereWithoutUserInput = {
 
 export type UserPreferenceUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  theme?: Prisma.StringFieldUpdateOperationsInput | string
-  background?: Prisma.StringFieldUpdateOperationsInput | string
-  density?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  timeFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  reducedMotion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showCompletedCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  mentions?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardAssigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardDueSoon?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  boardInvites?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  weeklyDigest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileVisibility?: Prisma.StringFieldUpdateOperationsInput | string
-  showEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showActivity?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowDM?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  analyticsOptOut?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserPreferenceUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  theme?: Prisma.StringFieldUpdateOperationsInput | string
-  background?: Prisma.StringFieldUpdateOperationsInput | string
-  density?: Prisma.StringFieldUpdateOperationsInput | string
-  language?: Prisma.StringFieldUpdateOperationsInput | string
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  timeFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  dateFormat?: Prisma.StringFieldUpdateOperationsInput | string
-  reducedMotion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showCompletedCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  emailEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pushEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  mentions?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardAssigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  cardDueSoon?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  boardInvites?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  weeklyDigest?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  profileVisibility?: Prisma.StringFieldUpdateOperationsInput | string
-  showEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  showActivity?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowDM?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  analyticsOptOut?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -916,27 +386,7 @@ export type UserPreferenceUncheckedUpdateWithoutUserInput = {
 
 export type UserPreferenceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  theme?: boolean
-  background?: boolean
-  density?: boolean
-  language?: boolean
-  timezone?: boolean
-  timeFormat?: boolean
-  dateFormat?: boolean
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: boolean
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -945,27 +395,7 @@ export type UserPreferenceSelect<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type UserPreferenceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  theme?: boolean
-  background?: boolean
-  density?: boolean
-  language?: boolean
-  timezone?: boolean
-  timeFormat?: boolean
-  dateFormat?: boolean
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: boolean
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -974,27 +404,7 @@ export type UserPreferenceSelectCreateManyAndReturn<ExtArgs extends runtime.Type
 
 export type UserPreferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  theme?: boolean
-  background?: boolean
-  density?: boolean
-  language?: boolean
-  timezone?: boolean
-  timeFormat?: boolean
-  dateFormat?: boolean
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: boolean
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -1003,33 +413,13 @@ export type UserPreferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
 
 export type UserPreferenceSelectScalar = {
   id?: boolean
-  theme?: boolean
-  background?: boolean
-  density?: boolean
-  language?: boolean
-  timezone?: boolean
-  timeFormat?: boolean
-  dateFormat?: boolean
-  reducedMotion?: boolean
-  showCompletedCards?: boolean
-  emailEnabled?: boolean
-  pushEnabled?: boolean
-  mentions?: boolean
-  cardAssigned?: boolean
-  cardDueSoon?: boolean
-  boardInvites?: boolean
-  weeklyDigest?: boolean
-  profileVisibility?: boolean
-  showEmail?: boolean
-  showActivity?: boolean
-  allowDM?: boolean
-  analyticsOptOut?: boolean
+  settings?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
 }
 
-export type UserPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "theme" | "background" | "density" | "language" | "timezone" | "timeFormat" | "dateFormat" | "reducedMotion" | "showCompletedCards" | "emailEnabled" | "pushEnabled" | "mentions" | "cardAssigned" | "cardDueSoon" | "boardInvites" | "weeklyDigest" | "profileVisibility" | "showEmail" | "showActivity" | "allowDM" | "analyticsOptOut" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["userPreference"]>
+export type UserPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "settings" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["userPreference"]>
 export type UserPreferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -1047,27 +437,7 @@ export type $UserPreferencePayload<ExtArgs extends runtime.Types.Extensions.Inte
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    theme: string
-    background: string
-    density: string
-    language: string
-    timezone: string
-    timeFormat: string
-    dateFormat: string
-    reducedMotion: boolean
-    showCompletedCards: boolean
-    emailEnabled: boolean
-    pushEnabled: boolean
-    mentions: boolean
-    cardAssigned: boolean
-    cardDueSoon: boolean
-    boardInvites: boolean
-    weeklyDigest: boolean
-    profileVisibility: string
-    showEmail: boolean
-    showActivity: boolean
-    allowDM: boolean
-    analyticsOptOut: boolean
+    settings: runtime.JsonValue
     createdAt: Date
     updatedAt: Date
     userId: string
@@ -1496,27 +866,7 @@ export interface Prisma__UserPreferenceClient<T, Null = never, ExtArgs extends r
  */
 export interface UserPreferenceFieldRefs {
   readonly id: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly theme: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly background: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly density: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly language: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly timezone: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly timeFormat: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly dateFormat: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly reducedMotion: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly showCompletedCards: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly emailEnabled: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly pushEnabled: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly mentions: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly cardAssigned: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly cardDueSoon: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly boardInvites: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly weeklyDigest: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly profileVisibility: Prisma.FieldRef<"UserPreference", 'String'>
-  readonly showEmail: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly showActivity: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly allowDM: Prisma.FieldRef<"UserPreference", 'Boolean'>
-  readonly analyticsOptOut: Prisma.FieldRef<"UserPreference", 'Boolean'>
+  readonly settings: Prisma.FieldRef<"UserPreference", 'Json'>
   readonly createdAt: Prisma.FieldRef<"UserPreference", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UserPreference", 'DateTime'>
   readonly userId: Prisma.FieldRef<"UserPreference", 'String'>

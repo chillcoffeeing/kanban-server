@@ -75,6 +75,18 @@ async function main() {
       role: "Mobile Dev",
       username: "eve_c",
     },
+    {
+      email: "frank@kanban.dev",
+      name: "Frank Thompson",
+      role: "DevOps Engineer",
+      username: "frank_t",
+    },
+    {
+      email: "grace@kanban.dev",
+      name: "Grace Kim",
+      role: "Data Engineer",
+      username: "grace_k",
+    },
   ];
 
   const users: {
@@ -180,6 +192,36 @@ async function main() {
         socialTwitter: "@eve_c_mobile",
       },
     },
+    {
+      userId: users[5].id,
+      profile: {
+        displayName: "Frank Thompson",
+        bio: "DevOps Engineer experto en CI/CD, infraestructura cloud y Docker. Automatizando todo lo que se deja.",
+        jobTitle: "DevOps Engineer",
+        company: "KanbanFlow Inc.",
+        location: "Austin, USA",
+        coverUrl: "https://images.unsplash.com/photo-1531746790095-e5cb157c0c86?w=1200",
+        socialWebsite: "https://frankthompson.dev",
+        socialGithub: "frank-thompson",
+        socialLinkedin: "frank-thompson-devops",
+        socialTwitter: "@frank_devops",
+      },
+    },
+    {
+      userId: users[6].id,
+      profile: {
+        displayName: "Grace Kim",
+        bio: "Data Engineer construyendo pipelines de datos escalables con Python, Spark y PostgreSQL.",
+        jobTitle: "Data Engineer",
+        company: "KanbanFlow Inc.",
+        location: "Seúl, Corea del Sur",
+        coverUrl: "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=1200",
+        socialWebsite: "https://gracekim.dev",
+        socialGithub: "grace-kim",
+        socialLinkedin: "grace-kim-data",
+        socialInstagram: "grace.codes",
+      },
+    },
   ];
 
   for (const p of profileData) {
@@ -201,7 +243,7 @@ async function main() {
   }
   console.log("  ✓ Profiles and preferences created");
 
-  const [alice, bob, carol, dave, eve] = users;
+  const [alice, bob, carol, dave, eve, frank, grace] = users;
 
   // 3. Board 1: "Frontend Redesign Q2"
   console.log('\n📋 Creating Board 1: "Frontend Redesign Q2"...');
@@ -243,6 +285,28 @@ async function main() {
         showMembers: true,
         showLabels: true,
         cardCover: false,
+      },
+    },
+  });
+
+  // 4.5 Board 3: "Data Pipeline"
+  console.log('\n📋 Creating Board 3: "Data Pipeline"...');
+  const board3 = await prisma.board.create({
+    data: {
+      name: "Data Pipeline",
+      background: "bg-gradient-to-br from-orange-500 to-red-700",
+    },
+  });
+  console.log(`  ✓ ${board3.name}`);
+
+  // Create board preference for board 3
+  await prisma.boardPreference.create({
+    data: {
+      boardId: board3.id,
+      settings: {
+        showMembers: true,
+        showLabels: true,
+        cardCover: true,
       },
     },
   });
@@ -294,6 +358,30 @@ async function main() {
     );
   }
 
+  // 5.5 Board 3 memberships
+  console.log("\n👥 Board 3 memberships...");
+  const b3Memberships = [
+    { userId: eve.id, role: "owner" as const, perms: ALL_PERMISSIONS },
+    { userId: dave.id, role: "admin" as const, perms: [] },
+    { userId: grace.id, role: "member" as const, perms: [] },
+    { userId: frank.id, role: "member" as const, perms: [] },
+  ];
+  const b3MemMap = new Map();
+  for (const m of b3Memberships) {
+    const created = await prisma.boardMembership.create({
+      data: {
+        boardId: board3.id,
+        userId: m.userId,
+        role: m.role,
+        permissions: m.perms,
+      },
+    });
+    b3MemMap.set(m.userId, created);
+    console.log(
+      `  ✓ ${users.find((u) => u.id === m.userId)?.name} (${m.role})`,
+    );
+  }
+
   // 6. Pending invitations
   console.log("\n📨 Pending invitations...");
   const tokenExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -317,6 +405,16 @@ async function main() {
     },
   });
   console.log(`  ✓ Board 2: ${dave.name} (pending)`);
+  await prisma.invitation.create({
+    data: {
+      boardId: board3.id,
+      email: alice.email,
+      role: "admin",
+      token: crypto.randomBytes(32).toString("hex"),
+      expiresAt: tokenExpires,
+    },
+  });
+  console.log(`  ✓ Board 3: ${alice.name} (pending)`);
 
   // 7. Labels Board 1
   console.log("\n🏷️  Labels for Board 1...");
@@ -351,9 +449,26 @@ async function main() {
     console.log(`  ✓ ${l.name}`);
   }
 
+  // 8.5 Labels Board 3
+  console.log("\n🏷️  Labels for Board 3...");
+  const b3Labels = [
+    { name: "Backend", color: "#f59e0b" },
+    { name: "Data", color: "#3b82f6" },
+    { name: "Infra", color: "#ef4444" },
+    { name: "Monitoring", color: "#10b981" },
+  ];
+  const b3LabelMap = new Map();
+  for (const l of b3Labels) {
+    const label = await prisma.label.create({
+      data: { boardId: board3.id, name: l.name, color: l.color },
+    });
+    b3LabelMap.set(l.name, label);
+    console.log(`  ✓ ${l.name}`);
+  }
+
   // 9. Stages Board 1
   console.log("\n📊 Stages for Board 1...");
-  const stageNames = ["Backlog", "In Progress", "Review", "Done"];
+  const stageNames = ["Planning", "Backlog", "In Progress", "Review", "Done", "Deployed"];
   const b1Stages = [];
   for (let i = 0; i < stageNames.length; i++) {
     const stage = await prisma.stage.create({
@@ -371,6 +486,17 @@ async function main() {
       data: { boardId: board2.id, name: stageNames[i], position: i + 1 },
     });
     b2Stages.push(stage);
+    console.log(`  ✓ ${stage.name}`);
+  }
+
+  // 10.5 Stages Board 3
+  console.log("\n📊 Stages for Board 3...");
+  const b3Stages = [];
+  for (let i = 0; i < stageNames.length; i++) {
+    const stage = await prisma.stage.create({
+      data: { boardId: board3.id, name: stageNames[i], position: i + 1 },
+    });
+    b3Stages.push(stage);
     console.log(`  ✓ ${stage.name}`);
   }
 
@@ -446,6 +572,30 @@ async function main() {
     [
       {
         stageIndex: 0,
+        title: "Planificar sprint de rediseno",
+        description:
+          "Definir alcance, milestones y recursos necesarios para el frontend redesign Q2.",
+        assigneeEmails: [alice.email, bob.email],
+        labelNames: ["UI/UX"],
+        checklist: [
+          { text: "Definir milestones", done: true },
+          { text: "Asignar recursos", done: true },
+        ],
+      },
+      {
+        stageIndex: 0,
+        title: "Research de tendencias UI 2026",
+        description:
+          "Recopilar referencias de diseno moderno para inspirar el rediseno.",
+        assigneeEmails: [carol.email],
+        labelNames: ["UI/UX"],
+        checklist: [
+          { text: "Crear moodboard", done: true },
+          { text: "Seleccionar paleta", done: false },
+        ],
+      },
+      {
+        stageIndex: 0,
         title: "Auditoria de accesibilidad (WCAG 2.1 AA)",
         description:
           "Revisar contraste, navegacion por teclado y roles ARIA en todas las vistas principales.",
@@ -458,7 +608,7 @@ async function main() {
         ],
       },
       {
-        stageIndex: 0,
+        stageIndex: 1,
         title: "Migrar iconografia a Phosphor Icons",
         description:
           "Reemplazar lucide-react por @phosphor-icons/react y normalizar tamaños.",
@@ -517,6 +667,30 @@ async function main() {
           { text: "Tests de integracion", done: false },
         ],
       },
+      {
+        stageIndex: 3,
+        title: "Test de regresion visual",
+        description:
+          "Configurar Chromatic o Percy para capturar diffs visuales en cada PR.",
+        assigneeEmails: [carol.email, bob.email],
+        labelNames: ["UI/UX"],
+        checklist: [
+          { text: "Investigar herramientas", done: true },
+          { text: "Integrar en CI", done: false },
+        ],
+      },
+      {
+        stageIndex: 4,
+        title: "Auditoria de rendimiento Lighthouse",
+        description:
+          "Alcanzar puntuacion minima de 90 en rendimiento, accesibilidad y SEO.",
+        assigneeEmails: [bob.email, alice.email],
+        labelNames: ["Accessibility"],
+        checklist: [
+          { text: "Ejecutar Lighthouse en cada vista", done: false },
+          { text: "Optimizar LCP y CLS", done: false },
+        ],
+      },
     ],
     1,
   );
@@ -565,8 +739,102 @@ async function main() {
           { text: "Modal component", done: false },
         ],
       },
+      {
+        stageIndex: 3,
+        title: "Revision de diseno UX mobile",
+        description:
+          "Evaluar flujos de navegacion y prototipar pantallas faltantes en Figma.",
+        assigneeEmails: [carol.email, eve.email],
+        labelNames: ["Design"],
+        checklist: [
+          { text: "Flujo de onboarding", done: true },
+          { text: "Pantalla de configuracion", done: false },
+        ],
+      },
+      {
+        stageIndex: 3,
+        title: "Pruebas de API en dispositivos moviles",
+        description:
+          "Verificar que los endpoints responden correctamente con ancho de banda limitado.",
+        assigneeEmails: [eve.email],
+        labelNames: ["API", "Mobile"],
+        checklist: [
+          { text: "Probar con throttling 3G", done: false },
+          { text: "Cachear respuestas offline", done: false },
+        ],
+      },
+      {
+        stageIndex: 4,
+        title: "Publicar beta en TestFlight",
+        description:
+          "Preparar build para distribucion interna y recolectar feedback temprano.",
+        assigneeEmails: [eve.email, bob.email],
+        labelNames: ["Mobile"],
+        checklist: [
+          { text: "Configurar certificados", done: true },
+          { text: "Subir build a TestFlight", done: false },
+        ],
+      },
     ],
     2,
+  );
+
+  // Board 3 cards
+  await createCards(
+    b3Stages,
+    b3LabelMap,
+    b3MemMap,
+    [
+      {
+        stageIndex: 0,
+        title: "Disenar arquitectura del pipeline",
+        description:
+          "Definir el flujo de datos desde fuentes (APIs, DBs) hasta el data warehouse.",
+        assigneeEmails: [grace.email, dave.email],
+        labelNames: ["Data"],
+        checklist: [
+          { text: "Diagrama de arquitectura", done: true },
+          { text: "Seleccionar herramientas", done: true },
+        ],
+      },
+      {
+        stageIndex: 1,
+        title: "Implementar extraccion de datos",
+        description:
+          "Conectar fuentes externas (Stripe, Mixpanel) y normalizar datos crudos.",
+        assigneeEmails: [grace.email],
+        labelNames: ["Data", "Backend"],
+        checklist: [
+          { text: "Integracion con Stripe API", done: true },
+          { text: "Integracion con Mixpanel", done: false },
+        ],
+      },
+      {
+        stageIndex: 3,
+        title: "Configurar alertas de monitoreo",
+        description:
+          "Implementar sistema de alertas para fallos en el pipeline basado en Datadog.",
+        assigneeEmails: [frank.email, grace.email],
+        labelNames: ["Monitoring", "Infra"],
+        checklist: [
+          { text: "Dashboards en Datadog", done: false },
+          { text: "Alertas por Slack", done: false },
+        ],
+      },
+      {
+        stageIndex: 5,
+        title: "Desplegar worker de procesamiento",
+        description:
+          "Containerizar y desplegar workers en Kubernetes para proceso nocturno de datos.",
+        assigneeEmails: [frank.email, eve.email],
+        labelNames: ["Infra"],
+        checklist: [
+          { text: "Dockerizar worker", done: true },
+          { text: "Configurar CronJob en K8s", done: false },
+        ],
+      },
+    ],
+    3,
   );
 
   // Comments
@@ -609,6 +877,25 @@ async function main() {
       ],
     });
   }
+  const b3FirstCard = await prisma.card.findFirst({
+    where: { stageId: b3Stages[0].id },
+  });
+  if (b3FirstCard) {
+    await prisma.comment.createMany({
+      data: [
+        {
+          cardId: b3FirstCard.id,
+          authorId: b3MemMap.get(eve.id).id,
+          body: "Great initiative! Let's align with the existing data strategy.",
+        },
+        {
+          cardId: b3FirstCard.id,
+          authorId: b3MemMap.get(grace.id).id,
+          body: "I'll draft the architecture proposal this week.",
+        },
+      ],
+    });
+  }
   console.log("  ✓ Comments added");
 
   console.log("\n✅ Seed completed!");
@@ -626,6 +913,9 @@ async function main() {
   console.log(`  Invitations: ${await prisma.invitation.count()}`);
   console.log(`\n🔑 Login: alice@kanban.dev / Passw0rd! (Board 1 owner)`);
   console.log(`🔑 Login: bob@kanban.dev / Passw0rd! (Board 2 owner)`);
+  console.log(`🔑 Login: eve@kanban.dev / Passw0rd! (Board 3 owner)`);
+  console.log(`🔑 Login: frank@kanban.dev / Passw0rd! (DevOps)`);
+  console.log(`🔑 Login: grace@kanban.dev / Passw0rd! (Data Engineer)`);
 }
 
 main()

@@ -25,15 +25,25 @@ export class AuthService {
     email: string;
     name: string;
     password: string;
+    username?: string;
+    displayName?: string;
+    jobTitle?: string;
+    company?: string;
   }): Promise<{ user: User; tokens: AuthTokens }> {
     const existing = await this.users.findByEmail(input.email);
     if (existing) throw new ConflictException('Email already registered');
 
     const passwordHash = await this.hasher.hash(input.password);
+    const { displayName, jobTitle, company, ...rest } = input;
+    const profileFields: Record<string, string | undefined> = {};
+    if (displayName) profileFields.displayName = displayName;
+    if (jobTitle) profileFields.jobTitle = jobTitle;
+    if (company) profileFields.company = company;
+
     const user = await this.users.create({
-      email: input.email,
-      name: input.name,
+      ...rest,
       passwordHash,
+      profile: Object.keys(profileFields).length > 0 ? profileFields : undefined,
     });
     
     const pending = await this.invitations.getPendingForUser(input.email);

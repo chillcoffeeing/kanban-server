@@ -12,6 +12,8 @@ export interface CreateUserData {
   email: string;
   name: string;
   passwordHash: string;
+  username?: string;
+  profile?: Partial<UserProfileJson>;
 }
 
 export interface UpdateProfileData {

@@ -29,16 +29,16 @@ export class AuthController {
   @Public()
   @Post('register')
   async register(@Body() dto: RegisterDto): Promise<AuthResponseDto> {
-    const { user, tokens } = await this.auth.register(dto);
-    return { ...tokens, user: UserResponseDto.fromEntity(user) };
+    const { tokens } = await this.auth.register(dto);
+    return tokens;
   }
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() dto: LoginDto): Promise<AuthResponseDto> {
-    const { user, tokens } = await this.auth.login(dto);
-    return { ...tokens, user: UserResponseDto.fromEntity(user) };
+    const { tokens } = await this.auth.login(dto);
+    return tokens;
   }
 
   @Public()

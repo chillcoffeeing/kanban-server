@@ -33,7 +33,6 @@ export class UsersRepository implements IUsersRepository {
   findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { email: email.toLowerCase() },
-      include: { profile: true, preference: true },
     });
   }
 
@@ -54,12 +53,17 @@ export class UsersRepository implements IUsersRepository {
   }
 
   create(data: CreateUserData): Promise<User> {
+    const { profile: profileExtra, ...userData } = data;
+    const profileJson = {
+      ...DEFAULT_PROFILE_JSON,
+      ...(profileExtra ?? {}),
+    };
     return this.prisma.user.create({
       data: {
-        ...data,
-        email: data.email.toLowerCase(),
+        ...userData,
+        email: userData.email.toLowerCase(),
         profile: {
-          create: { profile: DEFAULT_PROFILE_JSON as Prisma.InputJsonValue },
+          create: { profile: profileJson as Prisma.InputJsonValue },
         },
         preference: {
           create: {
@@ -67,10 +71,6 @@ export class UsersRepository implements IUsersRepository {
               DEFAULT_PREFERENCES_SETTINGS_JSON as Prisma.InputJsonValue,
           },
         },
-      },
-      include: {
-        profile: true,
-        preference: true,
       },
     });
   }

@@ -1,3 +1,4 @@
+import { addDays, isPast } from 'date-fns';
 import {
   BadRequestException,
   ConflictException,
@@ -15,8 +16,6 @@ import {
   IInvitationsRepository,
   INVITATIONS_REPOSITORY,
 } from '../interfaces/invitations-repository.interface';
-
-const INVITATION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 @Injectable()
 export class InvitationsService {
@@ -52,7 +51,7 @@ export class InvitationsService {
       email,
       role,
       token,
-      expiresAt: new Date(Date.now() + INVITATION_TTL_MS),
+      expiresAt: addDays(new Date(), 7),
     });
 
     const acceptUrl = `${process.env.APP_URL || 'http://localhost:5173'}/invite/${token}`;
@@ -67,7 +66,7 @@ export class InvitationsService {
     if (invitation.acceptedAt) {
       throw new BadRequestException('Invitation already accepted');
     }
-    if (invitation.expiresAt < new Date()) {
+    if (isPast(invitation.expiresAt)) {
       throw new BadRequestException('Invitation expired');
     }
 
@@ -87,7 +86,7 @@ export class InvitationsService {
     if (invitation.acceptedAt) {
       throw new BadRequestException('Invitation already accepted');
     }
-    if (invitation.expiresAt < new Date()) {
+    if (isPast(invitation.expiresAt)) {
       throw new BadRequestException('Invitation expired');
     }
 

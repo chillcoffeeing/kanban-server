@@ -1,3 +1,4 @@
+import { addDays } from "date-fns";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as bcrypt from "bcrypt";
 import { PrismaClient } from "../src/generated/prisma/client";
@@ -384,7 +385,7 @@ async function main() {
 
   // 6. Pending invitations
   console.log("\n📨 Pending invitations...");
-  const tokenExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  const tokenExpires = addDays(new Date(), 7);
   await prisma.invitation.create({
     data: {
       boardId: board1.id,

@@ -1,3 +1,4 @@
+import { addMilliseconds, isPast } from "date-fns";
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { createHash, randomUUID } from "node:crypto";
@@ -46,7 +47,7 @@ export class TokenService {
       id: jti,
       userId: payload.sub,
       tokenHash: this.hashToken(refreshToken),
-      expiresAt: new Date(Date.now() + parseDurationToMs(refreshTtl)),
+      expiresAt: addMilliseconds(new Date(), parseDurationToMs(refreshTtl)),
     });
 
     return {
@@ -70,7 +71,7 @@ export class TokenService {
     }
 
     const stored = await this.refreshRepo.findById(payload.jti);
-    if (!stored || stored.revokedAt || stored.expiresAt < new Date()) {
+    if (!stored || stored.revokedAt || isPast(stored.expiresAt)) {
       throw new UnauthorizedException("Refresh token revoked or expired");
     }
     if (stored.tokenHash !== this.hashToken(token)) {

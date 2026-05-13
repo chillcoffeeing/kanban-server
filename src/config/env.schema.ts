@@ -8,7 +8,9 @@ export const envSchema = z.object({
     .default("development"),
   PORT: z.coerce.number().int().positive().default(Number(process.env.PORT)),
   API_PREFIX: z.string().default("api/v1"),
-  CORS_ORIGINS: z.string().default(""),
+  CORS_ORIGINS: z
+    .string()
+    .default("http://localhost:4173,http://localhost:5173"),
 
   DATABASE_URL: nonEmpty,
 

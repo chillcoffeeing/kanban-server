@@ -108,7 +108,6 @@ async function main() {
           process.env.BCRYPT_ROUNDS ? parseInt(process.env.BCRYPT_ROUNDS) : 10,
         ),
         avatarUrl: `https://i.pravatar.cc/150?u=${u.email}`,
-        roles: [u.role],
       },
     });
     users.push({ ...u, id: user.id });
@@ -316,7 +315,7 @@ async function main() {
   console.log("\n👥 Board 1 memberships...");
   const b1Memberships = [
     { userId: alice.id, role: "owner" as const, perms: ALL_PERMISSIONS },
-    { userId: bob.id, role: "admin" as const, perms: [] },
+    { userId: bob.id, role: "member" as const, perms: [] },
     { userId: carol.id, role: "member" as const, perms: [] },
     { userId: dave.id, role: "member" as const, perms: [] },
   ];
@@ -340,7 +339,7 @@ async function main() {
   console.log("\n👥 Board 2 memberships...");
   const b2Memberships = [
     { userId: bob.id, role: "owner" as const, perms: ALL_PERMISSIONS },
-    { userId: carol.id, role: "admin" as const, perms: [] },
+    { userId: carol.id, role: "member" as const, perms: [] },
     { userId: eve.id, role: "member" as const, perms: [] },
   ];
   const b2MemMap = new Map();
@@ -363,7 +362,7 @@ async function main() {
   console.log("\n👥 Board 3 memberships...");
   const b3Memberships = [
     { userId: eve.id, role: "owner" as const, perms: ALL_PERMISSIONS },
-    { userId: dave.id, role: "admin" as const, perms: [] },
+    { userId: dave.id, role: "member" as const, perms: [] },
     { userId: grace.id, role: "member" as const, perms: [] },
     { userId: frank.id, role: "member" as const, perms: [] },
   ];
@@ -410,7 +409,7 @@ async function main() {
     data: {
       boardId: board3.id,
       email: alice.email,
-      role: "admin",
+      role: "member",
       token: crypto.randomBytes(32).toString("hex"),
       expiresAt: tokenExpires,
     },

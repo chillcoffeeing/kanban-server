@@ -11,8 +11,16 @@
 
 export const BoardRole = {
   owner: 'owner',
-  admin: 'admin',
   member: 'member'
 } as const
 
 export type BoardRole = (typeof BoardRole)[keyof typeof BoardRole]
+
+
+export const PermissionRequestStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected'
+} as const
+
+export type PermissionRequestStatus = (typeof PermissionRequestStatus)[keyof typeof PermissionRequestStatus]

@@ -66,6 +66,7 @@ export const ModelName = {
   Comment: 'Comment',
   Activity: 'Activity',
   RefreshToken: 'RefreshToken',
+  PermissionRequest: 'PermissionRequest',
   Invitation: 'Invitation'
 } as const
 
@@ -92,7 +93,6 @@ export const UserScalarFieldEnum = {
   username: 'username',
   passwordHash: 'passwordHash',
   avatarUrl: 'avatarUrl',
-  roles: 'roles',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
@@ -256,6 +256,19 @@ export const RefreshTokenScalarFieldEnum = {
 } as const
 
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+export const PermissionRequestScalarFieldEnum = {
+  id: 'id',
+  boardId: 'boardId',
+  requesterId: 'requesterId',
+  permission: 'permission',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PermissionRequestScalarFieldEnum = (typeof PermissionRequestScalarFieldEnum)[keyof typeof PermissionRequestScalarFieldEnum]
 
 
 export const InvitationScalarFieldEnum = {

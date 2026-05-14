@@ -35,7 +35,7 @@ export class MembersController {
   ) {}
 
   @Get('members')
-  @RequireBoardRole('owner', 'admin', 'member')
+  @RequireBoardRole('owner', 'member')
   async list(
     @Param('boardId', ParseUUIDPipe) boardId: string,
   ): Promise<MemberResponseDto[]> {

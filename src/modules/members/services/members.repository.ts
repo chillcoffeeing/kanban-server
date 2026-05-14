@@ -90,11 +90,10 @@ export class MembersRepository implements IMembersRepository {
     });
   }
 
-  async listBoardIdsForUser(userId: string): Promise<string[]> {
-    const rows = await this.prisma.boardMembership.findMany({
+  async listBoardIdsForUser(userId: string): Promise<{ boardId: string; role: string }[]> {
+    return this.prisma.boardMembership.findMany({
       where: { userId },
-      select: { boardId: true },
+      select: { boardId: true, role: true },
     });
-    return rows.map((r: any) => r.boardId);
   }
 }

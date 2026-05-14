@@ -7,6 +7,7 @@ import { Logger } from "nestjs-pino";
 import helmet from "helmet";
 import { AppModule } from "./app.module";
 import { TypedConfigService } from "./config/typed-config.service";
+import { HttpExceptionFilter } from "./infrastructure/filters/http-exception.filter";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -35,6 +36,7 @@ async function bootstrap(): Promise<void> {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const swagger = new DocumentBuilder()
     .setTitle("Kanban Platform API")

@@ -17,7 +17,6 @@ datasource db {
 
 enum BoardRole {
   owner
-  admin
   member
 }
 
@@ -30,7 +29,6 @@ model User {
   username      String?  @unique @map("username") @db.VarChar(50)
   passwordHash  String   @map("password_hash") @db.VarChar(255)
   avatarUrl     String?  @map("avatar_url") @db.VarChar(500)
-  roles         String[] @default([])
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
   lastLoginAt   DateTime? @map("last_login_at") @db.Timestamptz
@@ -80,9 +78,10 @@ model Board {
   stages      Stage[]
   labels      Label[]
   activities  Activity[]
-  invitations Invitation[]
+  invitations        Invitation[]
+  permissionRequests PermissionRequest[]
 
-  preference  BoardPreference? @relation("BoardPreference")
+  preference         BoardPreference? @relation("BoardPreference")
 
   @@map("boards")
 }
@@ -110,9 +109,10 @@ model BoardMembership {
 
   board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  cardMembers CardMember[]
-  comments    Comment[]
-  activities  Activity[]
+  cardMembers        CardMember[]
+  comments           Comment[]
+  activities         Activity[]
+  permissionRequests PermissionRequest[]
 
   @@unique([boardId, userId])
   @@index([boardId])
@@ -250,6 +250,29 @@ model RefreshToken {
 
   @@index([userId])
   @@map("refresh_tokens")
+}
+
+enum PermissionRequestStatus {
+  pending
+  approved
+  rejected
+}
+
+model PermissionRequest {
+  id          String                   @id @default(uuid()) @db.Uuid
+  boardId     String                   @map("board_id") @db.Uuid
+  requesterId String                   @map("requester_id") @db.Uuid
+  permission  String?                  @db.VarChar(100)
+  status      PermissionRequestStatus  @default(pending)
+  createdAt   DateTime                 @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime                 @updatedAt @map("updated_at") @db.Timestamptz
+
+  board     Board           @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  requester BoardMembership @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+
+  @@index([boardId, status])
+  @@index([requesterId])
+  @@map("permission_requests")
 }
 
 model Invitation {

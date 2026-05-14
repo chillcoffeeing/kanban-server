@@ -36,7 +36,7 @@ export class LabelsController {
 
   @Get('boards/:id/labels')
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole('owner', 'admin', 'member')
+  @RequireBoardRole('owner', 'member')
   async listByBoard(
     @Param('id', ParseUUIDPipe) boardId: string,
   ): Promise<LabelResponseDto[]> {

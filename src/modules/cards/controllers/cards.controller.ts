@@ -154,7 +154,7 @@ export class CardsController {
 
   @Get("boards/:id/cards/search")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole("owner", "admin", "member")
+  @RequireBoardRole("owner", "member")
   async search(
     @Param("id", ParseUUIDPipe) boardId: string,
     @Query("q") q: string,

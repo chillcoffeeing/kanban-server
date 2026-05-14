@@ -399,6 +399,7 @@ export const ModelName = {
   Comment: 'Comment',
   Activity: 'Activity',
   RefreshToken: 'RefreshToken',
+  PermissionRequest: 'PermissionRequest',
   Invitation: 'Invitation'
 } as const
 
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userProfile" | "userPreference" | "board" | "boardPreference" | "boardMembership" | "stage" | "label" | "card" | "checklistItem" | "cardLabel" | "cardMember" | "comment" | "activity" | "refreshToken" | "invitation"
+    modelProps: "user" | "userProfile" | "userPreference" | "board" | "boardPreference" | "boardMembership" | "stage" | "label" | "card" | "checklistItem" | "cardLabel" | "cardMember" | "comment" | "activity" | "refreshToken" | "permissionRequest" | "invitation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1529,6 +1530,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PermissionRequest: {
+      payload: Prisma.$PermissionRequestPayload<ExtArgs>
+      fields: Prisma.PermissionRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PermissionRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PermissionRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.PermissionRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PermissionRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>
+        }
+        findMany: {
+          args: Prisma.PermissionRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>[]
+        }
+        create: {
+          args: Prisma.PermissionRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>
+        }
+        createMany: {
+          args: Prisma.PermissionRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PermissionRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.PermissionRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>
+        }
+        update: {
+          args: Prisma.PermissionRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.PermissionRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PermissionRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PermissionRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.PermissionRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PermissionRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.PermissionRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePermissionRequest>
+        }
+        groupBy: {
+          args: Prisma.PermissionRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PermissionRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PermissionRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PermissionRequestCountAggregateOutputType> | number
+        }
+      }
+    }
     Invitation: {
       payload: Prisma.$InvitationPayload<ExtArgs>
       fields: Prisma.InvitationFieldRefs
@@ -1649,7 +1724,6 @@ export const UserScalarFieldEnum = {
   username: 'username',
   passwordHash: 'passwordHash',
   avatarUrl: 'avatarUrl',
-  roles: 'roles',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
@@ -1815,6 +1889,19 @@ export const RefreshTokenScalarFieldEnum = {
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
+export const PermissionRequestScalarFieldEnum = {
+  id: 'id',
+  boardId: 'boardId',
+  requesterId: 'requesterId',
+  permission: 'permission',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PermissionRequestScalarFieldEnum = (typeof PermissionRequestScalarFieldEnum)[keyof typeof PermissionRequestScalarFieldEnum]
+
+
 export const InvitationScalarFieldEnum = {
   id: 'id',
   boardId: 'boardId',
@@ -1949,6 +2036,20 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'PermissionRequestStatus'
+ */
+export type EnumPermissionRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PermissionRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PermissionRequestStatus[]'
+ */
+export type ListEnumPermissionRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PermissionRequestStatus[]'>
     
 
 
@@ -2090,6 +2191,7 @@ export type GlobalOmitConfig = {
   comment?: Prisma.CommentOmit
   activity?: Prisma.ActivityOmit
   refreshToken?: Prisma.RefreshTokenOmit
+  permissionRequest?: Prisma.PermissionRequestOmit
   invitation?: Prisma.InvitationOmit
 }
 

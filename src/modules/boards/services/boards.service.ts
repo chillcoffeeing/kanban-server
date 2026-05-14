@@ -21,9 +21,15 @@ export class BoardsService {
     return board;
   }
 
-  async listForUser(userId: string): Promise<Board[]> {
-    const ids = await this.members.listBoardIdsForUser(userId);
-    return this.repo.listByIds(ids);
+  async listForUser(userId: string): Promise<any[]> {
+    const memberships = await this.members.listBoardIdsForUser(userId);
+    const ids = memberships.map((m) => m.boardId);
+    const boards = await this.repo.listByIds(ids);
+    const roleByBoard = new Map(memberships.map((m) => [m.boardId, m.role]));
+    return boards.map((board) => ({
+      ...board,
+      userRole: roleByBoard.get(board.id),
+    }));
   }
 
   async create(

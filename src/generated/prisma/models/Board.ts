@@ -187,6 +187,7 @@ export type BoardWhereInput = {
   labels?: Prisma.LabelListRelationFilter
   activities?: Prisma.ActivityListRelationFilter
   invitations?: Prisma.InvitationListRelationFilter
+  permissionRequests?: Prisma.PermissionRequestListRelationFilter
   preference?: Prisma.XOR<Prisma.BoardPreferenceNullableScalarRelationFilter, Prisma.BoardPreferenceWhereInput> | null
 }
 
@@ -201,6 +202,7 @@ export type BoardOrderByWithRelationInput = {
   labels?: Prisma.LabelOrderByRelationAggregateInput
   activities?: Prisma.ActivityOrderByRelationAggregateInput
   invitations?: Prisma.InvitationOrderByRelationAggregateInput
+  permissionRequests?: Prisma.PermissionRequestOrderByRelationAggregateInput
   preference?: Prisma.BoardPreferenceOrderByWithRelationInput
 }
 
@@ -218,6 +220,7 @@ export type BoardWhereUniqueInput = Prisma.AtLeast<{
   labels?: Prisma.LabelListRelationFilter
   activities?: Prisma.ActivityListRelationFilter
   invitations?: Prisma.InvitationListRelationFilter
+  permissionRequests?: Prisma.PermissionRequestListRelationFilter
   preference?: Prisma.XOR<Prisma.BoardPreferenceNullableScalarRelationFilter, Prisma.BoardPreferenceWhereInput> | null
 }, "id">
 
@@ -254,6 +257,7 @@ export type BoardCreateInput = {
   labels?: Prisma.LabelCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceCreateNestedOneWithoutBoardInput
 }
 
@@ -268,6 +272,7 @@ export type BoardUncheckedCreateInput = {
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceUncheckedCreateNestedOneWithoutBoardInput
 }
 
@@ -282,6 +287,7 @@ export type BoardUpdateInput = {
   labels?: Prisma.LabelUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUpdateOneWithoutBoardNestedInput
 }
 
@@ -296,6 +302,7 @@ export type BoardUncheckedUpdateInput = {
   labels?: Prisma.LabelUncheckedUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUncheckedUpdateOneWithoutBoardNestedInput
 }
 
@@ -422,6 +429,20 @@ export type BoardUpdateOneRequiredWithoutActivitiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BoardUpdateToOneWithWhereWithoutActivitiesInput, Prisma.BoardUpdateWithoutActivitiesInput>, Prisma.BoardUncheckedUpdateWithoutActivitiesInput>
 }
 
+export type BoardCreateNestedOneWithoutPermissionRequestsInput = {
+  create?: Prisma.XOR<Prisma.BoardCreateWithoutPermissionRequestsInput, Prisma.BoardUncheckedCreateWithoutPermissionRequestsInput>
+  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutPermissionRequestsInput
+  connect?: Prisma.BoardWhereUniqueInput
+}
+
+export type BoardUpdateOneRequiredWithoutPermissionRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.BoardCreateWithoutPermissionRequestsInput, Prisma.BoardUncheckedCreateWithoutPermissionRequestsInput>
+  connectOrCreate?: Prisma.BoardCreateOrConnectWithoutPermissionRequestsInput
+  upsert?: Prisma.BoardUpsertWithoutPermissionRequestsInput
+  connect?: Prisma.BoardWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BoardUpdateToOneWithWhereWithoutPermissionRequestsInput, Prisma.BoardUpdateWithoutPermissionRequestsInput>, Prisma.BoardUncheckedUpdateWithoutPermissionRequestsInput>
+}
+
 export type BoardCreateNestedOneWithoutInvitationsInput = {
   create?: Prisma.XOR<Prisma.BoardCreateWithoutInvitationsInput, Prisma.BoardUncheckedCreateWithoutInvitationsInput>
   connectOrCreate?: Prisma.BoardCreateOrConnectWithoutInvitationsInput
@@ -447,6 +468,7 @@ export type BoardCreateWithoutPreferenceInput = {
   labels?: Prisma.LabelCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutBoardInput
 }
 
 export type BoardUncheckedCreateWithoutPreferenceInput = {
@@ -460,6 +482,7 @@ export type BoardUncheckedCreateWithoutPreferenceInput = {
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutBoardInput
 }
 
 export type BoardCreateOrConnectWithoutPreferenceInput = {
@@ -489,6 +512,7 @@ export type BoardUpdateWithoutPreferenceInput = {
   labels?: Prisma.LabelUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardUncheckedUpdateWithoutPreferenceInput = {
@@ -502,6 +526,7 @@ export type BoardUncheckedUpdateWithoutPreferenceInput = {
   labels?: Prisma.LabelUncheckedUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutBoardNestedInput
 }
 
 export type BoardCreateWithoutMembersInput = {
@@ -514,6 +539,7 @@ export type BoardCreateWithoutMembersInput = {
   labels?: Prisma.LabelCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceCreateNestedOneWithoutBoardInput
 }
 
@@ -527,6 +553,7 @@ export type BoardUncheckedCreateWithoutMembersInput = {
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceUncheckedCreateNestedOneWithoutBoardInput
 }
 
@@ -556,6 +583,7 @@ export type BoardUpdateWithoutMembersInput = {
   labels?: Prisma.LabelUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUpdateOneWithoutBoardNestedInput
 }
 
@@ -569,6 +597,7 @@ export type BoardUncheckedUpdateWithoutMembersInput = {
   labels?: Prisma.LabelUncheckedUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUncheckedUpdateOneWithoutBoardNestedInput
 }
 
@@ -582,6 +611,7 @@ export type BoardCreateWithoutStagesInput = {
   labels?: Prisma.LabelCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceCreateNestedOneWithoutBoardInput
 }
 
@@ -595,6 +625,7 @@ export type BoardUncheckedCreateWithoutStagesInput = {
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceUncheckedCreateNestedOneWithoutBoardInput
 }
 
@@ -624,6 +655,7 @@ export type BoardUpdateWithoutStagesInput = {
   labels?: Prisma.LabelUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUpdateOneWithoutBoardNestedInput
 }
 
@@ -637,6 +669,7 @@ export type BoardUncheckedUpdateWithoutStagesInput = {
   labels?: Prisma.LabelUncheckedUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUncheckedUpdateOneWithoutBoardNestedInput
 }
 
@@ -650,6 +683,7 @@ export type BoardCreateWithoutLabelsInput = {
   stages?: Prisma.StageCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceCreateNestedOneWithoutBoardInput
 }
 
@@ -663,6 +697,7 @@ export type BoardUncheckedCreateWithoutLabelsInput = {
   stages?: Prisma.StageUncheckedCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceUncheckedCreateNestedOneWithoutBoardInput
 }
 
@@ -692,6 +727,7 @@ export type BoardUpdateWithoutLabelsInput = {
   stages?: Prisma.StageUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUpdateOneWithoutBoardNestedInput
 }
 
@@ -705,6 +741,7 @@ export type BoardUncheckedUpdateWithoutLabelsInput = {
   stages?: Prisma.StageUncheckedUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUncheckedUpdateOneWithoutBoardNestedInput
 }
 
@@ -718,6 +755,7 @@ export type BoardCreateWithoutActivitiesInput = {
   stages?: Prisma.StageCreateNestedManyWithoutBoardInput
   labels?: Prisma.LabelCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceCreateNestedOneWithoutBoardInput
 }
 
@@ -731,6 +769,7 @@ export type BoardUncheckedCreateWithoutActivitiesInput = {
   stages?: Prisma.StageUncheckedCreateNestedManyWithoutBoardInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutBoardInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceUncheckedCreateNestedOneWithoutBoardInput
 }
 
@@ -760,6 +799,7 @@ export type BoardUpdateWithoutActivitiesInput = {
   stages?: Prisma.StageUpdateManyWithoutBoardNestedInput
   labels?: Prisma.LabelUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUpdateOneWithoutBoardNestedInput
 }
 
@@ -772,6 +812,79 @@ export type BoardUncheckedUpdateWithoutActivitiesInput = {
   members?: Prisma.BoardMembershipUncheckedUpdateManyWithoutBoardNestedInput
   stages?: Prisma.StageUncheckedUpdateManyWithoutBoardNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutBoardNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutBoardNestedInput
+  preference?: Prisma.BoardPreferenceUncheckedUpdateOneWithoutBoardNestedInput
+}
+
+export type BoardCreateWithoutPermissionRequestsInput = {
+  id?: string
+  name: string
+  background?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.BoardMembershipCreateNestedManyWithoutBoardInput
+  stages?: Prisma.StageCreateNestedManyWithoutBoardInput
+  labels?: Prisma.LabelCreateNestedManyWithoutBoardInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutBoardInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutBoardInput
+  preference?: Prisma.BoardPreferenceCreateNestedOneWithoutBoardInput
+}
+
+export type BoardUncheckedCreateWithoutPermissionRequestsInput = {
+  id?: string
+  name: string
+  background?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.BoardMembershipUncheckedCreateNestedManyWithoutBoardInput
+  stages?: Prisma.StageUncheckedCreateNestedManyWithoutBoardInput
+  labels?: Prisma.LabelUncheckedCreateNestedManyWithoutBoardInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoardInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutBoardInput
+  preference?: Prisma.BoardPreferenceUncheckedCreateNestedOneWithoutBoardInput
+}
+
+export type BoardCreateOrConnectWithoutPermissionRequestsInput = {
+  where: Prisma.BoardWhereUniqueInput
+  create: Prisma.XOR<Prisma.BoardCreateWithoutPermissionRequestsInput, Prisma.BoardUncheckedCreateWithoutPermissionRequestsInput>
+}
+
+export type BoardUpsertWithoutPermissionRequestsInput = {
+  update: Prisma.XOR<Prisma.BoardUpdateWithoutPermissionRequestsInput, Prisma.BoardUncheckedUpdateWithoutPermissionRequestsInput>
+  create: Prisma.XOR<Prisma.BoardCreateWithoutPermissionRequestsInput, Prisma.BoardUncheckedCreateWithoutPermissionRequestsInput>
+  where?: Prisma.BoardWhereInput
+}
+
+export type BoardUpdateToOneWithWhereWithoutPermissionRequestsInput = {
+  where?: Prisma.BoardWhereInput
+  data: Prisma.XOR<Prisma.BoardUpdateWithoutPermissionRequestsInput, Prisma.BoardUncheckedUpdateWithoutPermissionRequestsInput>
+}
+
+export type BoardUpdateWithoutPermissionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  background?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.BoardMembershipUpdateManyWithoutBoardNestedInput
+  stages?: Prisma.StageUpdateManyWithoutBoardNestedInput
+  labels?: Prisma.LabelUpdateManyWithoutBoardNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutBoardNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutBoardNestedInput
+  preference?: Prisma.BoardPreferenceUpdateOneWithoutBoardNestedInput
+}
+
+export type BoardUncheckedUpdateWithoutPermissionRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  background?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.BoardMembershipUncheckedUpdateManyWithoutBoardNestedInput
+  stages?: Prisma.StageUncheckedUpdateManyWithoutBoardNestedInput
+  labels?: Prisma.LabelUncheckedUpdateManyWithoutBoardNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoardNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUncheckedUpdateOneWithoutBoardNestedInput
 }
@@ -786,6 +899,7 @@ export type BoardCreateWithoutInvitationsInput = {
   stages?: Prisma.StageCreateNestedManyWithoutBoardInput
   labels?: Prisma.LabelCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceCreateNestedOneWithoutBoardInput
 }
 
@@ -799,6 +913,7 @@ export type BoardUncheckedCreateWithoutInvitationsInput = {
   stages?: Prisma.StageUncheckedCreateNestedManyWithoutBoardInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutBoardInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutBoardInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutBoardInput
   preference?: Prisma.BoardPreferenceUncheckedCreateNestedOneWithoutBoardInput
 }
 
@@ -828,6 +943,7 @@ export type BoardUpdateWithoutInvitationsInput = {
   stages?: Prisma.StageUpdateManyWithoutBoardNestedInput
   labels?: Prisma.LabelUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUpdateOneWithoutBoardNestedInput
 }
 
@@ -841,6 +957,7 @@ export type BoardUncheckedUpdateWithoutInvitationsInput = {
   stages?: Prisma.StageUncheckedUpdateManyWithoutBoardNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutBoardNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutBoardNestedInput
+  permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutBoardNestedInput
   preference?: Prisma.BoardPreferenceUncheckedUpdateOneWithoutBoardNestedInput
 }
 
@@ -855,6 +972,7 @@ export type BoardCountOutputType = {
   labels: number
   activities: number
   invitations: number
+  permissionRequests: number
 }
 
 export type BoardCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -863,6 +981,7 @@ export type BoardCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   labels?: boolean | BoardCountOutputTypeCountLabelsArgs
   activities?: boolean | BoardCountOutputTypeCountActivitiesArgs
   invitations?: boolean | BoardCountOutputTypeCountInvitationsArgs
+  permissionRequests?: boolean | BoardCountOutputTypeCountPermissionRequestsArgs
 }
 
 /**
@@ -910,6 +1029,13 @@ export type BoardCountOutputTypeCountInvitationsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.InvitationWhereInput
 }
 
+/**
+ * BoardCountOutputType without action
+ */
+export type BoardCountOutputTypeCountPermissionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PermissionRequestWhereInput
+}
+
 
 export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -922,6 +1048,7 @@ export type BoardSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   labels?: boolean | Prisma.Board$labelsArgs<ExtArgs>
   activities?: boolean | Prisma.Board$activitiesArgs<ExtArgs>
   invitations?: boolean | Prisma.Board$invitationsArgs<ExtArgs>
+  permissionRequests?: boolean | Prisma.Board$permissionRequestsArgs<ExtArgs>
   preference?: boolean | Prisma.Board$preferenceArgs<ExtArgs>
   _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["board"]>
@@ -957,6 +1084,7 @@ export type BoardInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   labels?: boolean | Prisma.Board$labelsArgs<ExtArgs>
   activities?: boolean | Prisma.Board$activitiesArgs<ExtArgs>
   invitations?: boolean | Prisma.Board$invitationsArgs<ExtArgs>
+  permissionRequests?: boolean | Prisma.Board$permissionRequestsArgs<ExtArgs>
   preference?: boolean | Prisma.Board$preferenceArgs<ExtArgs>
   _count?: boolean | Prisma.BoardCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -971,6 +1099,7 @@ export type $BoardPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     labels: Prisma.$LabelPayload<ExtArgs>[]
     activities: Prisma.$ActivityPayload<ExtArgs>[]
     invitations: Prisma.$InvitationPayload<ExtArgs>[]
+    permissionRequests: Prisma.$PermissionRequestPayload<ExtArgs>[]
     preference: Prisma.$BoardPreferencePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1378,6 +1507,7 @@ export interface Prisma__BoardClient<T, Null = never, ExtArgs extends runtime.Ty
   labels<T extends Prisma.Board$labelsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$labelsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LabelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activities<T extends Prisma.Board$activitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invitations<T extends Prisma.Board$invitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  permissionRequests<T extends Prisma.Board$permissionRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$permissionRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PermissionRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   preference<T extends Prisma.Board$preferenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Board$preferenceArgs<ExtArgs>>): Prisma.Prisma__BoardPreferenceClient<runtime.Types.Result.GetResult<Prisma.$BoardPreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1923,6 +2053,30 @@ export type Board$invitationsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.InvitationScalarFieldEnum | Prisma.InvitationScalarFieldEnum[]
+}
+
+/**
+ * Board.permissionRequests
+ */
+export type Board$permissionRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PermissionRequest
+   */
+  select?: Prisma.PermissionRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PermissionRequest
+   */
+  omit?: Prisma.PermissionRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PermissionRequestInclude<ExtArgs> | null
+  where?: Prisma.PermissionRequestWhereInput
+  orderBy?: Prisma.PermissionRequestOrderByWithRelationInput | Prisma.PermissionRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PermissionRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PermissionRequestScalarFieldEnum | Prisma.PermissionRequestScalarFieldEnum[]
 }
 
 /**

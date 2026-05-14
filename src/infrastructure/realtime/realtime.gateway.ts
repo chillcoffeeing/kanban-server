@@ -56,7 +56,6 @@ export class RealtimeGateway
         id: payload.sub,
         email: payload.email,
         name: payload.name,
-        roles: payload.roles,
       };
     } catch {
       this.logger.warn("Unauthorized connection attempt");

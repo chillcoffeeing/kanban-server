@@ -65,7 +65,7 @@ export class BoardsController {
 
   @Get(":id")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole("owner", "admin", "member")
+  @RequireBoardRole("owner", "member")
   async get(@Param("id", ParseUUIDPipe) id: string): Promise<BoardResponseDto> {
     const board = await this.boards.getById(id);
     return BoardResponseDto.fromEntity(board);
@@ -73,7 +73,7 @@ export class BoardsController {
 
   @Get(":id/full")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole("owner", "admin", "member")
+  @RequireBoardRole("owner", "member")
   async getFull(@Param("id", ParseUUIDPipe) id: string): Promise<{
     board: BoardResponseDto;
     members: MemberResponseDto[];
@@ -123,7 +123,7 @@ export class BoardsController {
 
   @Patch(":id/preferences")
   @UseGuards(BoardPermissionGuard)
-  @RequireBoardRole("owner", "admin", "member")
+  @RequireBoardRole("owner", "member")
   async updatePrefs(
     @Param("id", ParseUUIDPipe) id: string,
     @Body() dto: UpdatePreferencesDto,

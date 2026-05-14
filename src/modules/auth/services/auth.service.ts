@@ -55,7 +55,6 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       name: user.name,
-      roles: user.roles,
     });
     return { user, tokens };
   }
@@ -74,7 +73,6 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       name: user.name,
-      roles: user.roles,
     });
     return { user, tokens };
   }
@@ -88,7 +86,6 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       name: user.name,
-      roles: user.roles,
     });
   }
 

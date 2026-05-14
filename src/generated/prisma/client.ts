@@ -115,6 +115,11 @@ export type Activity = Prisma.ActivityModel
  */
 export type RefreshToken = Prisma.RefreshTokenModel
 /**
+ * Model PermissionRequest
+ * 
+ */
+export type PermissionRequest = Prisma.PermissionRequestModel
+/**
  * Model Invitation
  * 
  */

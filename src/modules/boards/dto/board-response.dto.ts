@@ -14,6 +14,7 @@ export class BoardResponseDto {
   @ApiPropertyOptional() stagesCount?: number;
   @ApiPropertyOptional() membersCount?: number;
   @ApiPropertyOptional() cardsCount?: number;
+  @ApiPropertyOptional() role?: string;
 
   static fromEntity(
     b: any,
@@ -34,6 +35,7 @@ export class BoardResponseDto {
       stagesCount: b._count?.stages,
       membersCount: b._count?.members,
       cardsCount: totalCards,
+      role: b.userRole,
     };
   }
 }

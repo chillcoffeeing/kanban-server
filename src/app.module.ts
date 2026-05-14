@@ -19,6 +19,7 @@ import { ChecklistModule } from '@modules/checklist/checklist.module';
 import { CommentsModule } from '@modules/comments/comments.module';
 import { ActivityModule } from '@modules/activity/activity.module';
 import { InvitationsModule } from '@modules/invitations/invitations.module';
+import { PermissionRequestsModule } from '@modules/permission-requests/permission-requests.module';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 
 @Module({
@@ -40,6 +41,7 @@ import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
     CommentsModule,
     ActivityModule,
     InvitationsModule,
+    PermissionRequestsModule,
     HealthModule,
   ],
   providers: [

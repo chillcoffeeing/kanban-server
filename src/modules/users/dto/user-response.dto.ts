@@ -10,7 +10,6 @@ export class UserResponseDto {
   @ApiProperty() email!: string;
   @ApiProperty() avatarUrl!: string;
   @ApiProperty() name!: string;
-  @ApiProperty({ type: [String] }) roles!: string[];
   @ApiProperty({ type: Object }) profile?: UserProfile;
   @ApiProperty({ type: Object }) preference?: UserPreference;
   @ApiProperty() createdAt!: Date;
@@ -24,7 +23,6 @@ export class UserResponseDto {
       email: user.email,
       avatarUrl: user.avatarUrl || "",
       name: user.name,
-      roles: user.roles,
       profile: user.profile || undefined,
       preference: user.preference || undefined,
       createdAt: user.createdAt,

@@ -22,7 +22,7 @@ export class MembersService {
     return this.repo.listByBoard(boardId);
   }
 
-  listBoardIdsForUser(userId: string): Promise<string[]> {
+  listBoardIdsForUser(userId: string): Promise<{ boardId: string; role: string }[]> {
     return this.repo.listBoardIdsForUser(userId);
   }
 
@@ -47,6 +47,16 @@ export class MembersService {
       throw new BadRequestException('Cannot demote the board owner');
     }
     return this.repo.updateById(id, data);
+  }
+
+  async addPermission(membershipId: string, permission: string): Promise<void> {
+    const membership = await this.repo.findById(membershipId);
+    if (!membership) throw new NotFoundException("Member not found");
+    if (membership.role === "owner") return;
+    const perms = membership.permissions.includes(permission)
+      ? membership.permissions
+      : [...membership.permissions, permission];
+    await this.repo.updateById(membershipId, { permissions: perms });
   }
 
   async removeById(id: string): Promise<void> {

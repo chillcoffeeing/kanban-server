@@ -13,7 +13,7 @@ export class ActivityController {
   constructor(private readonly activity: ActivityService) {}
 
   @Get()
-  @RequireBoardRole('owner', 'admin', 'member')
+  @RequireBoardRole('owner', 'member')
   async list(
     @Param('id', ParseUUIDPipe) boardId: string,
     @Query() query: ListActivityQueryDto,

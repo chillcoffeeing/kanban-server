@@ -20,7 +20,7 @@ export interface IMembersRepository {
   }): Promise<BoardMembership>;
   updateById(id: string, data: { role?: BoardRole; permissions?: string[] }): Promise<BoardMembership>;
   deleteById(id: string): Promise<void>;
-  listBoardIdsForUser(userId: string): Promise<string[]>;
+  listBoardIdsForUser(userId: string): Promise<{ boardId: string; role: string }[]>;
 }
 
 export const MEMBERS_REPOSITORY = Symbol('MEMBERS_REPOSITORY');

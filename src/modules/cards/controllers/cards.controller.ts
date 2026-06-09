@@ -13,6 +13,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 import { CurrentUser } from "@modules/auth/decorators/current-user.decorator";
 import type { AuthUser } from "@modules/auth/interfaces/auth-user.interface";
 import { BoardPermissionGuard } from "@modules/members/guards/board-permission.guard";
@@ -22,8 +23,7 @@ import {
 } from "@modules/members/decorators/board-permission.decorator";
 import { BoardAccessService } from "@modules/members/services/board-access.service";
 import { StagesService } from "@modules/stages/services/stages.service";
-import { RealtimeService } from "@infrastructure/realtime/realtime.service";
-import { REALTIME_EVENTS } from "@infrastructure/realtime/events.constants";
+import { DOMAIN_EVENTS } from "@shared/events/domain.events";
 import { CardsService } from "../services/cards.service";
 import { CreateCardDto } from "../dto/create-card.dto";
 import { UpdateCardDto, UpdateMembersDto } from "../dto/update-card.dto";
@@ -38,7 +38,7 @@ export class CardsController {
     private readonly cards: CardsService,
     private readonly stages: StagesService,
     private readonly access: BoardAccessService,
-    private readonly realtime: RealtimeService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @Post("stages/:id/cards")
@@ -48,10 +48,18 @@ export class CardsController {
     @Body() dto: CreateCardDto,
   ): Promise<CardResponseDto> {
     const stage = await this.stages.getById(stageId);
-    await this.access.requirePermission(stage.boardId, user.id, "create_card");
+    const membership = await this.access.requirePermission(stage.boardId, user.id, "create_card");
     const card = await this.cards.create(stageId, dto);
     const res = CardResponseDto.fromEntity(card);
-    this.realtime.cardChanged(stage.boardId, REALTIME_EVENTS.CARD_CREATED, res);
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_CREATED, {
+      boardId: stage.boardId,
+      membershipId: membership.id,
+      userName: user.name,
+      cardId: card.id,
+      title: dto.title,
+      stageId,
+      data: res,
+    });
     return res;
   }
 
@@ -62,15 +70,23 @@ export class CardsController {
     @Body() dto: UpdateMembersDto,
   ): Promise<CardResponseDto> {
     const boardId = await this.cards.getBoardIdForCard(cardId);
-    await this.access.requirePermission(boardId, user.id, "invite_member");
+    const membership = await this.access.requirePermission(boardId, user.id, "invite_member");
     await this.cards.updateMembers({
       action: "addMember",
       cardId,
       boardMembershipId: dto.boardMembershipId,
     });
-    const card = await this.cards.getById(cardId); // Refetch with members
+    const card = await this.cards.getById(cardId);
     const res = CardResponseDto.fromEntity(card);
-    this.realtime.cardChanged(boardId, REALTIME_EVENTS.CARD_MEMBER_ADDED, res);
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_MEMBER_ADDED, {
+      boardId,
+      membershipId: membership.id,
+      userName: user.name,
+      cardId,
+      cardTitle: card.title,
+      memberName: "",
+      data: res,
+    });
     return res;
   }
 
@@ -82,19 +98,23 @@ export class CardsController {
     @Param("boardMembershipId", ParseUUIDPipe) boardMembershipId: string,
   ): Promise<CardResponseDto> {
     const boardId = await this.cards.getBoardIdForCard(cardId);
-    await this.access.requirePermission(boardId, user.id, "invite_member");
+    const membership = await this.access.requirePermission(boardId, user.id, "invite_member");
     await this.cards.updateMembers({
       action: "removeMember",
       cardId,
       boardMembershipId: boardMembershipId,
     });
-    const card = await this.cards.getById(cardId); // Refetch with members
+    const card = await this.cards.getById(cardId);
     const res = CardResponseDto.fromEntity(card);
-    this.realtime.cardChanged(
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_MEMBER_REMOVED, {
       boardId,
-      REALTIME_EVENTS.CARD_MEMBER_REMOVED,
-      res,
-    );
+      membershipId: membership.id,
+      userName: user.name,
+      cardId,
+      cardTitle: card.title,
+      memberName: "",
+      data: res,
+    });
     return res;
   }
 
@@ -116,10 +136,25 @@ export class CardsController {
     @Body() dto: UpdateCardDto,
   ): Promise<CardResponseDto> {
     const boardId = await this.cards.getBoardIdForCard(id);
-    await this.access.requirePermission(boardId, user.id, "modify_card");
+    const membership = await this.access.requirePermission(boardId, user.id, "modify_card");
     const card = await this.cards.update(id, dto);
     const res = CardResponseDto.fromEntity(card);
-    this.realtime.cardChanged(boardId, REALTIME_EVENTS.CARD_UPDATED, res);
+    const changes: Record<string, unknown> = {};
+    if (dto.title !== undefined) changes.title = dto.title;
+    if (dto.description !== undefined) changes.description = dto.description;
+    if (dto.startDate !== undefined) changes.startDate = dto.startDate;
+    if (dto.dueDate !== undefined) changes.dueDate = dto.dueDate;
+    if (Object.keys(changes).length > 0) {
+      this.eventEmitter.emit(DOMAIN_EVENTS.CARD_UPDATED, {
+        boardId,
+        membershipId: membership.id,
+        userName: user.name,
+        cardId: id,
+        title: card.title,
+        changes,
+        data: res,
+      });
+    }
     return res;
   }
 
@@ -130,10 +165,22 @@ export class CardsController {
     @Body() dto: MoveCardDto,
   ): Promise<CardResponseDto> {
     const boardId = await this.cards.getBoardIdForCard(id);
-    await this.access.requirePermission(boardId, user.id, "modify_card");
+    const membership = await this.access.requirePermission(boardId, user.id, "modify_card");
+    const oldCard = await this.cards.getById(id);
+    const oldStage = await this.stages.getById(oldCard.stageId);
+    const newStage = await this.stages.getById(dto.stageId);
     const card = await this.cards.move(id, dto.stageId, dto.index);
     const res = CardResponseDto.fromEntity(card);
-    this.realtime.cardChanged(boardId, REALTIME_EVENTS.CARD_MOVED, res);
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_MOVED, {
+      boardId,
+      membershipId: membership.id,
+      userName: user.name,
+      cardId: id,
+      title: card.title,
+      fromStage: oldStage.name,
+      toStage: newStage.name,
+      data: res,
+    });
     return res;
   }
 
@@ -144,11 +191,15 @@ export class CardsController {
     @Param("id", ParseUUIDPipe) id: string,
   ): Promise<void> {
     const boardId = await this.cards.getBoardIdForCard(id);
-    await this.access.requirePermission(boardId, user.id, "delete_card");
+    const membership = await this.access.requirePermission(boardId, user.id, "delete_card");
+    const card = await this.cards.getById(id);
     await this.cards.delete(id);
-    this.realtime.cardChanged(boardId, REALTIME_EVENTS.CARD_DELETED, {
-      id,
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_DELETED, {
       boardId,
+      membershipId: membership.id,
+      userName: user.name,
+      cardId: id,
+      title: card.title,
     });
   }
 

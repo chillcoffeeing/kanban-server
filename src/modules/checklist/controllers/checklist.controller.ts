@@ -11,11 +11,12 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CurrentUser } from '@modules/auth/decorators/current-user.decorator';
 import type { AuthUser } from '@modules/auth/interfaces/auth-user.interface';
 import { BoardAccessService } from '@modules/members/services/board-access.service';
 import { CardsService } from '@modules/cards/services/cards.service';
-import { RealtimeService } from '@infrastructure/realtime/realtime.service';
+import { DOMAIN_EVENTS } from '@shared/events/domain.events';
 import { ChecklistService } from '../services/checklist.service';
 import {
   ChecklistItemResponseDto,
@@ -31,12 +32,8 @@ export class ChecklistController {
     private readonly checklist: ChecklistService,
     private readonly cards: CardsService,
     private readonly access: BoardAccessService,
-    private readonly realtime: RealtimeService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
-
-  private notifyChange(boardId: string, cardId: string, action: string, payload: unknown): void {
-    this.realtime.checklistChanged(boardId, { cardId, action, payload });
-  }
 
   @Get('cards/:id/checklist')
   async list(
@@ -56,10 +53,17 @@ export class ChecklistController {
     @Body() dto: CreateChecklistItemDto,
   ): Promise<ChecklistItemResponseDto> {
     const boardId = await this.cards.getBoardIdForCard(cardId);
-    await this.access.requirePermission(boardId, user.id, 'modify_card');
+    const membership = await this.access.requirePermission(boardId, user.id, 'modify_card');
     const item = await this.checklist.create(cardId, dto.text);
     const res = ChecklistItemResponseDto.fromEntity(item);
-    this.notifyChange(boardId, cardId, 'created', res);
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_CHECKLIST_ADDED, {
+      boardId,
+      membershipId: membership.id,
+      userName: user.name,
+      cardId,
+      cardTitle: '',
+      itemText: dto.text,
+    });
     return res;
   }
 
@@ -71,10 +75,20 @@ export class ChecklistController {
     @Body() dto: UpdateChecklistItemDto,
   ): Promise<ChecklistItemResponseDto> {
     const boardId = await this.cards.getBoardIdForCard(cardId);
-    await this.access.requirePermission(boardId, user.id, 'modify_card');
+    const membership = await this.access.requirePermission(boardId, user.id, 'modify_card');
     const item = await this.checklist.update(itemId, dto);
     const res = ChecklistItemResponseDto.fromEntity(item);
-    this.notifyChange(boardId, cardId, 'updated', res);
+    if (dto.done !== undefined) {
+      this.eventEmitter.emit(DOMAIN_EVENTS.CARD_CHECKLIST_TOGGLED, {
+        boardId,
+        membershipId: membership.id,
+        userName: user.name,
+        cardId,
+        cardTitle: '',
+        itemText: item.text,
+        done: dto.done,
+      });
+    }
     return res;
   }
 
@@ -88,6 +102,5 @@ export class ChecklistController {
     const boardId = await this.cards.getBoardIdForCard(cardId);
     await this.access.requirePermission(boardId, user.id, 'modify_card');
     await this.checklist.delete(itemId);
-    this.notifyChange(boardId, cardId, 'deleted', { itemId });
   }
 }

@@ -1,7 +1,7 @@
 import { addDays } from "date-fns";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as bcrypt from "bcrypt";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { Prisma, PrismaClient } from "../src/generated/prisma/client";
 import { config } from "dotenv";
 import * as crypto from "crypto";
 
@@ -34,10 +34,10 @@ async function main() {
   await prisma.boardPreference.deleteMany({});
   await prisma.invitation.deleteMany({});
   await prisma.label.deleteMany({});
+  await prisma.activity.deleteMany({});
   await prisma.boardMembership.deleteMany({});
   await prisma.board.deleteMany({});
   await prisma.refreshToken.deleteMany({});
-  await prisma.activity.deleteMany({});
   await prisma.userProfile.deleteMany({});
   await prisma.userPreference.deleteMany({});
   await prisma.user.deleteMany({});
@@ -97,20 +97,20 @@ async function main() {
     role: string;
     username: string;
   }[] = [];
-  for (const u of seedUsers) {
+  for (const seedUser of seedUsers) {
     const user = await prisma.user.create({
       data: {
-        email: u.email,
-        name: u.name,
-        username: u.username,
+        email: seedUser.email,
+        name: seedUser.name,
+        username: seedUser.username,
         passwordHash: await bcrypt.hash(
           "Passw0rd!",
           process.env.BCRYPT_ROUNDS ? parseInt(process.env.BCRYPT_ROUNDS) : 10,
         ),
-        avatarUrl: `https://i.pravatar.cc/150?u=${u.email}`,
+        avatarUrl: `https://i.pravatar.cc/150?u=${seedUser.email}`,
       },
     });
-    users.push({ ...u, id: user.id });
+    users.push({ ...seedUser, id: user.id });
     console.log(`  ✓ ${user.name} (${user.email})`);
   }
 
@@ -224,14 +224,14 @@ async function main() {
     },
   ];
 
-  for (const p of profileData) {
-    await prisma.userProfile.create({ data: p });
+  for (const entry of profileData) {
+    await prisma.userProfile.create({ data: entry });
   }
 
-  for (const u of users) {
+  for (const createdUser of users) {
     await prisma.userPreference.create({
       data: {
-        userId: u.id,
+        userId: createdUser.id,
         settings: {
           theme: "light",
           language: "es",
@@ -320,18 +320,18 @@ async function main() {
     { userId: dave.id, role: "member" as const, perms: [] },
   ];
   const b1MemMap = new Map();
-  for (const m of b1Memberships) {
+  for (const membership of b1Memberships) {
     const created = await prisma.boardMembership.create({
       data: {
         boardId: board1.id,
-        userId: m.userId,
-        role: m.role,
-        permissions: m.perms,
+        userId: membership.userId,
+        role: membership.role,
+        permissions: membership.perms,
       },
     });
-    b1MemMap.set(m.userId, created);
+    b1MemMap.set(membership.userId, created);
     console.log(
-      `  ✓ ${users.find((u) => u.id === m.userId)?.name} (${m.role})`,
+      `  ✓ ${users.find((user) => user.id === membership.userId)?.name} (${membership.role})`,
     );
   }
 
@@ -343,18 +343,18 @@ async function main() {
     { userId: eve.id, role: "member" as const, perms: [] },
   ];
   const b2MemMap = new Map();
-  for (const m of b2Memberships) {
+  for (const membership of b2Memberships) {
     const created = await prisma.boardMembership.create({
       data: {
         boardId: board2.id,
-        userId: m.userId,
-        role: m.role,
-        permissions: m.perms,
+        userId: membership.userId,
+        role: membership.role,
+        permissions: membership.perms,
       },
     });
-    b2MemMap.set(m.userId, created);
+    b2MemMap.set(membership.userId, created);
     console.log(
-      `  ✓ ${users.find((u) => u.id === m.userId)?.name} (${m.role})`,
+      `  ✓ ${users.find((user) => user.id === membership.userId)?.name} (${membership.role})`,
     );
   }
 
@@ -367,18 +367,18 @@ async function main() {
     { userId: frank.id, role: "member" as const, perms: [] },
   ];
   const b3MemMap = new Map();
-  for (const m of b3Memberships) {
+  for (const membership of b3Memberships) {
     const created = await prisma.boardMembership.create({
       data: {
         boardId: board3.id,
-        userId: m.userId,
-        role: m.role,
-        permissions: m.perms,
+        userId: membership.userId,
+        role: membership.role,
+        permissions: membership.perms,
       },
     });
-    b3MemMap.set(m.userId, created);
+    b3MemMap.set(membership.userId, created);
     console.log(
-      `  ✓ ${users.find((u) => u.id === m.userId)?.name} (${m.role})`,
+      `  ✓ ${users.find((user) => user.id === membership.userId)?.name} (${membership.role})`,
     );
   }
 
@@ -425,12 +425,12 @@ async function main() {
     { name: "Bug", color: "#ef4444" },
   ];
   const b1LabelMap = new Map();
-  for (const l of b1Labels) {
+  for (const labelData of b1Labels) {
     const label = await prisma.label.create({
-      data: { boardId: board1.id, name: l.name, color: l.color },
+      data: { boardId: board1.id, name: labelData.name, color: labelData.color },
     });
-    b1LabelMap.set(l.name, label);
-    console.log(`  ✓ ${l.name}`);
+    b1LabelMap.set(labelData.name, label);
+    console.log(`  ✓ ${labelData.name}`);
   }
 
   // 8. Labels Board 2
@@ -441,12 +441,12 @@ async function main() {
     { name: "Design", color: "#ec4899" },
   ];
   const b2LabelMap = new Map();
-  for (const l of b2Labels) {
+  for (const labelData of b2Labels) {
     const label = await prisma.label.create({
-      data: { boardId: board2.id, name: l.name, color: l.color },
+      data: { boardId: board2.id, name: labelData.name, color: labelData.color },
     });
-    b2LabelMap.set(l.name, label);
-    console.log(`  ✓ ${l.name}`);
+    b2LabelMap.set(labelData.name, label);
+    console.log(`  ✓ ${labelData.name}`);
   }
 
   // 8.5 Labels Board 3
@@ -458,12 +458,12 @@ async function main() {
     { name: "Monitoring", color: "#10b981" },
   ];
   const b3LabelMap = new Map();
-  for (const l of b3Labels) {
+  for (const labelData of b3Labels) {
     const label = await prisma.label.create({
-      data: { boardId: board3.id, name: l.name, color: l.color },
+      data: { boardId: board3.id, name: labelData.name, color: labelData.color },
     });
-    b3LabelMap.set(l.name, label);
-    console.log(`  ✓ ${l.name}`);
+    b3LabelMap.set(labelData.name, label);
+    console.log(`  ✓ ${labelData.name}`);
   }
 
   // 9. Stages Board 1
@@ -500,31 +500,33 @@ async function main() {
     console.log(`  ✓ ${stage.name}`);
   }
 
-  // Helper to create cards
+  // Helper to create cards — returns map of title → card for ID lookups
   async function createCards(
     boardStages: any,
     boardLabels: any,
     boardMemMap: any,
     cardsPlan: any,
     boardNum: any,
-  ) {
+  ): Promise<Map<string, { id: string; title: string }>> {
     console.log(`\n📝 Cards for Board ${boardNum}...`);
-    let pos = 1;
-    for (const c of cardsPlan) {
-      const stage = boardStages[c.stageIndex];
+    const cardMap = new Map<string, { id: string; title: string }>();
+    let position = 1;
+    for (const cardPlan of cardsPlan) {
+      const stage = boardStages[cardPlan.stageIndex];
       const card = await prisma.card.create({
         data: {
           stageId: stage.id,
-          title: c.title,
-          description: c.description,
-          position: pos++,
+          title: cardPlan.title,
+          description: cardPlan.description,
+          position: position++,
         },
       });
+      cardMap.set(cardPlan.title, { id: card.id, title: card.title });
 
       // Labels
-      if (c.labelNames) {
-        for (const ln of c.labelNames) {
-          const label = boardLabels.get(ln);
+      if (cardPlan.labelNames) {
+        for (const labelName of cardPlan.labelNames) {
+          const label = boardLabels.get(labelName);
           if (label)
             await prisma.cardLabel.create({
               data: { cardId: card.id, labelId: label.id },
@@ -533,28 +535,28 @@ async function main() {
       }
 
       // Members via boardMembershipId
-      if (c.assigneeEmails) {
-        for (const email of c.assigneeEmails) {
-          const user = users.find((u) => u.email === email);
+      if (cardPlan.assigneeEmails) {
+        for (const email of cardPlan.assigneeEmails) {
+          const user = users.find((createdUser) => createdUser.email === email);
           if (user) {
-            const mem = boardMemMap.get(user.id);
-            if (mem)
+            const membership = boardMemMap.get(user.id);
+            if (membership)
               await prisma.cardMember.create({
-                data: { cardId: card.id, boardMembershipId: mem.id },
+                data: { cardId: card.id, boardMembershipId: membership.id },
               });
           }
         }
       }
 
       // Checklist
-      if (c.checklist) {
-        for (let i = 0; i < c.checklist.length; i++) {
+      if (cardPlan.checklist) {
+        for (let itemIndex = 0; itemIndex < cardPlan.checklist.length; itemIndex++) {
           await prisma.checklistItem.create({
             data: {
               cardId: card.id,
-              text: c.checklist[i].text,
-              done: c.checklist[i].done,
-              position: i + 1,
+              text: cardPlan.checklist[itemIndex].text,
+              done: cardPlan.checklist[itemIndex].done,
+              position: itemIndex + 1,
             },
           });
         }
@@ -562,10 +564,18 @@ async function main() {
 
       console.log(`  ✓ [${stage.name}] ${card.title}`);
     }
+    return cardMap;
+  }
+
+  function findCardId(cardMap: Map<string, { id: string; title: string }>, hint: string): string {
+    const exact = [...cardMap.values()].find((c) => c.title === hint);
+    if (exact) return exact.id;
+    const partial = [...cardMap.values()].find((c) => c.title.startsWith(hint));
+    return partial?.id ?? crypto.randomUUID();
   }
 
   // Board 1 cards
-  await createCards(
+  const b1CardMap = await createCards(
     b1Stages,
     b1LabelMap,
     b1MemMap,
@@ -696,7 +706,7 @@ async function main() {
   );
 
   // Board 2 cards
-  await createCards(
+  const b2CardMap = await createCards(
     b2Stages,
     b2LabelMap,
     b2MemMap,
@@ -780,7 +790,7 @@ async function main() {
   );
 
   // Board 3 cards
-  await createCards(
+  const b3CardMap = await createCards(
     b3Stages,
     b3LabelMap,
     b3MemMap,
@@ -897,6 +907,61 @@ async function main() {
     });
   }
   console.log("  ✓ Comments added");
+
+  // Activities
+  console.log("\n📋 Adding activity records...");
+
+  async function addActivity(
+    boardId: string,
+    memMap: Map<string, { id: string }>,
+    user: { id: string; name: string },
+    type: string,
+    detail: string,
+    meta: Prisma.InputJsonValue,
+    daysAgo: number,
+  ) {
+    const membership = memMap.get(user.id);
+    if (!membership) return;
+    await prisma.activity.create({
+      data: {
+        boardId,
+        membershipId: membership.id,
+        userName: user.name,
+        type,
+        detail,
+        meta,
+        createdAt: new Date(Date.now() - daysAgo * 86_400_000),
+      },
+    });
+  }
+
+  // Board 1 activities
+  await addActivity(board1.id, b1MemMap, alice, "card_moved", `Movió "Auditoria de rendimiento Lighthouse" de "Review" a "Done"`, { cardId: findCardId(b1CardMap, "Auditoria de rendimiento Lighthouse"), fromStage: "Review", toStage: "Done" }, 0.1);
+  await addActivity(board1.id, b1MemMap, bob, "card_checklist_toggled", `Completó "Implementar DragOverlay" en "Drag and drop entre etapas"`, { cardId: findCardId(b1CardMap, "Drag and drop entre etapas"), itemText: "Implementar DragOverlay", done: true }, 0.3);
+  await addActivity(board1.id, b1MemMap, carol, "card_label_added", `Agregó etiqueta "Accessibility" a "Auditoria de accesibilidad"`, { cardId: findCardId(b1CardMap, "Auditoria de accesibilidad"), labelName: "Accessibility" }, 0.5);
+  await addActivity(board1.id, b1MemMap, alice, "stage_created", `Creó la etapa "Deployed"`, { stageId: crypto.randomUUID() }, 1);
+  await addActivity(board1.id, b1MemMap, dave, "card_created", `Creó la tarjeta "Integrar autenticacion JWT"`, { cardId: findCardId(b1CardMap, "Integrar autenticacion JWT"), stageId: crypto.randomUUID() }, 2);
+  await addActivity(board1.id, b1MemMap, alice, "board_renamed", `Renombró el tablero "Frontend Q2" a "Frontend Redesign Q2"`, { oldName: "Frontend Q2", newName: "Frontend Redesign Q2" }, 3);
+  await addActivity(board1.id, b1MemMap, carol, "member_invited", `Invitó a "Dave Wilson" al tablero`, { memberEmail: dave.email, memberName: dave.name }, 4);
+  await addActivity(board1.id, b1MemMap, bob, "card_checklist_added", `Agregó "Instalar @dnd-kit" al checklist de "Drag and drop entre etapas"`, { cardId: findCardId(b1CardMap, "Drag and drop entre etapas"), itemText: "Instalar @dnd-kit" }, 5);
+
+  // Board 2 activities
+  await addActivity(board2.id, b2MemMap, eve, "card_created", `Creó la tarjeta "Setup inicial React Native + Expo"`, { cardId: findCardId(b2CardMap, "Setup inicial React Native + Expo"), stageId: crypto.randomUUID() }, 0.2);
+  await addActivity(board2.id, b2MemMap, carol, "card_checklist_toggled", `Completó "Button component" en "Diseno de componentes base"`, { cardId: findCardId(b2CardMap, "Diseno de componentes base"), itemText: "Button component", done: true }, 0.4);
+  await addActivity(board2.id, b2MemMap, bob, "card_moved", `Movió "Publicar beta en TestFlight" de "Backlog" a "Done"`, { cardId: findCardId(b2CardMap, "Publicar beta en TestFlight"), fromStage: "Backlog", toStage: "Done" }, 1);
+  await addActivity(board2.id, b2MemMap, eve, "member_invited", `Invitó a "Carol Rodriguez" al tablero`, { memberEmail: carol.email, memberName: carol.name }, 2);
+  await addActivity(board2.id, b2MemMap, bob, "card_checklist_added", `Agregó "Certificados iOS" al checklist de "Publicar beta en TestFlight"`, { cardId: findCardId(b2CardMap, "Publicar beta en TestFlight"), itemText: "Certificados iOS" }, 6);
+
+  // Board 3 activities
+  await addActivity(board3.id, b3MemMap, eve, "board_renamed", `Renombró el tablero "ETL Pipeline" a "Data Pipeline"`, { oldName: "ETL Pipeline", newName: "Data Pipeline" }, 0.5);
+  await addActivity(board3.id, b3MemMap, grace, "card_created", `Creó la tarjeta "Disenar arquitectura del pipeline"`, { cardId: findCardId(b3CardMap, "Disenar arquitectura del pipeline"), stageId: crypto.randomUUID() }, 1);
+  await addActivity(board3.id, b3MemMap, frank, "card_label_added", `Agregó etiqueta "Infra" a "Desplegar worker de procesamiento"`, { cardId: findCardId(b3CardMap, "Desplegar worker de procesamiento"), labelName: "Infra" }, 2);
+  await addActivity(board3.id, b3MemMap, eve, "member_invited", `Invitó a "Frank Thompson" al tablero`, { memberEmail: frank.email, memberName: frank.name }, 3);
+  await addActivity(board3.id, b3MemMap, grace, "stage_created", `Creó la etapa "Planning"`, { stageId: crypto.randomUUID() }, 5);
+  await addActivity(board3.id, b3MemMap, dave, "card_moved", `Movió "Implementar extraccion de datos" de "Backlog" a "In Progress"`, { cardId: findCardId(b3CardMap, "Implementar extraccion de datos"), fromStage: "Backlog", toStage: "In Progress" }, 7);
+  await addActivity(board3.id, b3MemMap, eve, "member_joined_card", `Asignó a "Grace Kim" en "Implementar extraccion de datos"`, { cardId: findCardId(b3CardMap, "Implementar extraccion de datos"), memberName: grace.name }, 8);
+
+  console.log(`  ✓ ${await prisma.activity.count()} activities added`);
 
   console.log("\n✅ Seed completed!");
   console.log(`\n📊 Summary:`);

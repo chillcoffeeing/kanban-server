@@ -2,7 +2,8 @@ import type { Activity, Prisma } from '@/generated/prisma/client';
 
 export interface CreateActivityData {
   boardId: string;
-  userId: string;  // Now represents BoardMembership ID
+  membershipId: string;
+  userName?: string;
   type: string;
   detail: string;
   meta?: Prisma.InputJsonValue;

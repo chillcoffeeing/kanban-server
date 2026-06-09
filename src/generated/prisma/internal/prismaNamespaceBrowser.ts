@@ -236,7 +236,8 @@ export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeo
 export const ActivityScalarFieldEnum = {
   id: 'id',
   boardId: 'boardId',
-  userId: 'userId',
+  membershipId: 'membershipId',
+  userName: 'userName',
   type: 'type',
   detail: 'detail',
   meta: 'meta',

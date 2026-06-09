@@ -22,7 +22,8 @@ export class ListActivityQueryDto {
 export class ActivityResponseDto {
   @ApiProperty() id!: string;
   @ApiProperty() boardId!: string;
-  @ApiProperty() userId!: string;
+  @ApiProperty() membershipId!: string | null;
+  @ApiPropertyOptional() userName?: string;
   @ApiProperty() type!: string;
   @ApiProperty() detail!: string;
   @ApiProperty({ type: Object }) meta!: Record<string, unknown>;
@@ -32,7 +33,8 @@ export class ActivityResponseDto {
     return {
       id: a.id,
       boardId: a.boardId,
-      userId: a.userId,
+      membershipId: a.membershipId,
+      userName: a.userName || undefined,
       type: a.type,
       detail: a.detail,
       meta: a.meta as Record<string, unknown>,

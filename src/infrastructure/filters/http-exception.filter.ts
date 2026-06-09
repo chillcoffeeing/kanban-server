@@ -29,7 +29,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
+    /* const request = ctx.getRequest(); */
 
     let status: number;
     let message: string;
@@ -53,18 +53,24 @@ export class HttpExceptionFilter implements ExceptionFilter {
       } else {
         message = exception.message;
       }
-    } else if (
-      exception instanceof Prisma.PrismaClientKnownRequestError
-    ) {
-      status = PRISMA_STATUS_MAP[exception.code] ?? HttpStatus.INTERNAL_SERVER_ERROR;
-      message = PRISMA_MESSAGE_MAP[exception.code] ?? "Error interno del servidor";
+    } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+      status =
+        PRISMA_STATUS_MAP[exception.code] ?? HttpStatus.INTERNAL_SERVER_ERROR;
+      message =
+        PRISMA_MESSAGE_MAP[exception.code] ?? "Error interno del servidor";
       code = `PRISMA_${exception.code}`;
-      this.logger.warn(`Prisma error: ${exception.code} — ${exception.message}`);
+      this.logger.warn(
+        `Prisma error: ${exception.code} — ${exception.message}`,
+      );
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = "Error interno del servidor";
       const e = exception as Record<string, unknown> | null;
-      this.logger.error("Unhandled exception", e?.message as string ?? "Unknown error", e?.stack as string ?? "");
+      this.logger.error(
+        "Unhandled exception",
+        (e?.message as string) ?? "Unknown error",
+        (e?.stack as string) ?? "",
+      );
     }
 
     const errorBody: Record<string, unknown> = {

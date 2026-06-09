@@ -261,7 +261,7 @@ export type BoardMembershipCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   cardMembers?: Prisma.CardMemberCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutRequesterInput
 }
 
@@ -274,7 +274,7 @@ export type BoardMembershipUncheckedCreateInput = {
   invitedAt?: Date | string
   cardMembers?: Prisma.CardMemberUncheckedCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutRequesterInput
 }
 
@@ -287,7 +287,7 @@ export type BoardMembershipUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   cardMembers?: Prisma.CardMemberUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutRequesterNestedInput
 }
 
@@ -300,7 +300,7 @@ export type BoardMembershipUncheckedUpdateInput = {
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cardMembers?: Prisma.CardMemberUncheckedUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutRequesterNestedInput
 }
 
@@ -380,6 +380,11 @@ export type BoardMembershipMinOrderByAggregateInput = {
 export type BoardMembershipScalarRelationFilter = {
   is?: Prisma.BoardMembershipWhereInput
   isNot?: Prisma.BoardMembershipWhereInput
+}
+
+export type BoardMembershipNullableScalarRelationFilter = {
+  is?: Prisma.BoardMembershipWhereInput | null
+  isNot?: Prisma.BoardMembershipWhereInput | null
 }
 
 export type BoardMembershipCreateNestedManyWithoutUserInput = {
@@ -513,10 +518,12 @@ export type BoardMembershipCreateNestedOneWithoutActivitiesInput = {
   connect?: Prisma.BoardMembershipWhereUniqueInput
 }
 
-export type BoardMembershipUpdateOneRequiredWithoutActivitiesNestedInput = {
+export type BoardMembershipUpdateOneWithoutActivitiesNestedInput = {
   create?: Prisma.XOR<Prisma.BoardMembershipCreateWithoutActivitiesInput, Prisma.BoardMembershipUncheckedCreateWithoutActivitiesInput>
   connectOrCreate?: Prisma.BoardMembershipCreateOrConnectWithoutActivitiesInput
   upsert?: Prisma.BoardMembershipUpsertWithoutActivitiesInput
+  disconnect?: Prisma.BoardMembershipWhereInput | boolean
+  delete?: Prisma.BoardMembershipWhereInput | boolean
   connect?: Prisma.BoardMembershipWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.BoardMembershipUpdateToOneWithWhereWithoutActivitiesInput, Prisma.BoardMembershipUpdateWithoutActivitiesInput>, Prisma.BoardMembershipUncheckedUpdateWithoutActivitiesInput>
 }
@@ -543,7 +550,7 @@ export type BoardMembershipCreateWithoutUserInput = {
   board: Prisma.BoardCreateNestedOneWithoutMembersInput
   cardMembers?: Prisma.CardMemberCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutRequesterInput
 }
 
@@ -555,7 +562,7 @@ export type BoardMembershipUncheckedCreateWithoutUserInput = {
   invitedAt?: Date | string
   cardMembers?: Prisma.CardMemberUncheckedCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutRequesterInput
 }
 
@@ -605,7 +612,7 @@ export type BoardMembershipCreateWithoutBoardInput = {
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   cardMembers?: Prisma.CardMemberCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutRequesterInput
 }
 
@@ -617,7 +624,7 @@ export type BoardMembershipUncheckedCreateWithoutBoardInput = {
   invitedAt?: Date | string
   cardMembers?: Prisma.CardMemberUncheckedCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutRequesterInput
 }
 
@@ -655,7 +662,7 @@ export type BoardMembershipCreateWithoutCardMembersInput = {
   board: Prisma.BoardCreateNestedOneWithoutMembersInput
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutRequesterInput
 }
 
@@ -667,7 +674,7 @@ export type BoardMembershipUncheckedCreateWithoutCardMembersInput = {
   permissions?: Prisma.BoardMembershipCreatepermissionsInput | string[]
   invitedAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutRequesterInput
 }
 
@@ -695,7 +702,7 @@ export type BoardMembershipUpdateWithoutCardMembersInput = {
   board?: Prisma.BoardUpdateOneRequiredWithoutMembersNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutRequesterNestedInput
 }
 
@@ -707,7 +714,7 @@ export type BoardMembershipUncheckedUpdateWithoutCardMembersInput = {
   permissions?: Prisma.BoardMembershipUpdatepermissionsInput | string[]
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutRequesterNestedInput
 }
 
@@ -719,7 +726,7 @@ export type BoardMembershipCreateWithoutCommentsInput = {
   board: Prisma.BoardCreateNestedOneWithoutMembersInput
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   cardMembers?: Prisma.CardMemberCreateNestedManyWithoutBoardMembershipInput
-  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestCreateNestedManyWithoutRequesterInput
 }
 
@@ -731,7 +738,7 @@ export type BoardMembershipUncheckedCreateWithoutCommentsInput = {
   permissions?: Prisma.BoardMembershipCreatepermissionsInput | string[]
   invitedAt?: Date | string
   cardMembers?: Prisma.CardMemberUncheckedCreateNestedManyWithoutBoardMembershipInput
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutMembershipInput
   permissionRequests?: Prisma.PermissionRequestUncheckedCreateNestedManyWithoutRequesterInput
 }
 
@@ -759,7 +766,7 @@ export type BoardMembershipUpdateWithoutCommentsInput = {
   board?: Prisma.BoardUpdateOneRequiredWithoutMembersNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   cardMembers?: Prisma.CardMemberUpdateManyWithoutBoardMembershipNestedInput
-  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutRequesterNestedInput
 }
 
@@ -771,7 +778,7 @@ export type BoardMembershipUncheckedUpdateWithoutCommentsInput = {
   permissions?: Prisma.BoardMembershipUpdatepermissionsInput | string[]
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cardMembers?: Prisma.CardMemberUncheckedUpdateManyWithoutBoardMembershipNestedInput
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutRequesterNestedInput
 }
 
@@ -848,7 +855,7 @@ export type BoardMembershipCreateWithoutPermissionRequestsInput = {
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
   cardMembers?: Prisma.CardMemberCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutMembershipInput
 }
 
 export type BoardMembershipUncheckedCreateWithoutPermissionRequestsInput = {
@@ -860,7 +867,7 @@ export type BoardMembershipUncheckedCreateWithoutPermissionRequestsInput = {
   invitedAt?: Date | string
   cardMembers?: Prisma.CardMemberUncheckedCreateNestedManyWithoutBoardMembershipInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
-  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutMembershipInput
 }
 
 export type BoardMembershipCreateOrConnectWithoutPermissionRequestsInput = {
@@ -888,7 +895,7 @@ export type BoardMembershipUpdateWithoutPermissionRequestsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   cardMembers?: Prisma.CardMemberUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutMembershipNestedInput
 }
 
 export type BoardMembershipUncheckedUpdateWithoutPermissionRequestsInput = {
@@ -900,7 +907,7 @@ export type BoardMembershipUncheckedUpdateWithoutPermissionRequestsInput = {
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cardMembers?: Prisma.CardMemberUncheckedUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutMembershipNestedInput
 }
 
 export type BoardMembershipCreateManyUserInput = {
@@ -919,7 +926,7 @@ export type BoardMembershipUpdateWithoutUserInput = {
   board?: Prisma.BoardUpdateOneRequiredWithoutMembersNestedInput
   cardMembers?: Prisma.CardMemberUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutRequesterNestedInput
 }
 
@@ -931,7 +938,7 @@ export type BoardMembershipUncheckedUpdateWithoutUserInput = {
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cardMembers?: Prisma.CardMemberUncheckedUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutRequesterNestedInput
 }
 
@@ -959,7 +966,7 @@ export type BoardMembershipUpdateWithoutBoardInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
   cardMembers?: Prisma.CardMemberUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUpdateManyWithoutRequesterNestedInput
 }
 
@@ -971,7 +978,7 @@ export type BoardMembershipUncheckedUpdateWithoutBoardInput = {
   invitedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cardMembers?: Prisma.CardMemberUncheckedUpdateManyWithoutBoardMembershipNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
-  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutMembershipNestedInput
   permissionRequests?: Prisma.PermissionRequestUncheckedUpdateManyWithoutRequesterNestedInput
 }
 

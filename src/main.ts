@@ -11,11 +11,15 @@ import { HttpExceptionFilter } from "./infrastructure/filters/http-exception.fil
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
+
   app.useLogger(app.get(Logger));
+
   const config = app.get(TypedConfigService);
 
   app.useWebSocketAdapter(new IoAdapter(app));
+
   app.use(helmet());
+
   const corsOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
     : config.get("CORS_ORIGINS") || [];
@@ -26,6 +30,7 @@ async function bootstrap(): Promise<void> {
   });
 
   const globalPrefix = process.env.API_PREFIX || config.get("API_PREFIX");
+
   app.setGlobalPrefix(globalPrefix);
 
   app.useGlobalPipes(

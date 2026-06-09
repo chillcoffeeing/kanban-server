@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppConfigModule } from '@config/config.module';
 import { TypedConfigService } from '@config/typed-config.service';
 import { AppLoggerModule } from '@common/logging/logger.module';
@@ -24,6 +26,8 @@ import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
     AppConfigModule,
     AppLoggerModule,
     AppThrottlerModule,

@@ -11,11 +11,12 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CurrentUser } from '@modules/auth/decorators/current-user.decorator';
 import type { AuthUser } from '@modules/auth/interfaces/auth-user.interface';
 import { BoardAccessService } from '@modules/members/services/board-access.service';
 import { CardsService } from '@modules/cards/services/cards.service';
-import { RealtimeService } from '@infrastructure/realtime/realtime.service';
+import { DOMAIN_EVENTS } from '@shared/events/domain.events';
 import { CommentsService } from '../services/comments.service';
 import {
   CommentResponseDto,
@@ -31,7 +32,7 @@ export class CommentsController {
     private readonly comments: CommentsService,
     private readonly cards: CardsService,
     private readonly access: BoardAccessService,
-    private readonly realtime: RealtimeService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @Get('cards/:id/comments')
@@ -40,7 +41,7 @@ export class CommentsController {
     @Param('id', ParseUUIDPipe) cardId: string,
   ): Promise<CommentResponseDto[]> {
     const boardId = await this.cards.getBoardIdForCard(cardId);
-    const membership = await this.access.requireMembership(boardId, user.id);
+    await this.access.requireMembership(boardId, user.id);
     const rows = await this.comments.listByCard(cardId);
     return rows.map(CommentResponseDto.fromEntity);
   }
@@ -55,7 +56,10 @@ export class CommentsController {
     const membership = await this.access.requireMembership(boardId, user.id);
     const comment = await this.comments.create(cardId, membership.id, dto.body);
     const res = CommentResponseDto.fromEntity(comment);
-    this.realtime.commentCreated(boardId, res);
+    this.eventEmitter.emit(DOMAIN_EVENTS.COMMENT_CREATED, {
+      boardId,
+      data: res,
+    });
     return res;
   }
 

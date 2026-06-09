@@ -12,6 +12,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 import { CurrentUser } from "@modules/auth/decorators/current-user.decorator";
 import type { AuthUser } from "@modules/auth/interfaces/auth-user.interface";
 import { BoardPermissionGuard } from "@modules/members/guards/board-permission.guard";
@@ -19,7 +20,7 @@ import {
   RequireBoardPermission,
   RequireBoardRole,
 } from "@modules/members/decorators/board-permission.decorator";
-import { RealtimeService } from "@infrastructure/realtime/realtime.service";
+import { DOMAIN_EVENTS } from "@shared/events/domain.events";
 import { BoardsService } from "../services/boards.service";
 import { StagesService } from "@modules/stages/services/stages.service";
 import { CardsService } from "@modules/cards/services/cards.service";
@@ -33,7 +34,6 @@ import { CreateBoardDto } from "../dto/create-board.dto";
 import { UpdateBoardDto } from "../dto/update-board.dto";
 import { UpdatePreferencesDto } from "../dto/update-preferences.dto";
 import { BoardResponseDto } from "../dto/board-response.dto";
-import { log } from "node:console";
 
 @ApiTags("boards")
 @ApiBearerAuth()
@@ -45,7 +45,7 @@ export class BoardsController {
     private readonly cards: CardsService,
     private readonly members: MembersService,
     private readonly labels: LabelsService,
-    private readonly realtime: RealtimeService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @Get()
@@ -112,12 +112,31 @@ export class BoardsController {
   @UseGuards(BoardPermissionGuard)
   @RequireBoardRole("owner")
   async update(
+    @CurrentUser() user: AuthUser,
     @Param("id", ParseUUIDPipe) id: string,
     @Body() dto: UpdateBoardDto,
   ): Promise<BoardResponseDto> {
+    const membership = await this.members.findByUserAndBoard(id, user.id);
+    const old = await this.boards.getById(id);
     const board = await this.boards.update(id, dto);
     const res = BoardResponseDto.fromEntity(board);
-    this.realtime.boardUpdated(board.id, res);
+
+    if (dto.name && dto.name !== old.name) {
+      this.eventEmitter.emit(DOMAIN_EVENTS.BOARD_UPDATED, {
+        boardId: id,
+        membershipId: membership.id,
+        userName: user.name,
+        oldName: old.name,
+        newName: dto.name,
+        data: res,
+      });
+    } else {
+      this.eventEmitter.emit(DOMAIN_EVENTS.BOARD_UPDATED, {
+        boardId: id,
+        data: res,
+      });
+    }
+
     return res;
   }
 
@@ -132,7 +151,10 @@ export class BoardsController {
       preferences: dto.preferences,
     });
     const res = BoardResponseDto.fromEntity(board);
-    this.realtime.boardUpdated(board.id, res);
+    this.eventEmitter.emit(DOMAIN_EVENTS.BOARD_UPDATED, {
+      boardId: id,
+      data: res,
+    });
     return res;
   }
 
@@ -141,7 +163,6 @@ export class BoardsController {
   @RequireBoardRole("owner")
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param("id", ParseUUIDPipe) id: string): Promise<void> {
-    this.realtime.boardDeleted(id);
     await this.boards.delete(id);
   }
 }

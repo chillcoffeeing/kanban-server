@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CurrentUser } from '@modules/auth/decorators/current-user.decorator';
 import type { AuthUser } from '@modules/auth/interfaces/auth-user.interface';
 import { BoardPermissionGuard } from '@modules/members/guards/board-permission.guard';
@@ -18,8 +19,7 @@ import {
   RequireBoardPermission,
 } from '@modules/members/decorators/board-permission.decorator';
 import { BoardAccessService } from '@modules/members/services/board-access.service';
-import { RealtimeService } from '@infrastructure/realtime/realtime.service';
-import { REALTIME_EVENTS } from '@infrastructure/realtime/events.constants';
+import { DOMAIN_EVENTS } from '@shared/events/domain.events';
 import { StagesService } from '../services/stages.service';
 import { CreateStageDto } from '../dto/create-stage.dto';
 import { UpdateStageDto } from '../dto/update-stage.dto';
@@ -32,19 +32,28 @@ export class StagesController {
   constructor(
     private readonly stages: StagesService,
     private readonly access: BoardAccessService,
-    private readonly realtime: RealtimeService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @Post('boards/:id/stages')
   @UseGuards(BoardPermissionGuard)
   @RequireBoardPermission('create_stage')
   async create(
+    @CurrentUser() user: AuthUser,
     @Param('id', ParseUUIDPipe) boardId: string,
     @Body() dto: CreateStageDto,
   ): Promise<StageResponseDto> {
+    const membership = await this.access.requirePermission(boardId, user.id, 'create_stage');
     const stage = await this.stages.create(boardId, dto.name);
     const res = StageResponseDto.fromEntity(stage);
-    this.realtime.stageChanged(boardId, REALTIME_EVENTS.STAGE_CREATED, res);
+    this.eventEmitter.emit(DOMAIN_EVENTS.STAGE_CREATED, {
+      boardId,
+      membershipId: membership.id,
+      userName: user.name,
+      stageId: stage.id,
+      name: dto.name,
+      data: res,
+    });
     return res;
   }
 
@@ -54,13 +63,33 @@ export class StagesController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateStageDto,
   ): Promise<StageResponseDto> {
-    const stage = await this.stages.getById(id);
-    await this.access.requireRole(stage.boardId, user.id, ['owner']);
+    const old = await this.stages.getById(id);
+    const membership = await this.access.requireRole(old.boardId, user.id, ['owner']);
     const updated = await this.stages.update(id, dto);
     const res = StageResponseDto.fromEntity(updated);
-    const event =
-      dto.position !== undefined ? REALTIME_EVENTS.STAGE_REORDERED : REALTIME_EVENTS.STAGE_UPDATED;
-    this.realtime.stageChanged(stage.boardId, event, res);
+
+    if (dto.position !== undefined) {
+      this.eventEmitter.emit(DOMAIN_EVENTS.STAGE_REORDERED, {
+        boardId: old.boardId,
+        data: res,
+      });
+    } else if (dto.name && dto.name !== old.name) {
+      this.eventEmitter.emit(DOMAIN_EVENTS.STAGE_UPDATED, {
+        boardId: old.boardId,
+        membershipId: membership.id,
+        userName: user.name,
+        stageId: id,
+        oldName: old.name,
+        newName: dto.name,
+        data: res,
+      });
+    } else {
+      this.eventEmitter.emit(DOMAIN_EVENTS.STAGE_UPDATED, {
+        boardId: old.boardId,
+        data: res,
+      });
+    }
+
     return res;
   }
 
@@ -71,11 +100,14 @@ export class StagesController {
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<void> {
     const stage = await this.stages.getById(id);
-    await this.access.requireRole(stage.boardId, user.id, ['owner']);
+    const membership = await this.access.requireRole(stage.boardId, user.id, ['owner']);
     await this.stages.delete(id);
-    this.realtime.stageChanged(stage.boardId, REALTIME_EVENTS.STAGE_DELETED, {
-      id,
+    this.eventEmitter.emit(DOMAIN_EVENTS.STAGE_DELETED, {
       boardId: stage.boardId,
+      membershipId: membership.id,
+      userName: user.name,
+      stageId: id,
+      name: stage.name,
     });
   }
 }

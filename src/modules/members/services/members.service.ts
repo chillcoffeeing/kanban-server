@@ -59,6 +59,10 @@ export class MembersService {
     await this.repo.updateById(membershipId, { permissions: perms });
   }
 
+  async findByUserAndBoard(boardId: string, userId: string): Promise<any> {
+    return this.repo.findByUserAndBoard(boardId, userId);
+  }
+
   async removeById(id: string): Promise<void> {
     const membership = await this.repo.findById(id);
     if (!membership) throw new NotFoundException('Member not found');

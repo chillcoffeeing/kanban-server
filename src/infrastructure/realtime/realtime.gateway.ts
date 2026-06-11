@@ -15,6 +15,7 @@ import { TypedConfigService } from "@config/typed-config.service";
 import { BoardAccessService } from "@modules/members/services/board-access.service";
 import type { AccessTokenPayload } from "@modules/auth/interfaces/token-payload.interface";
 import { boardRoom } from "./events.constants";
+import { RealtimeService } from "./realtime.service";
 import type { AuthenticatedSocket } from "./interfaces/socket-user.interface";
 
 interface JoinBoardDto {
@@ -37,6 +38,7 @@ export class RealtimeGateway
   server!: Server;
 
   afterInit(): void {
+    this.realtime.bindServer(this.server);
     this.logger.log("RealtimeGateway initialized");
   }
 
@@ -44,6 +46,7 @@ export class RealtimeGateway
     private readonly jwt: JwtService,
     private readonly config: TypedConfigService,
     private readonly access: BoardAccessService,
+    private readonly realtime: RealtimeService,
   ) {}
 
   async handleConnection(client: AuthenticatedSocket): Promise<void> {

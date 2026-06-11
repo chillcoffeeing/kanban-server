@@ -74,11 +74,44 @@ export class CardsRepository implements ICardsRepository {
   }
 
   create(data: CreateCardData): Promise<Card> {
-    return this.prisma.card.create({ data });
+    return this.prisma.card.create({
+      data,
+      include: {
+        members: {
+          select: {
+            boardMembershipId: true,
+            boardMembership: {
+              select: {
+                user: { select: { name: true, avatarUrl: true, id: true } },
+              },
+            },
+          },
+        },
+        checklistItems: { orderBy: { position: "asc" } },
+        labels: { include: { label: true } },
+      },
+    });
   }
 
   update(id: string, data: UpdateCardData): Promise<Card> {
-    return this.prisma.card.update({ where: { id }, data });
+    return this.prisma.card.update({
+      where: { id },
+      data,
+      include: {
+        members: {
+          select: {
+            boardMembershipId: true,
+            boardMembership: {
+              select: {
+                user: { select: { name: true, avatarUrl: true, id: true } },
+              },
+            },
+          },
+        },
+        checklistItems: { orderBy: { position: "asc" } },
+        labels: { include: { label: true } },
+      },
+    });
   }
 
   async delete(id: string): Promise<void> {
@@ -102,9 +135,10 @@ export class CardsRepository implements ICardsRepository {
   async neighborPositions(
     stageId: string,
     index: number,
+    excludeId?: string,
   ): Promise<{ prev: number | null; next: number | null }> {
     const siblings = await this.prisma.card.findMany({
-      where: { stageId },
+      where: { stageId, ...(excludeId ? { id: { not: excludeId } } : {}) },
       orderBy: { position: "asc" },
       select: { position: true },
     });

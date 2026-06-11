@@ -63,6 +63,7 @@ export class ChecklistController {
       cardId,
       cardTitle: '',
       itemText: dto.text,
+      data: res,
     });
     return res;
   }
@@ -87,6 +88,7 @@ export class ChecklistController {
         cardTitle: '',
         itemText: item.text,
         done: dto.done,
+        data: res,
       });
     }
     return res;

@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CurrentUser } from '@modules/auth/decorators/current-user.decorator';
 import type { AuthUser } from '@modules/auth/interfaces/auth-user.interface';
 import { BoardPermissionGuard } from '@modules/members/guards/board-permission.guard';
@@ -20,6 +21,8 @@ import {
 } from '@modules/members/decorators/board-permission.decorator';
 import { BoardAccessService } from '@modules/members/services/board-access.service';
 import { CardsService } from '@modules/cards/services/cards.service';
+import { DOMAIN_EVENTS } from '@shared/events/domain.events';
+import { CardResponseDto } from '@modules/cards/dto/card-response.dto';
 import { LabelsService } from '../services/labels.service';
 import { CreateLabelDto } from '../dto/create-label.dto';
 import { LabelResponseDto } from '../dto/label-response.dto';
@@ -32,6 +35,7 @@ export class LabelsController {
     private readonly labels: LabelsService,
     private readonly cards: CardsService,
     private readonly access: BoardAccessService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @Get('boards/:id/labels')
@@ -86,6 +90,16 @@ export class LabelsController {
     const boardId = await this.cards.getBoardIdForCard(cardId);
     await this.access.requirePermission(boardId, user.id, 'modify_card');
     await this.labels.attach(cardId, labelId, boardId);
+    const card = await this.cards.getById(cardId);
+    const label = LabelResponseDto.fromEntity(
+      (await this.labels.listByCard(cardId)).find((l) => l.id === labelId)!
+    );
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_LABEL_ADDED, {
+      boardId,
+      cardId,
+      label,
+      data: CardResponseDto.fromEntity(card),
+    });
     return { success: true };
   }
 
@@ -99,5 +113,12 @@ export class LabelsController {
     const boardId = await this.cards.getBoardIdForCard(cardId);
     await this.access.requirePermission(boardId, user.id, 'modify_card');
     await this.labels.detach(cardId, labelId);
+    const card = await this.cards.getById(cardId);
+    this.eventEmitter.emit(DOMAIN_EVENTS.CARD_LABEL_REMOVED, {
+      boardId,
+      cardId,
+      labelId,
+      data: CardResponseDto.fromEntity(card),
+    });
   }
 }

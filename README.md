@@ -47,6 +47,4 @@ src/
     └── ...                    dominio (auth, boards, cards, …)
 ```
 
-## Fases del roadmap
 
-Este repo está en **Fase 1: Esqueleto**. Próximas: Auth+Users, dominio core, Activity+Invitations, Realtime.

@@ -34,7 +34,7 @@ export class AuthService {
     if (existing) throw new ConflictException('Email already registered');
 
     const passwordHash = await this.hasher.hash(input.password);
-    const { displayName, jobTitle, company, ...rest } = input;
+    const { displayName, jobTitle, company, password, ...rest } = input;
     const profileFields: Record<string, string | undefined> = {};
     if (displayName) profileFields.displayName = displayName;
     if (jobTitle) profileFields.jobTitle = jobTitle;

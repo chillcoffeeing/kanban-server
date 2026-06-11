@@ -15,6 +15,8 @@ export const REALTIME_EVENTS = {
   CARD_MEMBER_REMOVED: 'card:member_removed',
 
   CHECKLIST_CHANGED: 'checklist:changed',
+  LABEL_ADDED: 'label:added',
+  LABEL_REMOVED: 'label:removed',
   ATTACHMENT_CHANGED: 'attachment:changed',
   COMMENT_CREATED: 'comment:created',
 

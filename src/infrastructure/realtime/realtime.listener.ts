@@ -65,9 +65,41 @@ export class RealtimeListener {
     this.realtime.cardChanged(payload.boardId, REALTIME_EVENTS.CARD_MEMBER_REMOVED, payload.data);
   }
 
-  @OnEvent(DOMAIN_EVENTS.CHECKLIST_CHANGED)
-  handleChecklistChanged(payload: { boardId: string; data: unknown }) {
-    this.realtime.checklistChanged(payload.boardId, payload.data);
+  @OnEvent(DOMAIN_EVENTS.CARD_CHECKLIST_ADDED)
+  handleChecklistAdded(payload: {
+    boardId: string;
+    cardId: string;
+    data: { id: string; text: string; done: boolean; position: number };
+  }) {
+    this.realtime.checklistChanged(payload.boardId, {
+      event: 'added' as const,
+      cardId: payload.cardId,
+      item: payload.data,
+    });
+  }
+
+  @OnEvent(DOMAIN_EVENTS.CARD_CHECKLIST_TOGGLED)
+  handleChecklistToggled(payload: {
+    boardId: string;
+    cardId: string;
+    data: { id: string; done: boolean };
+  }) {
+    this.realtime.checklistChanged(payload.boardId, {
+      event: 'toggled' as const,
+      cardId: payload.cardId,
+      itemId: payload.data.id,
+      done: payload.data.done,
+    });
+  }
+
+  @OnEvent(DOMAIN_EVENTS.CARD_LABEL_ADDED)
+  handleCardLabelAdded(payload: { boardId: string; data: unknown }) {
+    this.realtime.cardChanged(payload.boardId, REALTIME_EVENTS.CARD_UPDATED, payload.data);
+  }
+
+  @OnEvent(DOMAIN_EVENTS.CARD_LABEL_REMOVED)
+  handleCardLabelRemoved(payload: { boardId: string; data: unknown }) {
+    this.realtime.cardChanged(payload.boardId, REALTIME_EVENTS.CARD_UPDATED, payload.data);
   }
 
   @OnEvent(DOMAIN_EVENTS.COMMENT_CREATED)

@@ -37,6 +37,7 @@ export interface ICardsRepository {
   neighborPositions(
     stageId: string,
     index: number,
+    excludeId?: string,
   ): Promise<{ prev: number | null; next: number | null }>;
 }
 

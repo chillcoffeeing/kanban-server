@@ -66,12 +66,12 @@ export class CardsService {
       throw new BadRequestException('Cannot move card across boards');
     }
 
-    // Neighbors in target stage — if moving within same stage, exclude self.
-    const { prev, next } = await this.repo.neighborPositions(stageId, index);
-    const position = positionBetween(
-      prev === card.position ? null : prev,
-      next === card.position ? null : next,
+    const { prev, next } = await this.repo.neighborPositions(
+      stageId,
+      index,
+      card.stageId === stageId ? cardId : undefined,
     );
+    const position = positionBetween(prev, next);
     return this.repo.update(cardId, { stageId, position });
   }
 

@@ -191,14 +191,13 @@ export class ActivityListener {
   }
 
   @OnEvent(DOMAIN_EVENTS.MEMBER_JOINED)
-  handleMemberJoined(payload: { boardId: string; membershipId: string; userName: string; memberEmail: string; memberName: string }) {
+  handleMemberJoined(payload: { boardId: string; membershipId: string; userName: string }) {
     return this.activity.log({
       boardId: payload.boardId,
       membershipId: payload.membershipId,
       userName: payload.userName,
-      type: 'member_invited',
-      detail: `Invitó a "${payload.memberName || payload.memberEmail}" al tablero`,
-      meta: { memberEmail: payload.memberEmail, memberName: payload.memberName },
+      type: 'member_joined',
+      detail: 'entró al tablero',
     });
   }
 

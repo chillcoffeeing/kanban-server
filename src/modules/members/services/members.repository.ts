@@ -71,7 +71,24 @@ export class MembersRepository implements IMembersRepository {
     role: BoardRole;
     permissions: string[];
   }): Promise<any> {
-    return this.prisma.boardMembership.create({ data });
+    return this.prisma.boardMembership.create({
+      data,
+      select: {
+        id: true,
+        invitedAt: true,
+        role: true,
+        permissions: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatarUrl: true,
+            createdAt: true,
+          },
+        },
+      },
+    }) as any;
   }
 
   updateById(

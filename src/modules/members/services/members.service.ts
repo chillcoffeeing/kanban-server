@@ -5,17 +5,20 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import type { BoardRole } from '@/generated/prisma/client';
 import {
   IMembersRepository,
   MEMBERS_REPOSITORY,
 } from '../interfaces/members-repository.interface';
 import { DEFAULT_MEMBER_PERMISSIONS, type BoardPermission } from '@shared/board-permissions';
+import { DOMAIN_EVENTS } from '@shared/events/domain.events';
 
 @Injectable()
 export class MembersService {
   constructor(
     @Inject(MEMBERS_REPOSITORY) private readonly repo: IMembersRepository,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   listByBoard(boardId: string): Promise<any[]> {
@@ -34,7 +37,17 @@ export class MembersService {
   ): Promise<any> {
     const existing = await this.repo.findByUserAndBoard(boardId, userId);
     if (existing) throw new ConflictException('User is already a member');
-    return this.repo.create({ boardId, userId, role, permissions });
+    const raw: any = await this.repo.create({ boardId, userId, role, permissions });
+    const member = raw;
+    const memberName = (member as any).user?.name ?? '';
+    this.eventEmitter.emit(DOMAIN_EVENTS.MEMBER_JOINED, {
+      boardId,
+      data: { ...member, boardId },
+      membershipId: member.id,
+      userName: memberName,
+      memberName,
+    });
+    return member;
   }
 
   async updateById(
